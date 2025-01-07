@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>kr.co.mbc</groupId>
-	<artifactId>mvc_jpa_study_base</artifactId>
+	<artifactId>mbc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mvc_jpa_study_base</name>
+	<name>team1_JejuEV</name>
 	<description>project base source</description>
 	<url />
 	<licenses>
