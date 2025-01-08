@@ -18,19 +18,20 @@
 
 <div class="container">
 	<div>
-		<h3>회원정보 상세보기</h3>
+		<h3>회원정보 수정화면</h3>
 	</div>
 	
 	<div>
-		<div>
-			아이디 : ${memberResponse.username}
-		</div>
-		<div>
-			이름 : ${memberResponse.name}
-		</div>
+		<form action="/member/update" method="post">
+			<div>
+				아이디 : <input name="username" value="${memberResponse.username}" readonly="readonly">
+			</div>
+			<div>
+				이름 : <input name="name" value="${memberResponse.name}">
+			</div>
+			<button>수정완료</button>
+		</form>
 	</div>
-	<a href="/">메인페이지</a>
-	<a href="/member/updateForm/${memberResponse.username}">회원정보 수정</a>
 </div>
 
 </body>
