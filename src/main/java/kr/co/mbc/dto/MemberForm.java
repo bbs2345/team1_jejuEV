@@ -15,6 +15,8 @@ public class MemberForm {
 	
 	private String password;
 	
+	private String password2;
+
 	private String name;
 	
 	
