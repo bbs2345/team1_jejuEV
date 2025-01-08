@@ -15,5 +15,9 @@ public class MemberService {
 	public void save(MemberEntity memberEntity) {
 		memberRepository.save(memberEntity);
 	}
+
+	public MemberEntity findByUsername(String username) {
+		return memberRepository.findByUsername(username);
+	}
 	
 }
