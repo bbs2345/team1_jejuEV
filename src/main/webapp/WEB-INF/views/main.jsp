@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-AAA
+<a href="/member/insertForm">회원가입하기</a>
+
 </body>
 </html>
