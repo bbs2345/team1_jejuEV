@@ -31,7 +31,23 @@
 	</div>
 	<a href="/">메인페이지</a>
 	<a href="/member/updateForm/${memberResponse.username}">회원정보 수정</a>
+	<a id="member_read_deleteMember" href="${memberResponse.username}">회원탈퇴</a>
 </div>
 
+<script type="text/javascript">
+	$("#member_read_deleteMember").click(function(event){
+		event.preventDefault();
+		
+		let isDelete = confirm("정말 탈퇴하시겠습니까?");
+		
+		if(isDelete) {
+			let usernameValue = $(this).attr("href");
+			let input = $("<input>").attr("name", "username").val(usernameValue);
+			let form = $("<form>").attr("method", "post").attr("action", "/member/delete");
+			form.appendTo("body");
+			form.append(input).submit();
+		}
+	});
+</script>
 </body>
 </html>
