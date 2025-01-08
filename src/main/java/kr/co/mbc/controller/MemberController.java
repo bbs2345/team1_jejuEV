@@ -20,6 +20,15 @@ public class MemberController {
 
 	private final MemberService memberService;
 	
+	// 회원삭제
+	@PostMapping("/delete")
+	public String username(String username) {
+		
+		memberService.deleteByUsername(username);
+		
+		return "redirect:/";
+	}
+	
 	//회원정보 수정 처리
 	@PostMapping("/update")
 	public String update(MemberForm memberForm) {

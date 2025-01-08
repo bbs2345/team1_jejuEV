@@ -33,6 +33,8 @@ public class MemberEntity {
 	private String name; // 이름
 	
 	
+	
+	
 	// memberForm -> memberEntity로 변환
 	public static MemberEntity toMemberEntity(MemberForm memberForm) {
 		return MemberEntity.builder()
