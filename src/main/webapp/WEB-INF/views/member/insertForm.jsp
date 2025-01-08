@@ -10,18 +10,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-	type="text/javascript"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -31,23 +22,33 @@
 		</div>
 
 		<div>
-			<form action="/member/insert" method="post">
+			<form:form modelAttribute="memberForm" action="/member/insert" method="post">
+				<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
 				<div>
-					아이디 : <input name="username">
+					<form:label path="username">아이디</form:label>
+					<form:input path="username"/>
 					<button id="member_insertForm_checkId" type="button">중복체크</button>
 					<span></span>
 				</div>
 				<div>
-					비밀번호 : <input type="password" name="password"> <span></span>
+					<form:label path="password">비밀번호</form:label>
+					<form:input path="password" type="password"/>
+					<span></span>
 				</div>
 				<div>
-					비밀번호 확인 : <input type="password" name="password2"> <span></span>
+					<form:label path="password2">비밀번호 확인</form:label>
+					<form:input path="password2" type="password"/>
+					<span></span>
 				</div>
 				<div>
-					이름 : <input name="name">
+					<form:label path="name">이름</form:label>
+					<form:input path="name"/>
 				</div>
-				<button id="member_insertForm_submit" type="button">회원등록</button>
-			</form>
+				<div>
+					<button id="member_insertForm_submit" type="button">회원등록</button>
+					<!-- <button>등록</button> -->
+				</div>
+			</form:form>
 		</div>
 	</div>
 
@@ -86,7 +87,7 @@
 		
 		return true;
 	}
-
+	
 	let username = $("input[name='username']");
 	let password = $("input[name='password']");
 	let password2 = $("input[name='password2']");

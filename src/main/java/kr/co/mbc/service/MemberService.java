@@ -1,5 +1,7 @@
 package kr.co.mbc.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -24,6 +26,10 @@ public class MemberService {
 	@Transactional
 	public void deleteByUsername(String username) {
 		memberRepository.deleteByUsername(username);
+	}
+
+	public List<MemberEntity> findAll() {
+		return memberRepository.findAll();
 	}
 	
 }
