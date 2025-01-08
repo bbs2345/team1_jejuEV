@@ -27,6 +27,8 @@ public class MemberController {
 
 	private final MemberService memberService;
 	
+	
+	
 	// 아이디 중복체크
 	@PostMapping("/checkId")
 	@ResponseBody
@@ -92,18 +94,22 @@ public class MemberController {
 
 	// 회원가입 처리
 	@PostMapping("/insert")
-	public String insert(MemberForm memberForm) {
+	public String insert(@Valid @ModelAttribute("memberForm") MemberForm memberForm, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			return "member/insertForm";
+		}
 		
 		MemberEntity memberEntity = MemberEntity.toMemberEntity(memberForm);
 
 		memberService.save(memberEntity);
 
-		return "redirect:/";
+		return "redirect:/member/read/"+memberForm.getUsername();
 	}
 
 	// 회원가입 페이지
 	@GetMapping("/insertForm")
-	public String insertForm() {
+	public String insertForm(MemberForm memberForm) {
 		return "member/insertForm";
 	}
 
