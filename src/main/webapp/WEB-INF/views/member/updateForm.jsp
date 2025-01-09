@@ -22,7 +22,17 @@
 	</div>
 	
 	<div>
-		<form action="/member/update" method="post">
+		<form action="/member/update" method="post" enctype="multipart/form-data">
+			<div>
+				<div class="preview">
+					<c:if test="${memberResponse.profileImage != null}">
+						<img src="/member/imgDisplay?fullFileName=${memberResponse.profileImage}" width="100" height="100">
+					</c:if>
+				</div>
+				<div>
+					<input type="file" name="profileImage">
+				</div>
+			</div>
 			<div>
 				아이디 : <input name="username" value="${memberResponse.username}" readonly="readonly">
 			</div>
@@ -34,5 +44,6 @@
 	</div>
 </div>
 
+<script type="text/javascript" src="/js/memberService.js"></script>
 </body>
 </html>

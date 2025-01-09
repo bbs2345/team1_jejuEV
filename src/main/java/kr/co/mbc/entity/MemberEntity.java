@@ -36,6 +36,12 @@ public class MemberEntity {
 	@Column(nullable = false)
 	private String name; // 이름
 	
+	private String profileImage; // 프로필이미지
+	
+	
+	
+	
+	
 	
 	
 	
@@ -48,12 +54,12 @@ public class MemberEntity {
 				.build();
 	}
 
-
 	// memberEntity -> memberResponse로 변환
 	public static MemberResponse toMemberResponse(MemberEntity memberEntity) {
 		return MemberResponse.builder()
 				.username(memberEntity.getUsername())
 				.name(memberEntity.getName())
+				.profileImage(memberEntity.getProfileImage())
 				.build();
 	}
 	

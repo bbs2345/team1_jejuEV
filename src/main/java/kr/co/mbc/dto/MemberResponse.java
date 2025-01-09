@@ -16,5 +16,7 @@ public class MemberResponse {
 	private String username;
 	
 	private String name;
+	
+	private String profileImage;
 
 }

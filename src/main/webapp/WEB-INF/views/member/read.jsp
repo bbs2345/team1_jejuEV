@@ -20,8 +20,10 @@
 	<div>
 		<h3>회원정보 상세보기</h3>
 	</div>
-	
 	<div>
+		<div>
+			<img src="/member/imgDisplay?fullFileName=${memberResponse.profileImage}" width="100" height="100">
+		</div>
 		<div>
 			아이디 : ${memberResponse.username}
 		</div>
@@ -34,20 +36,6 @@
 	<a id="member_read_deleteMember" href="${memberResponse.username}">회원탈퇴</a>
 </div>
 
-<script type="text/javascript">
-	$("#member_read_deleteMember").click(function(event){
-		event.preventDefault();
-		
-		let isDelete = confirm("정말 탈퇴하시겠습니까?");
-		
-		if(isDelete) {
-			let usernameValue = $(this).attr("href");
-			let input = $("<input>").attr("name", "username").val(usernameValue);
-			let form = $("<form>").attr("method", "post").attr("action", "/member/delete");
-			form.appendTo("body");
-			form.append(input).submit();
-		}
-	});
-</script>
+<script type="text/javascript" src="/js/memberService.js"></script>
 </body>
 </html>

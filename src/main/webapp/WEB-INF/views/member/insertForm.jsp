@@ -22,8 +22,12 @@
 		</div>
 
 		<div>
-			<form:form modelAttribute="memberForm" action="/member/insert" method="post">
+			<form:form modelAttribute="memberForm" action="/member/insert" method="post" enctype="multipart/form-data">
 				<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
+				<div>
+					<div class="preview" style="width: 100px; height: 100px; border: 1px solid;"></div>
+					<input type="file" name="profileImage">
+				</div>
 				<div>
 					<form:label path="username">아이디</form:label>
 					<form:input path="username"/>
@@ -52,110 +56,6 @@
 		</div>
 	</div>
 
-<script type="text/javascript">
-	
-	function isOk() {
-		if (username.val() == '') {
-			alert("아이디를 입력하세요.");
-			return false;
-		}
-
-		if (password.val() == '') {
-			alert("비밀번호를 입력하세요.");
-			return false;
-		}
-
-		if (password2.val() == '') {
-			alert("비밀번호를 확인하세요.");
-			return false;
-		}
-
-		if (!confirmPassword) {
-			alert("비밀번호가 일치하지 않습니다.");
-			return false;
-		}
-
-		if (name.val() == '') {
-			alert("이름을 입력하세요.");
-			return false;
-		}
-
-		if (!checkId) {
-			alert("중복검사 하세요.");
-			return false;
-		}
-		
-		return true;
-	}
-	
-	let username = $("input[name='username']");
-	let password = $("input[name='password']");
-	let password2 = $("input[name='password2']");
-	let name = $("input[name='name']");
-
-	let checkId = false;
-	let confirmPassword = false;
-
-	// 비밀번호 확인 input이벤트
-	$("body").on("input", "input[type='password']", function() {
-		confirmPassword = false;
-
-		$("input[type='password']").next().removeAttr().text("");
-
-		let passwordVal = $("input[name='password']").val();
-		let password2Val = $("input[name='password2']").val();
-
-		if (passwordVal == password2Val && passwordVal != '' && password2Val != '') {
-			$("input[type='password']").next().attr("style", "color: blue").text("비밀번호 일치");
-			confirmPassword = true;
-		}
-	});
-
-	// 회원등록 버튼 클릭 이벤트
-	$("#member_insertForm_submit").click(function() {
-		if (isOk()) {
-			$("form").submit();
-		}
-	});
-
-	// input 이벤트
-	$("body").on("input", "input[name='username']", function() {
-		// 아이디 바꾸면 span태그 초기화 시키고 isOk false로, 중복체크버튼 다시 활성화
-		$("#member_insertForm_checkId").next().removeAttr().text('');
-		checkId = false;
-		$("#member_insertForm_checkId").prop("disabled", false);
-	});
-
-	// 중복체크 버튼 클릭 이벤트
-	$("#member_insertForm_checkId").click(function() {
-		// name속성값이 username인 input태그
-		let usernameValue = $("input[name='username']").val();
-
-		// usernameValue가 비어있으면 알림창 띄우기
-		if (usernameValue == '') {
-			alert("아이디를 입력하세요.");
-			return;
-		}
-
-		$.ajax({
-			url : "/member/checkId",
-			type : "post",
-			data : {
-				username : usernameValue
-			},
-			dataType : "text",
-			success : function(result) {
-				if (result == "ok") {
-					// result가 ok일 때, span태그 style속성바꾸고, text로 '사용가능한 아이디'
-					$("#member_insertForm_checkId").next().attr("style", "color: blue").text("사용가능한 아이디");
-					checkId = true;
-					$("#member_insertForm_checkId").prop("disabled", true); // 중복체크 버튼 비활성화 시킴
-				} else {
-					$("#member_insertForm_checkId").next().attr("style", "color: red").text("이미사용중인 아이디");
-				}
-			}
-		});
-	});
-</script>
+<script type="text/javascript" src="/js/memberService.js"></script>
 </body>
 </html>
