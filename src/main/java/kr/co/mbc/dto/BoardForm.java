@@ -12,14 +12,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class BoardForm {
+	private Long id;
 	private String title;
 	private String writer;
 	private String content;
 	
 	@Override
 	public String toString() {
-		return "BoardForm [title=" + title + ", writer=" + writer + ", content=" + content + "]";
+		return "BoardForm [id=" + id + ", title=" + title + ", writer=" + writer + ", content=" + content + "]";
 	}
+
+
 
 	
 }

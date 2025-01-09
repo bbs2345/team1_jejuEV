@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import kr.co.mbc.dto.BoardForm;
+import jakarta.transaction.Transactional;
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,4 +37,16 @@ public class BoardService {
 		
 		return null;
 	}
+	@Transactional
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		boardRepository.deleteById(id);
+	}
+
+	public void update(BoardEntity boardEntity) {
+		// TODO Auto-generated method stub
+		boardRepository.save(boardEntity);
+	}
+
+
 }

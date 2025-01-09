@@ -10,4 +10,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 
 	Optional<BoardEntity> findById(Long id);
 
+	void deleteById(Long id);
+
+
 }
