@@ -27,7 +27,7 @@ import lombok.Setter;
 public class UploadFileUtils {
 	
 	@Value("${file.upload-dir}")
-	private String uploadDir;
+	private String uploadDir; // "C:/team1_fileRepo/upload"
 	
 	// 파일삭제
 	public void deleteFile(String fullFileName) {
@@ -211,7 +211,7 @@ public class UploadFileUtils {
 		String newFileName = null;
 		
 		String uid = UUID.randomUUID().toString();
-		newFileName = uid + "___mbc___" + orgname;
+		newFileName = uid + "___mbc___" + orgname; // 랜덤문자열___mbc___진짜파일네임
 
 		return newFileName;
 	}
@@ -225,6 +225,47 @@ public class UploadFileUtils {
         return uploadPath;
     }
 
+//===================================================================	
 	
+	// 파일업로드
+	public String uploadFile(MultipartFile multipartFile, String serviceName){
+		
+		String fullFileName = null;
+		
+        String uploadPath = makeFolder(serviceName);  // "/board" 리턴받음
+        
+        // 원본 파일 이름 가져오기
+        String originalFilename = multipartFile.getOriginalFilename(); 
 
+        // 파일 이름 중복 방지: UUID 사용
+        String newFileName = makeNewFilename(originalFilename);  
+       
+		String path = uploadDir+ uploadPath; // "C:/team1_fileRepo/upload" + "/board" --> C:/team1_fileRepo/upload/board
+    	File dir = new File(path); // 파일객체
+    	
+    	// 디렉토리가 없다면 생성
+    	if (!dir.exists()) { 
+    		dir.mkdirs(); // 폴더가 실제로 생기는 곳
+    	}
+    	
+        File target = new File(path, newFileName); // 파일을 저장할 대상 객체 생성
+
+        try {
+        	FileCopyUtils.copy(multipartFile.getBytes(), target); // 파일 복사
+        	fullFileName = uploadPath + "/" + newFileName; // db에는 파일명이 "/board/랜덤문자___mbc___파일명"
+			fullFileName = fullFileName.replace(File.separatorChar, '/');
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return fullFileName;  // 업로드된 파일 이름 반환
+    }
+
+	private String makeFolder(String serviceName) {
+		
+		String uploadPath = "/"+serviceName;  // /board
+    	
+        return uploadPath;
+	}
 }

@@ -27,6 +27,14 @@
 		<p>${boardResponse.content}</p>
 	</div>
 	
+	
+	
+	<div class="images">
+		<c:forEach items="${fileList}" var="dto">
+			<img src="/board/imgDisplay?fullFileName=${dto.filename}" width="100px" height="100px">
+		</c:forEach>
+	</div>
+	
 	<div>
 	<a href="/board/list">목록</a>
 	<a href="/board/update/${boardResponse.id}">수정</a>
