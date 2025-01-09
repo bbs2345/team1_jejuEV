@@ -9,7 +9,7 @@
 <body>
 <h3>게시글 입력</h3>
 
-<form method="post">
+<form action="/board/insert" method="post" enctype="multipart/form-data">
 	<div>
 		<label>제목</label>
 		<input name="title">
@@ -23,7 +23,7 @@
 		<textarea rows="5" name="content"></textarea>
 	</div>
 	<div>
-	<input type="File">
+	<input type="File" name="myfile">
 	</div>
 	<div>
 		<button type="submit">글 입력 완료</button>

@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.co.mbc.entity.AttachEntity;
+import kr.co.mbc.entity.AttachEntity.AttachEntityBuilder;
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardService {
 	private final BoardRepository boardRepository;
+	
+	private final AttachService attachService;
 
 	public void save(BoardEntity boardEntity) {
 		// TODO Auto-generated method stub
@@ -46,6 +50,12 @@ public class BoardService {
 	public void update(BoardEntity boardEntity) {
 		// TODO Auto-generated method stub
 		boardRepository.save(boardEntity);
+	}
+
+	public void save(BoardEntity entity, String fullFileName) {
+		BoardEntity boardEntity = boardRepository.save(entity);
+		AttachEntity attachEntity = AttachEntity.builder().filename(fullFileName).board(boardEntity).build();
+		attachService.save(attachEntity);
 	}
 
 
