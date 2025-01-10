@@ -39,12 +39,6 @@ public class MemberEntity {
 	private String profileImage; // 프로필이미지
 	
 	
-	
-	
-	
-	
-	
-	
 	// memberForm -> memberEntity로 변환
 	public static MemberEntity toMemberEntity(MemberForm memberForm) {
 		return MemberEntity.builder()

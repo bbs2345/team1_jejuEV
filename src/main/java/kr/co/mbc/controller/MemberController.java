@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import jakarta.validation.Valid;
+import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.dto.MemberForm;
 import kr.co.mbc.dto.MemberResponse;
 import kr.co.mbc.entity.MemberEntity;
@@ -34,6 +35,22 @@ public class MemberController {
 	private final UploadFileUtils uploadFileUtils;
 
 	private final MemberService memberService;
+	
+	@GetMapping("/insert400")
+	public String insert400() {
+		
+		for (int i=1; i < 412; i++) {
+			MemberEntity memberEntity = MemberEntity.builder()
+					.username("user"+i)
+					.password("1")
+					.name("test")
+					.build();
+			
+			memberService.save(memberEntity);
+		}
+		
+		return "redirect:/admin/memberList";
+	}
 	
 	// 회원 프로필이미지 불러오기
 	@GetMapping("/imgDisplay")
@@ -124,13 +141,14 @@ public class MemberController {
 
 	// 회원정보 상세보기 페이지
 	@GetMapping("/read/{username}")
-	public String read(@PathVariable("username") String username, Model model) {
+	public String read(@PathVariable("username") String username, Model model, Criteria criteria) {
 
 		MemberEntity memberEntity = memberService.findByUsername(username);
 
 		MemberResponse memberResponse = MemberEntity.toMemberResponse(memberEntity);
 
 		model.addAttribute("memberResponse", memberResponse);
+		model.addAttribute("criteria", criteria);
 
 		return "member/read";
 	}

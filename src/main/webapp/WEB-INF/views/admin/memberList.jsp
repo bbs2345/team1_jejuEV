@@ -25,21 +25,99 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
+					<th>번호</th>
 					<th>아이디</th>
 					<th>이름</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${memberList}" var="dto">
+				<c:forEach items="${memberList}" var="dto" varStatus="status">
 					<tr>
-						<td><a href="/member/read/${dto.username}">${dto.username}</a></td>
+						<td>${status.count + (criteria.page-1) * criteria.perPageContent}</td>
+						<td><a href="${dto.username}">${dto.username}</a></td>
 						<td>${dto.name}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
+	
+	<!-- 검색 -->
+	<div class="d-flex justify-content-center">
+		<form method="get">
+			<select name="type">
+				<option value="username" ${criteria.type == 'username' ? 'selected':''}>아이디</option>
+				<option value="name" ${criteria.type == 'name' ? 'selected':''}>이름</option>
+			</select>
+			<input type="search" name="keyword" value="${criteria.keyword}" placeholder="키워드를 입력하세요.">
+			<button>검색</button>
+		</form>
+	</div>
+	
+	<!-- 페이징 -->
+	<div id="pagination" class="d-flex justify-content-center">
+		<ul class="pagination">
+			<c:if test="${pagination.prev}">
+				<li class="page-item"><a class="page-link" href="${pagination.startPage - 1}">Prev</a></li>
+			</c:if>
+			
+			<c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="pageNum">
+				<li class="page-item ${criteria.page == pageNum ? 'active' : ''}"><a class="page-link" href="${pageNum}">${pageNum}</a></li>
+			</c:forEach>
+			 
+			 <c:if test="${pagination.next}">
+				<li class="page-item"><a class="page-link" href="${pagination.endPage + 1}">Next</a></li>
+			</c:if>
+		</ul>
+	</div>
+	
 </div>
 
+
+<script type="text/javascript">
+	/* perPageContent */
+
+	function getSearchParam(key){
+		return new URLSearchParams(location.search).get(key);
+	}
+
+	function getHiddenTag(name, value) {
+	    return $("<input/>",{type:"hidden", "name":name, "value" : value});
+	    
+	}
+	
+	let page = getSearchParam("page");
+	let type = getSearchParam("type");
+	let keyword = getSearchParam("keyword");
+	
+	$("tbody").find("a").click(function(event){
+		event.preventDefault();
+		let username = $(this).attr("href");
+		
+		let form = $("<form>").attr("action", "/member/read/"+username).attr("method", "get").append(getHiddenTag("page", page));
+		
+		if(type != null && keyword != null) {
+			form.append(getHiddenTag("type", type));
+			form.append(getHiddenTag("keyword", keyword));
+		}
+		
+		form.appendTo("body").submit();
+		
+	});
+	
+	$("#pagination").find("a").click(function(event){
+		event.preventDefault();
+		
+		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
+		
+		if(type != null && keyword != null) {
+			form.append(getHiddenTag("type", type));
+			form.append(getHiddenTag("keyword", keyword));
+		}
+		
+		form.appendTo("body").submit();
+		
+	});
+</script>
 </body>
 </html>
