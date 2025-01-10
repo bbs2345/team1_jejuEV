@@ -20,6 +20,7 @@
 	<div>
 		<h3>회원정보 상세보기</h3>
 	</div>
+	
 	<div>
 		<div>
 			<img src="/member/imgDisplay?fullFileName=${memberResponse.profileImage}" width="100" height="100">
@@ -32,6 +33,7 @@
 		</div>
 	</div>
 	<a href="/">메인페이지</a>
+	<a href="/admin/memberList?page=${criteria.page}&type=${criteria.type}&keyword=${criteria.keyword}">목록</a>
 	<a href="/member/updateForm/${memberResponse.username}">회원정보 수정</a>
 	<a id="member_read_deleteMember" href="${memberResponse.username}">회원탈퇴</a>
 </div>
