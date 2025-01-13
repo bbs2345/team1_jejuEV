@@ -31,4 +31,14 @@ public class AttachService {
 		attachRepository.delete(file);
 	}
 
+	public void deleteByFilename(String filename) {
+		List<AttachEntity> attachments = attachRepository.findByFilename(filename);
+	    if (attachments != null && !attachments.isEmpty()) {
+	        for (AttachEntity attachEntity : attachments) {
+	            attachRepository.delete(attachEntity);  // 기존 파일 삭제 후 DB에서 삭제
+	        }
+	    }
+	}
+
+
 }
