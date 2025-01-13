@@ -7,7 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="/member/insertForm">회원가입하기</a>
+<%@ include file="part/part_header.jsp" %>
+
+<div>
+	<h3>메인페이지</h3>
+</div>
 
 </body>
 </html>

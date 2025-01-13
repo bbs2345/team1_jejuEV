@@ -14,6 +14,8 @@ import lombok.ToString;
 @ToString
 public class Pagination {
 	
+	private Criteria criteria;
+	
 	private Long displayPageNum;
 	
 	private Long endPage;
@@ -26,6 +28,7 @@ public class Pagination {
 	private boolean next;
 	
 	public Pagination(Criteria criteria, Long totalCount) {
+		this.criteria = criteria;
 		this.displayPageNum = 10L;
 		this.endPage = (long) (Math.ceil( (double) criteria.getPage() / (double) displayPageNum )) * displayPageNum;
 		this.startPage = endPage - displayPageNum + 1;

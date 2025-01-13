@@ -55,6 +55,7 @@
 	</div>
 	
 	<!-- 페이징 -->
+	<input type="hidden" name="page" value="${criteria.page}">
 	<div id="pagination" class="d-flex justify-content-center">
 		<ul class="pagination">
 			<c:if test="${pagination.prev}">
@@ -86,7 +87,7 @@
 	    
 	}
 	
-	let page = getSearchParam("page");
+	let page = $("input[name='page']").val();
 	let type = getSearchParam("type");
 	let keyword = getSearchParam("keyword");
 	
@@ -94,7 +95,7 @@
 		event.preventDefault();
 		let username = $(this).attr("href");
 		
-		let form = $("<form>").attr("action", "/member/read/"+username).attr("method", "get").append(getHiddenTag("page", page));
+		let form = $("<form>").attr("action", "/member/read/"+username).attr("method", "get").append(page);
 		
 		if(type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
@@ -108,7 +109,7 @@
 	$("#pagination").find("a").click(function(event){
 		event.preventDefault();
 		
-		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
+		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(page);
 		
 		if(type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
