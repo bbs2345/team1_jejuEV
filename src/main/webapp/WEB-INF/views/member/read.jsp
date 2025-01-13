@@ -32,12 +32,15 @@
 			이름 : ${memberResponse.name}
 		</div>
 	</div>
+	
 	<a href="/">메인페이지</a>
-	<a href="/admin/memberList?page=${criteria.page}&type=${criteria.type}&keyword=${criteria.keyword}">목록</a>
+	<a id="toMemberList" href="${criteria.page}">목록</a>
 	<a href="/member/updateForm/${memberResponse.username}">회원정보 수정</a>
 	<a id="member_read_deleteMember" href="${memberResponse.username}">회원탈퇴</a>
 </div>
 
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/memberService.js"></script>
+<script type="text/javascript" src="/js/adminService.js"></script>
 </body>
 </html>

@@ -149,6 +149,10 @@ public class MemberController {
 
 		model.addAttribute("memberResponse", memberResponse);
 		model.addAttribute("criteria", criteria);
+		
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::");
+		System.out.println(criteria);
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::");
 
 		return "member/read";
 	}

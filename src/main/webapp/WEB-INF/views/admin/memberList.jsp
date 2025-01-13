@@ -21,7 +21,7 @@
 		<h3>회원목록</h3>
 	</div>
 	
-	<div>
+	<div class="admin_memberList">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -75,50 +75,7 @@
 </div>
 
 
-<script type="text/javascript">
-	/* perPageContent */
-
-	function getSearchParam(key){
-		return new URLSearchParams(location.search).get(key);
-	}
-
-	function getHiddenTag(name, value) {
-	    return $("<input/>",{type:"hidden", "name":name, "value" : value});
-	    
-	}
-	
-	let page = $("input[name='page']").val();
-	let type = getSearchParam("type");
-	let keyword = getSearchParam("keyword");
-	
-	$("tbody").find("a").click(function(event){
-		event.preventDefault();
-		let username = $(this).attr("href");
-		
-		let form = $("<form>").attr("action", "/member/read/"+username).attr("method", "get").append(page);
-		
-		if(type != null && keyword != null) {
-			form.append(getHiddenTag("type", type));
-			form.append(getHiddenTag("keyword", keyword));
-		}
-		
-		form.appendTo("body").submit();
-		
-	});
-	
-	$("#pagination").find("a").click(function(event){
-		event.preventDefault();
-		
-		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(page);
-		
-		if(type != null && keyword != null) {
-			form.append(getHiddenTag("type", type));
-			form.append(getHiddenTag("keyword", keyword));
-		}
-		
-		form.appendTo("body").submit();
-		
-	});
-</script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/adminService.js"></script>
 </body>
 </html>

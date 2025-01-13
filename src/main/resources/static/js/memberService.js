@@ -7,6 +7,7 @@ function makeImg(result){
 
 $(function() {
 	
+	// 회원삭제 버튼 클릭 이벤트
 	$("#member_read_deleteMember").click(function(event){
 		event.preventDefault();
 		

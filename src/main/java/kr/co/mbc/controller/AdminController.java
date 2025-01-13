@@ -43,6 +43,10 @@ public class AdminController {
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("criteria", criteria);
 		
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::");
+		System.out.println();
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::");
+		
 		return "admin/memberList";
 	}
 	
