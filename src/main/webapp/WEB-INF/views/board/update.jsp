@@ -49,8 +49,7 @@
 							<div class="image-item">
 								<img src="/board/imgDisplay?fullFileName=${dto.filename}"
 									width="100" height="100">
-								<button type="button" class="btn btn-danger btn-sm"
-									onclick="deleteFile('${dto.filename}')">삭제</button>
+								<button type="button" class="btn btn-danger btn-sm" data-filename="${dto.filename}" id="deleteImage">삭제</button>
 							</div>
 						</c:forEach>
 					</c:if>

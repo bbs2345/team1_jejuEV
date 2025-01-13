@@ -3,7 +3,7 @@ package kr.co.mbc.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.List;import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -39,8 +41,24 @@ public class BoardController {
 	
 	private final UploadFileUtils uploadFileUtils;
 	
+	//보더 수정화면 이미지 삭제하기
+	@PostMapping("/deleteBoardFile")
+	@ResponseBody
+	public String deleteBoardFile(@RequestParam Map<String, String> map) {
+		
+		
+		String filename = map.get("filename");
+		
+		
+	    uploadFileUtils.deleteFile(filename); // 파일 삭제 처리
+	    attachService.deleteByFilename(filename); // attach 테이블에서 해당 filename 삭제 처리
+	   
+	    
+	    return "삭제완료";
+	}
+
 	
-	
+	//이미지 넣기
 	@GetMapping("/imgDisplay")
 	public ResponseEntity<byte[]> imgDisplay(String fullFileName) {
 		
@@ -169,7 +187,10 @@ public class BoardController {
 		boardEntity.setUpdateDate(naljja);
 		boardService.save(boardEntity);
 		String fullFileName = uploadFileUtils.uploadBoardFile(multipartFile, SERVICENAME, boardEntity.getId());
-
+		
+		AttachEntity attachEntity = new AttachEntity(null, fullFileName, boardEntity);
+		
+		attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
 		return "redirect:/board/list";
 	}
 
