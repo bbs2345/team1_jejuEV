@@ -26,4 +26,9 @@ public class AttachService {
 		return fileList;
 	}
 
+	public void delete(AttachEntity file) {
+		// TODO Auto-generated method stub
+		attachRepository.delete(file);
+	}
+
 }

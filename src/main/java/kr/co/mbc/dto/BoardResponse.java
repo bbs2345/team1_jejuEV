@@ -19,6 +19,7 @@ public class BoardResponse {
 	private String createDate;
 	private String updateDate;
 	
+
 	@Override
 	public String toString() {
 		return "BoardResponse [id=" + id + ", title=" + title + ", writer=" + writer + ", content=" + content

@@ -1,11 +1,20 @@
 console.log("boardService.js파일 불러옴.");
 
+
+
 function makeImg(result){
 	let tag =`<img src="${result}" width="100" height="100">`;
 	return tag;
 }
 
 $(function() {
+	//보더 삭제 기능
+	$("#delete_board_botton").click(function() {
+		$("#board_delete_service").submit();
+	})
+	
+	
+	//보더 상세보기 이미지 삭제 기능
 
 	// 이미지 미리보기
 	$("input[name='myfile']").change(function() {
