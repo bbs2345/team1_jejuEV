@@ -34,6 +34,7 @@ public class AttachEntity {
 	@JsonIgnore
 	@JoinColumn(name = "board_id", nullable = false)
 	private BoardEntity board;
+
 	
 	
 	/*

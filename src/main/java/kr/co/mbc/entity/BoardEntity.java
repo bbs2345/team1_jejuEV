@@ -46,6 +46,8 @@ public class BoardEntity {
 	private String createDate;
 	private String updateDate;
 	
+	
+	
 	@OneToMany
 	@JsonIgnore
 	private List<AttachEntity> attachEntity;

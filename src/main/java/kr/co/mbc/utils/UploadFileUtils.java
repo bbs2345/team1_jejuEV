@@ -223,14 +223,14 @@ public class UploadFileUtils {
         return uploadPath;
     }
 
-//===================================================================	
+//=============보드 보드 보드 보드 보드======================================================	
 	
-	// 파일업로드
-	public String uploadFile(MultipartFile multipartFile, String serviceName){
+	// 보드 인서트 파일업로드
+	public String uploadBoardFile(MultipartFile multipartFile, String serviceName, Long id){
 		
 		String fullFileName = null;
 		
-        String uploadPath = makeFolder(serviceName);  // "/board" 리턴받음
+        String uploadPath = makeFolder(serviceName,id);  // "/board/id" 리턴받음
         
         // 원본 파일 이름 가져오기
         String originalFilename = multipartFile.getOriginalFilename(); 
@@ -259,11 +259,57 @@ public class UploadFileUtils {
         
         return fullFileName;  // 업로드된 파일 이름 반환
     }
+	
+	// 업로드 경로 
+    private String makeFolder(String serviceName, Long id) {
+    	
+    	// ex) uploadPath = /board/id
+    	String uploadPath = "/"+serviceName+"/"+id; 
+    	
+        return uploadPath;
+    }
 
+	// 업로드 경로 
 	private String makeFolder(String serviceName) {
 		
 		String uploadPath = "/"+serviceName;  // /board
     	
         return uploadPath;
 	}
+
+	
+	// 보드 이미지 수정화면 미리보기
+	public ResponseEntity<byte[]> previewImage(String fullFileName) {
+	    ResponseEntity<byte[]> entity = null;
+
+	    InputStream in = null;
+	    File target = new File(uploadDir, fullFileName);
+
+	    try {
+	        in = new FileInputStream(target);
+	        HttpHeaders headers = new HttpHeaders();
+
+	        String val = "inline;filename=\"" + new String(fullFileName.getBytes("UTF-8"), "ISO-8859-1") + "\"";
+	        headers.add("Content-Disposition", val);
+
+	        entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+
+	    } finally {
+	        if (in != null) {
+	            try {
+	                in.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+
+	    return entity;
+	}
+
+
 }

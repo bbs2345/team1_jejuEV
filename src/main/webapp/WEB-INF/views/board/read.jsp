@@ -15,43 +15,37 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-<h3>게시글 자세히 보기</h3>
-<form action="/board/delete" method="post" >
-<input type="hidden" name="id" value="${boardResponse.id}"/>
+	<div class="container">
+		<div>
+			<h3>게시글 자세히 보기</h3>
+		</div>
+		<form action="/board/delete" method="post" id="board_delete_service">
+			<input type="hidden" name="id" value="${boardResponse.id}" />
 
-	<div>번호: ${boardResponse.id}</div>
-	<div>작성자: ${boardResponse.writer}</div>
-	<div>제목: ${boardResponse.title}</div>
-	<div>내용</div>
-	<div>
-		<p>${boardResponse.content}</p>
-	</div>
-	
-	
-	
-	<div class="images">
-		<c:forEach items="${fileList}" var="dto">
-			<img src="/board/imgDisplay?fullFileName=${dto.filename}" width="100px" height="100px">
-		</c:forEach>
-	</div>
-	
-	<div>
-	<a href="/board/list">목록</a>
-	<a href="/board/update/${boardResponse.id}">수정</a>
-	<a id=delete_board_botton href="#">삭제</a>
-	</div>
-</form>	
-	
-<script type="text/javascript">
+			<div>번호: ${boardResponse.id}</div>
+			<div>작성자: ${boardResponse.writer}</div>
+			<div>제목: ${boardResponse.title}</div>
+			<div>내용</div>
+			<div>
+				<p>${boardResponse.content}</p>
+			</div>
 
-$("#delete_board_botton").click(function(){
-	$("form").submit();
-	
-	
-	
-	
-});
 
-</script>
+
+			<div class="images">
+				<c:forEach items="${fileList}" var="dto">
+					<img src="/board/imgDisplay?fullFileName=${dto.filename}"
+						width="100px" height="100px">
+				</c:forEach>
+			</div>
+
+			<div>
+				<a href="/board/list">목록</a> <a
+					href="/board/update/${boardResponse.id}">수정</a> <a
+					id=delete_board_botton href="#">삭제</a>
+			</div>
+		</form>
+	</div>
+<script type="text/javascript" src="/js/boardService.js"></script>
 </body>
 </html>
