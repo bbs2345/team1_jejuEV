@@ -20,8 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.Setter;
-
 @Component
 @PropertySource(value = "classpath:fileUpload/fileUpload.properties") // src/main/resources/fileUpload/fileUpload.properties
 public class UploadFileUtils {
