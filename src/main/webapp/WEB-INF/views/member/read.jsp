@@ -32,6 +32,7 @@
 			이름 : ${memberResponse.name}
 		</div>
 	</div>
+	
 	<a href="/">메인페이지</a>
 	<a href="/admin/memberList?page=${criteria.page}&type=${criteria.type}&keyword=${criteria.keyword}">목록</a>
 	<a href="/member/updateForm/${memberResponse.username}">회원정보 수정</a>

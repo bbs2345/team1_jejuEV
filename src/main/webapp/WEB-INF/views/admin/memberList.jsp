@@ -87,15 +87,16 @@
 	    
 	}
 	
-	let page = $("input[name='page']").val();
+	let page = $("input[name='page']");
 	let type = getSearchParam("type");
 	let keyword = getSearchParam("keyword");
 	
+	// 상세페이지로 이동
 	$("tbody").find("a").click(function(event){
 		event.preventDefault();
 		let username = $(this).attr("href");
 		
-		let form = $("<form>").attr("action", "/member/read/"+username).attr("method", "get").append(page);
+		let form = $("<form>").attr("action", "/member/read/"+username).attr("method", "get").append(getHiddenTag("page",page.val()));
 		
 		if(type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
@@ -106,10 +107,11 @@
 		
 	});
 	
+	// 페이지 이동
 	$("#pagination").find("a").click(function(event){
 		event.preventDefault();
 		
-		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(page);
+		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(getHiddenTag("page",$(this).attr("href")));
 		
 		if(type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
