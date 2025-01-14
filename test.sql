@@ -6,4 +6,7 @@ select * from tbl_board;
 
 delete from tbl_member;
 
-select * from tbl_evcharger;
+select * from maincate;
+
+delete from maincate;
+
