@@ -13,21 +13,41 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<style>
+    .language-switch {
+        display: flex;
+        justify-content: flex-end; /* 오른쪽 정렬 */
+        margin-bottom: 10px; /* 간격 추가 */
+    }
+    .language-switch a {
+        margin-left: 10px; /* 링크들 간의 간격 */
+    }
+    .header-container {
+        display: flex;
+        justify-content: space-between; /* 좌우 정렬 */
+        align-items: center; /* 수직 중앙 정렬 */
+        margin-bottom: 20px;
+    }
+</style>
 </head>
 <body>
 
 <div class="container">
+		<div class="language-switch">
+			<a href="?lang=ko">한국어</a>
+			<a href="?lang=en">English</a>
+		</div>
 	<div>
-		<h3>회원목록</h3>
+		<h3><spring:message code="memberList" /></h3>
 	</div>
 	
 	<div>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>번호</th>
-					<th>아이디</th>
-					<th>이름</th>
+					<th><spring:message code="member.number" /></th>
+					<th><spring:message code="member.username" /></th>
+					<th><spring:message code="member.name" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -46,11 +66,11 @@
 	<div class="d-flex justify-content-center">
 		<form method="get">
 			<select name="type">
-				<option value="username" ${criteria.type == 'username' ? 'selected':''}>아이디</option>
-				<option value="name" ${criteria.type == 'name' ? 'selected':''}>이름</option>
+				<option value="username" ${criteria.type == 'username' ? 'selected':''}><spring:message code="member.username" /></option>
+				<option value="name" ${criteria.type == 'name' ? 'selected':''}><spring:message code="member.name" /></option>
 			</select>
-			<input type="search" name="keyword" value="${criteria.keyword}" placeholder="키워드를 입력하세요.">
-			<button>검색</button>
+			<input type="search" name="keyword" value="${criteria.keyword}" placeholder="<spring:message code="keyword" />">
+			<button><spring:message code="search" /></button>
 		</form>
 	</div>
 	

@@ -4,26 +4,45 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시물 목록</title>
+<title><spring:message code="board.list" /></title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<style>
+    .language-switch {
+        display: flex;
+        justify-content: flex-end; /* 오른쪽 정렬 */
+        margin-bottom: 10px; /* 간격 추가 */
+    }
+    .language-switch a {
+        margin-left: 10px; /* 링크들 간의 간격 */
+    }
+    .header-container {
+        display: flex;
+        justify-content: space-between; /* 좌우 정렬 */
+        align-items: center; /* 수직 중앙 정렬 */
+        margin-bottom: 20px;
+    }
+</style>
 </head>
 <body>
+		<div class="language-switch">
+			<a href="?lang=ko">한국어</a>
+			<a href="?lang=en">English</a>
+		</div>
 
-	<h3>게시물 목록</h3>
+	<h3><spring:message code="board.list" /></h3>
 
 	<table>
 		<thead>
 			<tr>
-				<td>번호</td>
-				<td>제목</td>
-				<td>작성자</td>
+				<td><spring:message code="board.number" /></td>
+				<td><spring:message code="board.title" /></td>
+				<td><spring:message code="board.writer" /></td>
 	
 			</tr>
 		</thead>
@@ -38,6 +57,6 @@
 		</tbody>
 	</table>
 	
-	<a href="/board/insert">글쓰기</a>
+	<a href="/board/insert"><spring:message code="board.newPost" /></a>
 </body>
 </html>

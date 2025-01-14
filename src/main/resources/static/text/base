@@ -26,7 +26,7 @@ flush privileges;
 quit눌러서 root계정 빠져나오고 사용자계정으로 접속
 
 4. database 생성
-create database 생성할database이름 character set utf8 default collate utf8_general_ci;
+create database mbcdb10 character set utf8 default collate utf8_general_ci;
 
 5. 데이터베이스 목록 확인
 show databases;
