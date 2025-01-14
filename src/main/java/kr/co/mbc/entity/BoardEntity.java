@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,6 +52,9 @@ public class BoardEntity {
 	@OneToMany
 	@JsonIgnore
 	private List<AttachEntity> attachEntity;
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private List<ReplyEntity> replyList;
 	
 	@Override
 	public String toString() {

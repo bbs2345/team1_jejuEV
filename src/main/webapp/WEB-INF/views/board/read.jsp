@@ -45,7 +45,57 @@
 					id=delete_board_botton href="#">삭제</a>
 			</div>
 		</form>
+		<hr>
 	</div>
-<script type="text/javascript" src="/js/boardService.js"></script>
+
+	
+	
+	<!-- 댓글 영역 -->
+
+	<div class="container">
+		<h5>댓글 목록</h5>
+		<div id="board_read_show_reply_list">
+	
+		
+		</div>
+	</div>
+	
+	<div class="container">
+		<h5>댓글</h5>
+		<!-- 댓글 작성 -->
+		<form action="/replies/" method="post" id="replyForm"
+			enctype="application/json">
+			<input id="ttt" type="hidden" name="boardId" value="${boardResponse.id}" />
+			<div>
+				<input type="text" id="replyWriter" class="form-control"
+					placeholder="작성자" required />
+			</div>
+			<div>
+				<textarea id="replyContent" class="form-control" rows="3"
+					placeholder="댓글 내용을 입력해 주세요" required></textarea>
+			</div>
+			<button id="board_read_reply_insert" type="button">댓글 작성</button>
+		</form>
+	</div>
+
+	
+
+	<script type="text/javascript" src="/js/boardService.js"></script>
+	<script type="text/javascript" src="/js/test1.js"></script>
+ 	<script type="text/javascript" src="/js/replyService.js"></script>
+
+
+
+	
+<script type="text/javascript">
+	let count = 1;
+
+	$("#qqq").click(function(){
+		$(".dddd").append("<input name='test"+count+"' value='"+${boardResponse.id}+"'>");
+		count = count +1;
+	});
+
+
+</script>
 </body>
 </html>

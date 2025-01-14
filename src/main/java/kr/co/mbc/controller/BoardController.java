@@ -34,11 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 
 	private static final String SERVICENAME = "board";
-	
 	private final AttachService attachService;
-	
 	private final BoardService boardService;
-	
 	private final UploadFileUtils uploadFileUtils;
 	
 	//보더 수정화면 이미지 삭제하기
@@ -46,14 +43,11 @@ public class BoardController {
 	@ResponseBody
 	public String deleteBoardFile(@RequestParam Map<String, String> map) {
 		
-		
 		String filename = map.get("filename");
-		
 		
 	    uploadFileUtils.deleteFile(filename); // 파일 삭제 처리
 	    attachService.deleteByFilename(filename); // attach 테이블에서 해당 filename 삭제 처리
 	   
-	    
 	    return "삭제완료";
 	}
 
