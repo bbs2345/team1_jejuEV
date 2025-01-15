@@ -51,7 +51,6 @@ public class BoardController {
 	
 	private final UserService userService;
 	
-	/*
 	@GetMapping("/insert400")
 	public String insert400() {
 		
@@ -70,7 +69,6 @@ public class BoardController {
 		
 		return "redirect:/board/list";
 	}
-	*/
 	
 	//보더 수정화면 이미지 삭제하기
 	@PostMapping("/deleteBoardFile")
