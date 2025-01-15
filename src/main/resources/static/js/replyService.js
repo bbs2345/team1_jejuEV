@@ -1,32 +1,32 @@
 console.log("replyService.js파일 불러옴.");
-function makeReplyListTag(obj){
-	let tag = `
-	<div class="reply">
-		<div>댓글 아이디: ${obj["id"]}</div>
-		<div>${obj["content"]}</div>
-	  	
-	</div>
-	`;
-	
+
+function makeReplyListTag(obj) {
+	let tag = ``;
+
+	for (i of obj) {
+		tag += `			
+		<div>
+			작성자 : ${i.writer}  내용 : ${i.content}  작성일 : ${i.createDate}`;
+		if (i.writer == $("input[name='username']").val()) {
+			tag += `
+			<button type='button' class='reply_btn_update' data-rId='${i.id}'>수정</button> 
+			<button type='button' class='reply_btn_delete' data-rId='${i.id}'>삭제</button>`;
+		}
+		tag += `
+		</div>
+		<hr>`;
+	}
+
 	return tag;
-	
 }
-
-
-// 댓글 삭제
-
 
 // 댓글 수정
 
-
-// 댓글 목록 가져오기
-
-getReplyList();
-
 function getReplyList() {
 	let bId = $("input[name='boardId']").val();
+
 	$.ajax({
-		url: "/replies/"+bId,
+		url: "/replies/" + bId,
 		type: "get",
 		headers: {
 			"Content-Type": "application/json",
@@ -34,43 +34,83 @@ function getReplyList() {
 		},
 		dataType: "text",
 		success: function(result) {
-			let object = JSON.parse(result);
-			
-			let tag =``;
-			for(i of object){
-				console.log(i);
-				tag += `			
-				<div>
-					작성자 : ${i.writer}  내용 : "${i.content}"  작성일 : ${i.createDate}
-					<button type='button'>수정</button> 
-				    <button type='button'>삭제</button>  
-				</div>
-				<hr>`;
-			}
-			
-			
+			let obj = JSON.parse(result);
+
+			let tag = makeReplyListTag(obj);
+
 			$("#board_read_show_reply_list").html(tag);
+
+			// 댓글 삭제 버튼 클릭 이벤트
+			$("#board_read_show_reply_list").find(".reply_btn_delete").each(function() {
+				
+				$(this).click(function() {
+					
+					let isDelete = confirm("정말 삭제하시겠습니까?");
+					if(isDelete){
+						let rId = $(this).attr("data-rId");
+						$.ajax({
+							url: "/replies/",
+							type: "delete",
+							data: JSON.stringify({
+								rId: rId
+							}),
+							headers: {
+								"Content-Type": "application/json",
+								"X-HTTP-Method-Override": "DELETE"
+							},
+							dataType: "text",
+							success: function(data) {
+								alert("댓글이 삭제되었습니다.");
+								getReplyList();
+							}
+						});
+					}
+					
+				});
+				
+			});
+
+			// 댓글 수정 버튼 클릭 이벤트
+			$("#board_read_show_reply_list").find(".reply_btn_update").each(function() {
+				$(this).click(function() {
+					let rId = $(this).attr("data-rId");
+
+					$.ajax({
+						url: "/replies/",
+						type: "put",
+						data: JSON.stringify({
+							rId: rId,
+							content: ""
+						}),
+						headers: {
+							"Content-Type": "application/json",
+							"X-HTTP-Method-Override": "PUT"
+						},
+						dataType: "text",
+						success: function(data) {
+							alert("댓글이 삭제되었습니다.");
+							getReplyList();
+						}
+					});
+				});
+			});
+
+
 		}
 	});
 
 }
 
-// 댓글 작성
 
 $(function() {
 
-	let bId = $("input[name='boardId']");
-	let replyWriter = $("#replyWriter").val();
-	let replyContent = $("#replyContent").val();
-
 	getReplyList();
 
-	//let bId2 = `${boardResponse.id}`;
-	//console.log(".js 보드아이디 : "+ bId2);
+	let bId = $("input[name='boardId']");
+	let replyWriter = $("#replyWriter");
+	let replyContent = $("#replyContent");
 
-
-	// $("#board_read_btn_reply_insert") -> $("#board_read_reply_insert")
-	// button type submit -> button
+	// 댓글 작성
 	$("#board_read_reply_insert").click(function() {
 
 		$.ajax({
@@ -87,15 +127,8 @@ $(function() {
 			},
 			dataType: "text",
 			success: function(result) {
-				getReplyList(bId.val());
+				getReplyList();
 			}
 		});
 	});
 });
-
-	//let count = 1;
-	$("#qqq").click(function() {
-		//$(".dddd").append("<input name='test"+count+"' value='"+count+"'>");
-		$(".dddd").append(`<input name="test${count}" value="${count}">`);
-		count = count + 1;
-	});

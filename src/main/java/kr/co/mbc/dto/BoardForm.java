@@ -5,24 +5,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class BoardForm {
-	private Long id;
-	private String title;
-	private String writer;
-	private String content;
 	
-	@Override
-	public String toString() {
-		return "BoardForm [id=" + id + ", title=" + title + ", writer=" + writer + ", content=" + content + "]";
-	}
-
-
-
+	private Long id;
+	
+	private String title;
+	
+	private String writer; // username
+	
+	private String content;
 	
 }

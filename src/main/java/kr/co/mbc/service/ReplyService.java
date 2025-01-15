@@ -28,6 +28,12 @@ public class ReplyService {
 		// TODO Auto-generated method stub
 		return replyRepository.findByBoardId(bId);
 	}
+
+
+
+	public void deleteById(Long id) {
+		replyRepository.deleteById(id);
+	}
 	
 
 

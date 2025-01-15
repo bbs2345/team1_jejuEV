@@ -24,19 +24,30 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ReplyEntity {
-    @Id 
+    
+	@Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String writer;
-    @Column(length = 300, nullable = false)
+   
+	private String writer; // 나중에 없앨것, 작성자는 user에서 가져오기
+    
+	@Column(length = 300, nullable = false)
 	private String content;
 	
+	
 	private String createDate;
+	
 	private String updateDate;
 	
 	@ManyToOne
 	@JsonIgnore
+	@JoinColumn(name = "board_id", nullable = false)
 	private BoardEntity board;
+	
+	@ManyToOne
+	@JsonIgnore
+	@JoinColumn(name = "user_id", nullable = false)
+	private UserEntity user;
 
 
 }

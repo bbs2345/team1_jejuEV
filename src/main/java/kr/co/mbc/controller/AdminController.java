@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.mbc.dto.Criteria;
-import kr.co.mbc.dto.MemberResponse;
+import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.CateEntity;
-import kr.co.mbc.entity.MemberEntity;
+import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.CateService;
-import kr.co.mbc.service.MemberService;
+import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.Pagination;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminController {
 
-	private final MemberService memberService;
+	private final UserService userService;
 	private final CateService cateService;
 	
 	// 관리자화면
@@ -46,31 +46,26 @@ public class AdminController {
 	}
 	
 	// 회원목록
-	@GetMapping("/memberList")
-	public String memberList(Criteria criteria, Model model) {
+	@GetMapping("/userList")
+	public String userList(Criteria criteria, Model model) {
 		
-		List<MemberEntity> memberEntityList = memberService.findMembers(criteria);
+		List<UserEntity> userEntities = userService.findMembers(criteria);
 		
-		// MemberEntity -> MemberResponse로 변환
-	    List<MemberResponse> memberList = new ArrayList<>();
-	    for (MemberEntity memberEntity : memberEntityList) {
-	        MemberResponse memberResponse = MemberEntity.toMemberResponse(memberEntity);
-	        memberList.add(memberResponse);
+	    List<UserResponse> userList = new ArrayList<>();
+	    for (UserEntity userEntity : userEntities) {
+	        UserResponse userResponse = UserEntity.toUserResponse(userEntity);
+	        userList.add(userResponse);
 	    }
 		
-		Long totalCount = memberService.getTotalCount(criteria);
+		Long totalCount = userService.getTotalCount(criteria);
 		
 		Pagination pagination = new Pagination(criteria, totalCount);
 		
-		model.addAttribute("memberList", memberList);
+		model.addAttribute("userList", userList);
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("criteria", criteria);
 		
-		System.out.println(":::::::::::::::::::::::::::::::::::::::::::");
-		System.out.println();
-		System.out.println(":::::::::::::::::::::::::::::::::::::::::::");
-		
-		return "admin/memberList";
+		return "admin/userList";
 	}
 	
 }

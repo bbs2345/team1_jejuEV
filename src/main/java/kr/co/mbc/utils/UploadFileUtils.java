@@ -156,12 +156,12 @@ public class UploadFileUtils {
 	}
 	
 	// 파일업로드
-	public String uploadFile(MultipartFile multipartFile, String serviceName, String username){
+	public String uploadFile(MultipartFile multipartFile, String servicePath, String username){
 		
 		String fullFileName = null;
 		
 		// 업로드 경로 설정
-        String uploadPath = makeFolder(serviceName, username); 
+        String uploadPath = makeFolder(servicePath, username); 
         
         // 원본 파일 이름 가져오기
         String originalFilename = multipartFile.getOriginalFilename(); 
@@ -215,10 +215,10 @@ public class UploadFileUtils {
 	}
     
 	// 업로드 경로 
-    private String makeFolder(String serviceName, String username) {
+    private String makeFolder(String servicePath, String username) {
     	
     	// ex) uploadPath = /member/m001
-    	String uploadPath = "/"+serviceName+"/"+username; 
+    	String uploadPath = "/"+servicePath+"/"+username; 
     	
         return uploadPath;
     }
@@ -226,11 +226,11 @@ public class UploadFileUtils {
 //=============보드 보드 보드 보드 보드======================================================	
 	
 	// 보드 인서트 파일업로드
-	public String uploadBoardFile(MultipartFile multipartFile, String serviceName, Long id){
+	public String uploadBoardFile(MultipartFile multipartFile, String servicePath, Long id){
 		
 		String fullFileName = null;
 		
-        String uploadPath = makeFolder(serviceName,id);  // "/board/id" 리턴받음
+        String uploadPath = makeFolder(servicePath, id);  // "/board/id" 리턴받음
         
         // 원본 파일 이름 가져오기
         String originalFilename = multipartFile.getOriginalFilename(); 
@@ -261,18 +261,18 @@ public class UploadFileUtils {
     }
 	
 	// 업로드 경로 
-    private String makeFolder(String serviceName, Long id) {
+    private String makeFolder(String servicePath, Long id) {
     	
     	// ex) uploadPath = /board/id
-    	String uploadPath = "/"+serviceName+"/"+id; 
+    	String uploadPath = "/"+servicePath+"/"+id; 
     	
         return uploadPath;
     }
 
 	// 업로드 경로 
-	private String makeFolder(String serviceName) {
+	private String makeFolder(String servicePath) {
 		
-		String uploadPath = "/"+serviceName;  // /board
+		String uploadPath = "/"+servicePath;  // /board
     	
         return uploadPath;
 	}

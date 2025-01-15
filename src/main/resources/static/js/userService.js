@@ -1,4 +1,4 @@
-console.log("memberService.js파일 불러옴.");
+console.log("userService.js파일 불러옴.");
 
 function makeImg(result){
 	let tag =`<img src="${result}" width="100" height="100">`;
@@ -8,7 +8,7 @@ function makeImg(result){
 $(function() {
 	
 	// 회원삭제 버튼 클릭 이벤트
-	$("#member_read_deleteMember").click(function(event){
+	$("#user_read_deleteuser").click(function(event){
 		event.preventDefault();
 		
 		let isDelete = confirm("정말 탈퇴하시겠습니까?");
@@ -16,7 +16,7 @@ $(function() {
 		if(isDelete) {
 			let usernameValue = $(this).attr("href");
 			let input = $("<input>").attr("name", "username").val(usernameValue);
-			let form = $("<form>").attr("method", "post").attr("action", "/member/delete");
+			let form = $("<form>").attr("method", "post").attr("action", "/user/delete");
 			form.appendTo("body");
 			form.append(input).submit();
 		}
@@ -89,7 +89,7 @@ $(function() {
 
 
 	// 회원등록 버튼 클릭 이벤트
-	$("#member_insertForm_submit").click(function() {
+	$("#auth_joinForm_submit").click(function() {
 		if (isOk()) {
 			$("form").submit();
 		}
@@ -113,13 +113,13 @@ $(function() {
 	// input 이벤트
 	$("body").on("input", "input[name='username']", function() {
 		// 아이디 바꾸면 span태그 초기화 시키고 isOk false로, 중복체크버튼 다시 활성화
-		$("#member_insertForm_checkId").next().removeAttr().text('');
+		$("#auth_joinForm_checkId").next().removeAttr().text('');
 		checkId = false;
-		$("#member_insertForm_checkId").prop("disabled", false);
+		$("#auth_joinForm_checkId").prop("disabled", false);
 	});
 
 	// 중복체크 버튼 클릭 이벤트
-	$("#member_insertForm_checkId").click(function() {
+	$("#auth_joinForm_checkId").click(function() {
 		// name속성값이 username인 input태그
 		let usernameValue = $("input[name='username']").val();
 
@@ -130,7 +130,7 @@ $(function() {
 		}
 
 		$.ajax({
-			url: "/member/checkId",
+			url: "/auth/checkId",
 			type: "post",
 			data: {
 				username: usernameValue
@@ -139,11 +139,11 @@ $(function() {
 			success: function(result) {
 				if (result == "ok") {
 					// result가 ok일 때, span태그 style속성바꾸고, text로 '사용가능한 아이디'
-					$("#member_insertForm_checkId").next().attr("style", "color: blue").text("사용가능한 아이디");
+					$("#auth_joinForm_checkId").next().attr("style", "color: blue").text("사용가능한 아이디");
 					checkId = true;
-					$("#member_insertForm_checkId").prop("disabled", true); // 중복체크 버튼 비활성화 시킴
+					$("#auth_joinForm_checkId").prop("disabled", true); // 중복체크 버튼 비활성화 시킴
 				} else {
-					$("#member_insertForm_checkId").next().attr("style", "color: red").text("이미사용중인 아이디");
+					$("#auth_joinForm_checkId").next().attr("style", "color: red").text("이미사용중인 아이디");
 				}
 			}
 		});
