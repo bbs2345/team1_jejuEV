@@ -15,35 +15,36 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
+<%@ include file="../part/part_header.jsp" %>
 
 <div class="container">
 	<div>
-		<h3>회원정보 수정화면</h3>
+		<h3>회원정보 상세보기</h3>
 	</div>
 	
 	<div>
-		<form action="/member/update" method="post" enctype="multipart/form-data">
-			<div>
-				<div class="preview">
-					<c:if test="${memberResponse.profileImage != null}">
-						<img src="/member/imgDisplay?fullFileName=${memberResponse.profileImage}" width="100" height="100">
-					</c:if>
-				</div>
-				<div>
-					<input type="file" name="profileImage">
-				</div>
-			</div>
-			<div>
-				아이디 : <input name="username" value="${memberResponse.username}" readonly="readonly">
-			</div>
-			<div>
-				이름 : <input name="name" value="${memberResponse.name}">
-			</div>
-			<button>수정완료</button>
-		</form>
+		<div>
+			<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" width="100" height="100">
+		</div>
+		<div>
+			아이디 : ${userResponse.username}
+		</div>
+		<div>
+			이름 : ${userResponse.name}
+		</div>
+		<div>
+			가입일 : ${userResponse.createDate}
+		</div>
 	</div>
+	
+	<a href="/">메인페이지</a>
+	<a id="toUserList" href="${criteria.page}">목록</a>
+	<a href="/user/updateForm/${userResponse.username}">회원정보 수정</a>
+	<a id="user_read_deleteuser" href="${userResponse.username}">회원탈퇴</a>
 </div>
 
-<script type="text/javascript" src="/js/memberService.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/userService.js"></script>
+<script type="text/javascript" src="/js/adminService.js"></script>
 </body>
 </html>

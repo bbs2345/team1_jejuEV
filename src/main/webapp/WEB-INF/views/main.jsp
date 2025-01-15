@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>메인페이지</title>
 </head>
 <body>
 <%@ include file="part/part_header.jsp" %>
@@ -12,7 +12,6 @@
 <div>
 	<h3>메인페이지</h3>
 </div>
-
-
+	
 </body>
 </html>

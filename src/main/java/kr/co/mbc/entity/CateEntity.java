@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "maincate")
+@Table(name = "tbl_cate")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class CateEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long cid;
+	private Long id;
 	
 	private String cname;
 	

@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tbl_board")
@@ -29,6 +30,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class BoardEntity {
 	
 	@Id
@@ -47,20 +49,19 @@ public class BoardEntity {
 	private String createDate;
 	private String updateDate;
 	
-	
-	
-	@OneToMany
+	@ManyToOne
 	@JsonIgnore
-	private List<AttachEntity> attachEntity;
+	@JoinColumn(name = "user_id", nullable = false)
+	private UserEntity user;
+	
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<ReplyEntity> replyList;
 	
-	@Override
-	public String toString() {
-		return "BoardEntity [id=" + id + ", title=" + title + ", writer=" + writer + ", content=" + content
-				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
-	}
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private List<AttachEntity> attachList;
+	
 	//boardForm을 BoardEntity 변형
 	public static BoardEntity toBoardEntity(BoardForm boardForm) {
 		return BoardEntity.builder()
@@ -74,10 +75,11 @@ public class BoardEntity {
 		return BoardResponse.builder()
 				.id(boardEntity.getId())
 				.title(boardEntity.getTitle())
-				.writer(boardEntity.getWriter())
+				.writer(boardEntity.getUser().getUsername())
 				.content(boardEntity.getContent())
 				.createDate(boardEntity.getCreateDate())
 				.updateDate(boardEntity.getUpdateDate())
+				.attachList(boardEntity.getAttachList())
 				.build();
 	}
 	

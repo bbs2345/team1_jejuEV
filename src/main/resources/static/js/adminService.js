@@ -3,11 +3,11 @@ console.log("adminService.js파일 불러옴.");
 $(function() {
 	
 	// 회원목록 페이지로 이동
-	$("#toMemberList").click(function(event){
+	$("#toUserList").click(function(event){
 		event.preventDefault();
 		let page = $(this).attr("href");
 		
-		let form = $("<form>").attr("action", "/admin/memberList").append(getHiddenTag("page", page));
+		let form = $("<form>").attr("action", "/admin/userList").append(getHiddenTag("page", page));
 		if (type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
 			form.append(getHiddenTag("keyword", keyword));
@@ -21,11 +21,11 @@ $(function() {
 	let keyword = getSearchParam("keyword");
 
 	// 상세페이지로 이동
-	$(".admin_memberList").find("a").click(function(event) {
+	$(".admin_userList").find("a").click(function(event) {
 		event.preventDefault();
 		let username = $(this).attr("href");
 
-		let form = $("<form>").attr("action", "/member/read/" + username).attr("method", "get").append(getHiddenTag("page", page.val()));
+		let form = $("<form>").attr("action", "/user/read/" + username).attr("method", "get").append(getHiddenTag("page", page.val()));
 
 		if (type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
@@ -40,7 +40,7 @@ $(function() {
 	$("#pagination").find("a").click(function(event) {
 		event.preventDefault();
 
-		let form = $("<form>").attr("action", "/admin/memberList").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
+		let form = $("<form>").attr("action", "/admin/userList").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
 
 		if (type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));

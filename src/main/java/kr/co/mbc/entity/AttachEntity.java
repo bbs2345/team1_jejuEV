@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "attach")
+@Table(name = "tbl_attach")
 @Getter
 @Setter
 @AllArgsConstructor

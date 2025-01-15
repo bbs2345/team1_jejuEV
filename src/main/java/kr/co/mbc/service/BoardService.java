@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
+import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.AttachEntity.AttachEntityBuilder;
 import kr.co.mbc.entity.BoardEntity;
@@ -57,6 +58,14 @@ public class BoardService {
 		BoardEntity boardEntity = boardRepository.save(entity);
 		AttachEntity attachEntity = AttachEntity.builder().filename(fullFileName).board(boardEntity).build();
 		attachService.save(attachEntity);
+	}
+
+	public Long getTotalCount(Criteria criteria) {
+		return boardRepository.getTotalCount(criteria);
+	}
+
+	public List<BoardEntity> findAll(Criteria criteria) {
+		return boardRepository.findAll(criteria);
 	}
 
 

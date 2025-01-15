@@ -14,6 +14,7 @@
 </head>
 <body>
 <%@ include file="../part/part_header.jsp" %>
+
 	<div class="container">
 		<div>
 			<h3>게시글 입력</h3>
@@ -26,7 +27,7 @@
 					<label>제목</label> <input name="title">
 				</div>
 				<div>
-					<label>작성자</label> <input name="writer">
+					<label>작성자</label> <input name="writer" value="${userEntity.username}">
 				</div>
 				<div>
 					<label>내용</label>

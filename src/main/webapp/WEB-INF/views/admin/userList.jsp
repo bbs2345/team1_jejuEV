@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 
 <!DOCTYPE html>
@@ -15,13 +14,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
+<%@ include file="../part/part_header.jsp" %>
 
 <div class="container">
 	<div>
 		<h3>회원목록</h3>
 	</div>
 	
-	<div class="admin_memberList">
+	<div class="admin_userList">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -31,7 +31,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${memberList}" var="dto" varStatus="status">
+				<c:forEach items="${userList}" var="dto" varStatus="status">
 					<tr>
 						<td>${status.count + (criteria.page-1) * criteria.perPageContent}</td>
 						<td><a href="${dto.username}">${dto.username}</a></td>
