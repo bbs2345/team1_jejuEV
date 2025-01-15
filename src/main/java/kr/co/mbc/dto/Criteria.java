@@ -12,7 +12,7 @@ public class Criteria {
 	private int page; // 현재페이지
 	private int perPageContent; //한페이지에 표시할 게시물 수
 
-	private String type; // 검색 타입 username, name
+	private String type; // 검색 타입 username, name, 만약에 보드다 title, writer
 	private String keyword; // 검색 키워드
 	
 	public Criteria() {
