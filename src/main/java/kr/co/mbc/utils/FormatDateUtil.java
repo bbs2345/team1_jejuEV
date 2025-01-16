@@ -11,7 +11,7 @@ public class FormatDateUtil {
 	public String getCurrentDate() {
 		
 		Date d = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 		String formattedDate = sdf.format(d);
 		
 		return formattedDate;
