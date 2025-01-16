@@ -16,104 +16,129 @@
 </head>
 <body>
 <%@ include file="../part/part_header.jsp" %>
-<div>
-	<h3>전기차 충전소 목록</h3>
+<div class="container">
+	<div>
+		<h3>전기차 충전소 목록</h3>
+	</div>
+
+	<div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>번호</td>
+					<td>충전소 이름</td> 
+					<td>주소</td> 
+					<td>이용가능시간</td> 
+					<td>주차료 무료</td> 
+		
+				</tr>
+			</thead>
+			<tbody class="board_list_boardList">
+				<c:forEach items="${evList}" var="dto">
+					<tr>
+						<td>${dto.id}</td>
+						<td>${dto.statNm}</td>
+						<td>${dto.addr}</td>
+						<td>${dto.useTime}</td>
+						<td>${dto.parkingFree}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- 검색 -->
+	<div class="d-flex justify-content-center">
+		<form method="get">
+			<select name="type">
+				<option value="stat_nm" ${criteria.type == 'stat_nm' ? 'selected':''}>이름</option>
+				<option value="addr" ${criteria.type == 'addr' ? 'selected':''}>주소</option>
+			</select>
+			<input type="search" name="keyword" value="${criteria.keyword}" placeholder="키워드를 입력하세요.">
+			<button>검색</button>
+		</form>
+	</div>
+	
+	<!-- 페이징 -->
+	<input type="hidden" name="page" value="${criteria.page}">
+	<div id="pagination" class="d-flex justify-content-center">
+		<ul class="pagination">
+			<c:if test="${pagination.prev}">
+				<li class="page-item"><a class="page-link" href="${pagination.startPage - 1}">Prev</a></li>
+			</c:if>
+			
+			<c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="pageNum">
+				<li class="page-item ${criteria.page == pageNum ? 'active' : ''}"><a class="page-link" href="${pageNum}">${pageNum}</a></li>
+			</c:forEach>
+			 
+			 <c:if test="${pagination.next}">
+				<li class="page-item"><a class="page-link" href="${pagination.endPage + 1}">Next</a></li>
+			</c:if>
+		</ul>
+	</div>
 </div>
 
-<div>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th>충전소 이름</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
 
-</div>
+<!-- <div> -->
+<!-- 	<button id="getChargerInfo" type="button">충전소정보 가져오기</button> -->
+<!-- </div> -->
 
-<div>
-	<button id="getChargerInfo" type="button">충전소정보 가져오기</button>
-<!-- 	<button id="test" type="button">테스트</button> -->
-</div>
-
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
+	
+	let page = $("input[name='page']");
+	let type = getSearchParam("type");
+	let keyword = getSearchParam("keyword");
 
-// $("#test").click(function(){
-// 	console.log("클릭!");
+	//페이지 이동
+	$("#pagination").find("a").click(function(event) {
+		event.preventDefault();
 	
-// 	let apiKey = "phPpD0+9/vesTTLZXECmqPTFD3L6f9Rmpnshwb+PHJL/2leup2J2OEFtIEVrnuhoh5RRd2KJ6oKVsa0e1reGhA=="
-// 	let apiKey2 = "phPpD0%2B9%2FvesTTLZXECmqPTFD3L6f9Rmpnshwb%2BPHJL%2F2leup2J2OEFtIEVrnuhoh5RRd2KJ6oKVsa0e1reGhA%3D%3D"
+		let form = $("<form>").attr("action", "/evcharger/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
 	
-// 	$.ajax({
-// 		url : "http://apis.data.go.kr/B552061/frequentzoneOldman/getRestFrequentzoneOldman",
-// 		type : "get",
-// 		data : {
-// 			"serviceKey" : apiKey2,
-// 			"searchYearCd" : 2022,
-// 			"siDo" : 11,
-// 			"guGun" : 680,
-// 			"numOfRows" : 10,
-// 			"pageNo" : 1
-// 		},
-// 		dataType : "text",
-// 		success : function(result){
-// 			let obj = JSON.parse(result);
-// 			console.log(obj);
-			
-// 			/*
-// 			let items = obj["items"];
-// 			let item = items["item"];
-			
-// 			console.log(item);
-			
-// 			let tag = "";
-// 			for(i of item) {
-// 				tag += "<tr><td>"+i["statNm"]+"</td></tr>";
-// 			};
-// 			console.log(tag);
-// 			$("tbody").html(tag);
-// 			*/
-// 		}
-// 	});
-	
-// });
-
-$("#getChargerInfo").click(function(){
-	console.log("클릭!");
-	
-	let apiKey = "phPpD0+9/vesTTLZXECmqPTFD3L6f9Rmpnshwb+PHJL/2leup2J2OEFtIEVrnuhoh5RRd2KJ6oKVsa0e1reGhA=="
-	let apiKey2 = "phPpD0%2B9%2FvesTTLZXECmqPTFD3L6f9Rmpnshwb%2BPHJL%2F2leup2J2OEFtIEVrnuhoh5RRd2KJ6oKVsa0e1reGhA%3D%3D"
-	
-	$.ajax({
-		url : "http://apis.data.go.kr/B552584/EvCharger/getChargerInfo",
-		type : "get",
-		data : {
-			"serviceKey" : apiKey,
-			"pageNo" : 1,
-			"numOfRows" : 10,
-			"zcode" : 50,
-			"dataType" : "JSON"
-		},
-		dataType : "text",
-		success : function(result){
-			let obj = JSON.parse(result);
-			let items = obj["items"];
-			let item = items["item"];
-			
-			console.log(item);
-			
-			let tag = "";
-			for(i of item) {
-				tag += "<tr><td>"+i["statNm"]+"</td></tr>";
-			};
-			console.log(tag);
-			$("tbody").html(tag);
+		if (type != null && keyword != null) {
+			form.append(getHiddenTag("type", type));
+			form.append(getHiddenTag("keyword", keyword));
 		}
-	});
 	
-});
+		form.appendTo("body").submit();
+	
+	});
+
+// 	$("#getChargerInfo").click(function(){
+// 		console.log("클릭!");
+		
+// 		let apiKey = "phPpD0+9/vesTTLZXECmqPTFD3L6f9Rmpnshwb+PHJL/2leup2J2OEFtIEVrnuhoh5RRd2KJ6oKVsa0e1reGhA=="
+// 		let apiKey2 = "phPpD0%2B9%2FvesTTLZXECmqPTFD3L6f9Rmpnshwb%2BPHJL%2F2leup2J2OEFtIEVrnuhoh5RRd2KJ6oKVsa0e1reGhA%3D%3D"
+		
+// 		$.ajax({
+// 			url : "http://apis.data.go.kr/B552584/EvCharger/getChargerInfo",
+// 			type : "get",
+// 			data : {
+// 				"serviceKey" : apiKey,
+// 				"pageNo" : 1,
+// 				"numOfRows" : 10,
+// 				"zcode" : 50,
+// 				"dataType" : "JSON"
+// 			},
+// 			dataType : "text",
+// 			success : function(result){
+// 				let obj = JSON.parse(result);
+// 				let items = obj["items"];
+// 				let item = items["item"];
+				
+// 				console.log(item);
+				
+// 				let tag = "";
+// 				for(i of item) {
+// 					tag += "<tr><td>"+i["statNm"]+"</td></tr>";
+// 				};
+// 				console.log(tag);
+// 				$("tbody").html(tag);
+// 			}
+// 		});
+		
+// 	});
 </script>
 </body>
 </html>
