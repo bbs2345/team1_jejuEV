@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,6 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.entity.EvchagerEntity;
 import kr.co.mbc.repository.EvChargerRepository;
 import lombok.RequiredArgsConstructor;
@@ -124,5 +126,15 @@ public class EvchargerService {
                 .trafficYn(getTagValue(item, "trafficYn"))
                 .build();
     }
+
+	public List<EvchagerEntity> findAll(Criteria criteria) {
+		
+		return evChargerRepository.findAll(criteria);
+	}
+
+	public Long getTotalCount(Criteria criteria) {
+		
+		return evChargerRepository.getTotalCount(criteria);
+	}
     
 }
