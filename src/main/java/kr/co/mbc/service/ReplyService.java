@@ -1,6 +1,7 @@
 package kr.co.mbc.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,15 @@ public class ReplyService {
 	public void deleteById(Long id) {
 		replyRepository.deleteById(id);
 	}
+
+
+
+    public Optional<ReplyEntity> findById(Long id) {
+        return replyRepository.findById(id);
+    }
+
 	
+
 
 
 }

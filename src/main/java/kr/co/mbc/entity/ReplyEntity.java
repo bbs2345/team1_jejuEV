@@ -23,6 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class ReplyEntity {
     
 	@Id 
@@ -34,10 +35,7 @@ public class ReplyEntity {
 	@Column(length = 300, nullable = false)
 	private String content;
 	
-	
-	private String createDate;
-	
-	private String updateDate;
+	private String writeDate;;
 	
 	@ManyToOne
 	@JsonIgnore

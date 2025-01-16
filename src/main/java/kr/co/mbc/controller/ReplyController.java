@@ -1,12 +1,16 @@
 package kr.co.mbc.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +45,29 @@ public class ReplyController {
 		return "ok";
 	}
 
-	// 댓글 수정
+    // 댓글 수정
+	@PutMapping("/{id}")
+	public String update(@PathVariable("id") Long id, @RequestBody Map<String, String> map) {
+	    Optional<ReplyEntity> optionalReply = replyService.findById(id);  // 댓글 존재 확인
+
+	    if (optionalReply.isPresent()) {
+	        ReplyEntity replyEntity = optionalReply.get();
+
+	        String content = map.get("content");
+	        if (content != null && !content.trim().isEmpty()) {
+	            replyEntity.setContent(content.trim());
+	            
+	            replyEntity.setWriteDate(formatDateUtil.getCurrentDate());
+	            
+	            replyService.save(replyEntity);  // 수정된 댓글 저장
+	        }
+	    }
+	    return "ok";
+	}
+
+
+        
+ 
 
 	// 댓글 리스트
 	@GetMapping("/{bId}")
@@ -66,7 +92,7 @@ public class ReplyController {
 		String currentDate = formatDateUtil.getCurrentDate();
 
 		ReplyEntity replyEntity = ReplyEntity.builder().writer(map.get("writer")).content(content)
-				.createDate(currentDate).user(userEntity).board(boardEntity).build();
+				.writeDate(currentDate).user(userEntity).board(boardEntity).build();
 
 		replyService.save(replyEntity);
 
