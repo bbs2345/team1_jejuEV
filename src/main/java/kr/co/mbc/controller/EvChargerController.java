@@ -1,11 +1,17 @@
 package kr.co.mbc.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.mbc.dto.Criteria;
+import kr.co.mbc.entity.EvchagerEntity;
 import kr.co.mbc.service.EvchargerService;
+import kr.co.mbc.utils.Pagination;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -18,9 +24,19 @@ public class EvChargerController {
 	private final String apiUrl = "http://apis.data.go.kr/B552584/EvCharger/getChargerInfo";
 	private final String apikey = "zdcb/dCnKTh9GswIuVYaVktIh68IRBPbWnnyqE6jqG5npU0ztdVPnHwocG98iL0HPqqufx2nKNqdbowVwrBu0Q==";
 	
-	
+	// 충전소 목록
 	@GetMapping("/list")
-	public String list() {
+	public String list(Criteria criteria, Model model) {
+		
+		List<EvchagerEntity> evList = evChargerService.findAll(criteria);
+		
+		Long totalCount = evChargerService.getTotalCount(criteria);
+		
+		Pagination pagination = new Pagination(criteria, totalCount);
+		
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("criteria", criteria);
+		model.addAttribute("evList", evList);
 		
 		return "evcharger/list";
 	}
