@@ -51,7 +51,7 @@ public class EvchagerEntity {
     private String powerType; // 충전속도타입
     private String output; // 충전용량
     private String method; // 충전방식
-    private String zcode; // 충전방식
+    private String zcode; // 지역코드
     private String zscode; // 지역구분 상세 코드 
     private String kind; // 충전소 구분 코드 
     private String kindDetail; // 충전소 구분 상세코드 
@@ -63,8 +63,7 @@ public class EvchagerEntity {
     private String delDetail; // 삭제 사유
     private String trafficYn; // 편의제공 여부
     
-//    @Transient
-//    private int totalCount;
+
     
 
     
