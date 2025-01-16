@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.sound.sampled.ReverbType;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +26,11 @@ import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardEntity;
+import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
 import kr.co.mbc.service.BoardService;
+import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
 import kr.co.mbc.utils.Pagination;
@@ -50,6 +53,8 @@ public class BoardController {
 	private final FormatDateUtil formatDateUtil;
 	
 	private final UserService userService;
+	
+	private final ReplyService replyService;
 	
 	@GetMapping("/insert400")
 	public String insert400() {
@@ -173,6 +178,8 @@ public class BoardController {
 	// 읽기 기능
 	@GetMapping("/read/{id}")
 	public String read(@PathVariable("id") Long id, Model model, Criteria criteria) {
+		
+
 		
 		BoardEntity dto = boardService.findById(id);
 		

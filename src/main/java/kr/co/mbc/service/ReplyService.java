@@ -3,9 +3,12 @@ package kr.co.mbc.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
+import kr.co.mbc.dto.PageTO;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +28,11 @@ public class ReplyService {
 
 
 
-	public List<ReplyEntity> findByBoardId(Long bId) {
-		// TODO Auto-generated method stub
-		return replyRepository.findByBoardId(bId);
-	}
+	public Page<ReplyEntity> findByBoardIdOrderByWriteDateDesc(Long bId, int page) {
+        // Pageable 객체를 생성하여 페이징 처리된 댓글 목록을 조회
+        Pageable pageable = PageRequest.of(page, 5);
+        return replyRepository.findByBoardIdOrderByWriteDateDesc(bId, pageable);
+    }
 
 
 

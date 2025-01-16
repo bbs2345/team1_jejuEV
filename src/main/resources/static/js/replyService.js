@@ -1,5 +1,82 @@
 console.log("replyService.js파일 불러옴.");
 
+//
+function replyPaging(obj) {
+   
+   let tag =`
+   <div>
+       <ul class="pagination">`;
+      
+   if(!obj.first){
+      tag+=`
+      <li><a class="page-link" href="1">처음으로</a></li>
+        <li><a class="page-link" href="${obj.number}"><</a></li>
+      `;
+   }
+   
+   // 페이지 번호들
+    for (let i = 1; i <= obj.totalPages; i++) {
+        let activeClass = (i == obj.number+1) ? 'active' : '';  // 현재 페이지일 때 active 클래스 추가
+        tag += `
+        <li class="${activeClass}"><a class="page-link" href="${i}">${i}</a></li>
+        `;
+    }
+               
+   if(!obj.last){
+      tag+=`
+      <li><a class="page-link" href="${obj.number +2}">></a></li>
+      <li><a class="page-link" href="${obj.totalPages}">마지막으로</a></li>
+      `;
+   }
+   tag+=`
+      </ul>
+   </div>`;
+   
+   $("#reply_pagenation").html(tag);
+   
+   // 페이지 이동
+   $("#reply_pagenation").find("a").click(function(event){
+      event.preventDefault();
+      let page = $(this).attr("href");
+      getReplyList(page);
+   });
+}
+
+//댓글 리스트 페이징
+/*
+function renderReplyPaging(currentPage, totalPages) {
+    let pagingTag = `
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="1">처음으로</a>
+                </li>
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}">이전</a>
+                </li>`;
+
+    for (let i = 1; i <= totalPages; i++) {
+        pagingTag += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+            </li>`;
+    }
+
+    pagingTag += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}">다음</a>
+                </li>
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${totalPages}">마지막으로</a>
+                </li>
+            </ul>
+        </nav>`;
+
+    $("#replyPaging").html(pagingTag);
+}
+*/
+
+// 댓글 리스트 생성
 function makeReplyListTag(obj) {
 	let tag = ``;
 
@@ -31,11 +108,17 @@ function makeReplyListTag(obj) {
 
 // 댓글 수정
 
-function getReplyList() {
+function getReplyList(page) {
 	let bId = $("input[name='boardId']").val();
+	
+	// page가 undefined일 경우 기본값 1로 설정
+	if (page === undefined) {
+	   page =1; 
+	}
 
 	$.ajax({
-		url: "/replies/" + bId,
+		//url: "/replies/" + bId+"?page="+num+"&size=5",
+		url: `/replies/${bId}?page=${page}`,
 		type: "get",
 		headers: {
 			"Content-Type": "application/json",
@@ -44,10 +127,14 @@ function getReplyList() {
 		dataType: "text",
 		success: function(result) {
 			let obj = JSON.parse(result);
-
-			let tag = makeReplyListTag(obj);
+		
+			let tag = makeReplyListTag(obj["content"]);
+			
+			console.log(obj);
 
 			$("#board_read_show_reply_list").html(tag);
+			
+			replyPaging(obj);
 
 			// 댓글 삭제 버튼 클릭 이벤트
 			$("#board_read_show_reply_list").find(".reply_btn_delete").each(function() {
@@ -70,7 +157,7 @@ function getReplyList() {
 							dataType: "text",
 							success: function() {
 								alert("댓글이 삭제되었습니다.");
-								getReplyList();
+								getReplyList(1);
 							}
 						});
 					}
@@ -90,28 +177,28 @@ function getReplyList() {
 			});
 
 			// 수정완료 버튼 
-			$("#board_read_show_reply_list").on("click", ".reply_save_btn", function () {
-			    let rId = $(this).data("id"); // 수정할 댓글 ID
-			    let content = $(this).closest("div").find(".reply_edit_input").val();
-			    let bId = $("input[name='boardId']").val(); // 게시글 ID
-			    let writer = $("input[name='username']").val(); // 작성자 이름			
-				
-			    $.ajax({
-			        url: "/replies/" + rId,
-			        type: "put",
-			        data: JSON.stringify({
-			            bId: bId,
-			            writer: writer,
-			            content: content.trim()
-			        }),
-			        headers: {
-			            "Content-Type": "application/json"
-			        },
-			        dataType: "text",
-					success: function () {
-						getReplyList();  // 댓글 리스트 새로고침
+			$("#board_read_show_reply_list").on("click", ".reply_save_btn", function() {
+				let rId = $(this).data("id"); // 수정할 댓글 ID
+				let content = $(this).closest("div").find(".reply_edit_input").val();
+				let bId = $("input[name='boardId']").val(); // 게시글 ID
+				let writer = $("input[name='username']").val(); // 작성자 이름			
+
+				$.ajax({
+					url: "/replies/" + rId,
+					type: "put",
+					data: JSON.stringify({
+						bId: bId,
+						writer: writer,
+						content: content.trim()
+					}),
+					headers: {
+						"Content-Type": "application/json"
+					},
+					dataType: "text",
+					success: function() {
+						getReplyList(1);  // 댓글 리스트 새로고침
 					}
-			    });
+				});
 			});
 
 
@@ -131,7 +218,7 @@ function getReplyList() {
 
 $(function() {
 
-	getReplyList();
+	getReplyList(1);
 
 	let bId = $("input[name='boardId']");
 	let replyWriter = $("#replyWriter");
@@ -154,7 +241,7 @@ $(function() {
 			},
 			dataType: "text",
 			success: function(result) {
-				getReplyList();
+				getReplyList(1);
 				$("#replyContent").val("");
 			}
 		});
