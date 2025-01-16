@@ -35,7 +35,7 @@ public class ReplyEntity {
 	@Column(length = 300, nullable = false)
 	private String content;
 	
-	private String writeDate;;
+	private String writeDate;
 	
 	@ManyToOne
 	@JsonIgnore
@@ -48,4 +48,9 @@ public class ReplyEntity {
 	private UserEntity user;
 
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return id+" : "+ writer;
+	}
 }
