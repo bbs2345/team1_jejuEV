@@ -39,7 +39,7 @@
 	<nav class="navbar" style="background-color: #e3f2fd;">
 		<ul class="nav">
 			<li class="nav-item"><a class="nav-link" href="/">메인</a></li>
-			<li class="nav-item"><a class="nav-link" href="/evcharger/list">전기차 충전소</a></li>
+			<li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a></li>
 			<li class="nav-item dropdown">
 				<a class="nav-link" href="/board/list">게시판</a>
 			</li>
