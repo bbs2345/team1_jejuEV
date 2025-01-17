@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,8 +20,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import kr.co.mbc.dto.Criteria;
-import kr.co.mbc.entity.EvchagerEntity;
+import kr.co.mbc.entity.EvChagerEntity;
+import kr.co.mbc.entity.EvChargingStationEntity;
 import kr.co.mbc.repository.EvChargerRepository;
+import kr.co.mbc.repository.EvStationRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,6 +31,9 @@ import lombok.RequiredArgsConstructor;
 public class EvchargerService {
 
     private final EvChargerRepository evChargerRepository;
+    
+    private final EvStationRepository evStationRepository;
+    
     private final String apiUrl = "http://apis.data.go.kr/B552584/EvCharger/getChargerInfo";
     private final String apiKey = "zdcb/dCnKTh9GswIuVYaVktIh68IRBPbWnnyqE6jqG5npU0ztdVPnHwocG98iL0HPqqufx2nKNqdbowVwrBu0Q==";
     
@@ -58,21 +64,103 @@ public class EvchargerService {
         return response.toString();
     }
 
-    // DB에 API 데이터 저장하는 메서드
+    // EvChargingStation 저장 메서드
     @Transactional
     public void saveDataFromXml(String xmlData) throws Exception {
-    	
-    	// XML 데이터를 파싱하여 Document 객체로 변환
+        // XML 데이터를 파싱하여 Document 객체로 변환
         Document doc = parseXml(xmlData);
         NodeList items = doc.getElementsByTagName("item");  // XML에서 "item" 태그를 가진 노드 목록 가져오기
         
-        // 각 "item" 노드에 대해 EvchagerEntity 객체 생성 및 저장
+        // 각 "item" 노드에 대해 EvChagerEntity 객체 생성 및 저장
         for (int i = 0; i < items.getLength(); i++) {
             Element item = (Element) items.item(i);
-            EvchagerEntity entity = createEntityFromXml(item);
+            
+            EvChargingStationEntity chargingStationEntity = createStationEntityFromxml(item);
+            
+            // 충전소 저장
+            saveChargingStation(chargingStationEntity);
+        }
+    }
+
+    // 충전소 저장 메소드
+    private void saveChargingStation(EvChargingStationEntity chargingStationEntity) {
+        // 중복 확인
+        boolean exists = evStationRepository.existsByStatIdAndAddrAndLatAndLng(
+                chargingStationEntity.getStatId(),
+                chargingStationEntity.getAddr(),
+                chargingStationEntity.getLat(),
+                chargingStationEntity.getLng()
+        );
+        
+        // 중복된 충전소 정보가 없다면 저장
+        if (!exists) {
+            evStationRepository.save(chargingStationEntity);  // 충전소 저장
+        }
+    }
+
+    // EvChagerEntity 저장 메소드
+    @Transactional
+    public void saveChagerEntity(String xmlData) throws Exception {
+        Document doc = parseXml(xmlData);
+        NodeList items = doc.getElementsByTagName("item");
+
+        for (int i = 0; i < items.getLength(); i++) {
+            Element item = (Element) items.item(i);
+            EvChagerEntity entity = createEntityFromXml(item);
+
+            // 중복된 충전소 엔티티 리스트 가져오기
+            List<EvChargingStationEntity> stations = evStationRepository.findByStatNm(entity.getStatNm());
+
+            if (stations.isEmpty()) {
+                System.err.println("No matching station found for statNm: " + entity.getStatNm());
+                continue; // 매칭되는 충전소가 없으면 다음으로 넘어감
+            }
+
+            EvChargingStationEntity chosenStation = stations.get(0);
+
+            // 선택된 충전소를 설정하고 저장
+            entity.setStation(chosenStation);
+            entity.setStatId(stations.get(0).getStatId());
+            
             evChargerRepository.save(entity);
         }
     }
+    
+    // 두 테이블에 동시에 넣으려고 하니 외래키 문제로 작동이 안되서 두개로 분리
+//    // DB에 API 데이터 저장하는 메서드
+//    @Transactional
+//    public void saveDataFromXml(String xmlData) throws Exception {
+//    	
+//    	// XML 데이터를 파싱하여 Document 객체로 변환
+//        Document doc = parseXml(xmlData);
+//        NodeList items = doc.getElementsByTagName("item");  // XML에서 "item" 태그를 가진 노드 목록 가져오기
+//        
+//        // 각 "item" 노드에 대해 EvchagerEntity 객체 생성 및 저장
+//        for (int i = 0; i < items.getLength(); i++) {
+//            Element item = (Element) items.item(i);
+//            
+//            EvChargingStationEntity chargingStationEntity = createStationEntityFromxml(item);
+//            
+//            // 중복 확인
+//            boolean exists = evStationRepository.existsByStatIdAndAddrAndLatAndLng(
+//            		chargingStationEntity.getStatId(),
+//            		chargingStationEntity.getAddr(),
+//            		chargingStationEntity.getLat(),
+//            		chargingStationEntity.getLng()
+//            		);
+//            
+//            // 중복된 충전소 정보가 없다면 저장
+//            if (!exists) {
+//            	evStationRepository.save(chargingStationEntity);
+//            }
+//            
+//            // EvChagerEntity는 충전소 저장 여부와 관계없이 저장
+//            EvChagerEntity entity = createEntityFromXml(item);
+//            entity.setStation(chargingStationEntity);
+//            evChargerRepository.save(entity);
+//
+//        }
+//    }
     
     // XML 문자열을 Document 객체로 변환하는 메서드
     public Document parseXml(String xmlData) throws Exception {
@@ -88,53 +176,66 @@ public class EvchargerService {
         return (node != null) ? node.getTextContent() : null; // 태그가 존재하면 값 반환, 없으면 null 반환
     }
     
-    // XML 요소로부터 EvchagerEntity 객체를 생성하는 메서드
-    public EvchagerEntity createEntityFromXml(Element item) {
-        return EvchagerEntity.builder()
-                .statId(getTagValue(item, "statId"))
-                .statNm(getTagValue(item, "statNm"))
-                .chgerId(getTagValue(item, "chgerId"))
-                .chgerType(getTagValue(item, "chgerType"))
-                .addr(getTagValue(item, "addr"))
-                .addrDetail(getTagValue(item, "addrDetail"))
-                .location(getTagValue(item, "location"))
-                .lat(getTagValue(item, "lat"))
-                .lng(getTagValue(item, "lng"))
-                .useTime(getTagValue(item, "useTime"))
-                .busiId(getTagValue(item, "busiId"))
-                .bnm(getTagValue(item, "bnm"))
-                .busiNm(getTagValue(item, "busiNm"))
-                .busiCall(getTagValue(item, "busiCall"))
-                .stat(getTagValue(item, "stat"))
-                .statUpdDt(getTagValue(item, "statUpdDt"))
-                .lastTsdt(getTagValue(item, "lastTsdt"))
-                .lastTedt(getTagValue(item, "lastTedt"))
-                .nowTsdt(getTagValue(item, "nowTsdt"))
-                .powerType(getTagValue(item, "powerType"))
-                .output(getTagValue(item, "output"))
-                .method(getTagValue(item, "method"))
-                .zcode(getTagValue(item, "zcode"))
-                .zscode(getTagValue(item, "zscode"))
-                .kind(getTagValue(item, "kind"))
-                .kindDetail(getTagValue(item, "kindDetail"))
-                .parkingFree(getTagValue(item, "parkingFree"))
-                .note(getTagValue(item, "note"))
-                .limitYn(getTagValue(item, "limitYn"))
-                .limitDetail(getTagValue(item, "limitDetail"))
-                .delYn(getTagValue(item, "delYn"))
-                .delDetail(getTagValue(item, "delDetail"))
-                .trafficYn(getTagValue(item, "trafficYn"))
-                .build();
+    // XML 요소로부터 EvChagerEntity 객체를 생성하는 메서드
+    public EvChagerEntity createEntityFromXml(Element item) {
+        return EvChagerEntity.builder().chgerId(getTagValue(item, "chgerId"))
+        .statNm(getTagValue(item, "statNm"))
+        .chgerType(getTagValue(item, "chgerType"))
+        .addrDetail(getTagValue(item, "addrDetail"))
+        .location(getTagValue(item, "location"))
+        .bnm(getTagValue(item, "bnm"))
+        .stat(getTagValue(item, "stat"))
+        .statUpdDt(getTagValue(item, "statUpdDt"))
+        .lastTsdt(getTagValue(item, "lastTsdt"))
+        .lastTedt(getTagValue(item, "lastTedt"))
+        .nowTsdt(getTagValue(item, "nowTsdt"))
+        .powerType(getTagValue(item, "powerType"))
+        .output(getTagValue(item, "output"))
+        .method(getTagValue(item, "method"))
+        .zscode(getTagValue(item, "zscode"))
+        .kind(getTagValue(item, "kind"))
+        .kindDetail(getTagValue(item, "kindDetail"))
+        .limitYn(getTagValue(item, "limitYn"))
+        .limitDetail(getTagValue(item, "limitDetail"))
+        .delYn(getTagValue(item, "delYn"))
+        .delDetail(getTagValue(item, "delDetail"))
+        .trafficYn(getTagValue(item, "trafficYn"))
+        .build();
+    }
+    
+    // XML 요소로부터 EvChargingStationEntity 객체를 생성하는 메서드
+    public EvChargingStationEntity createStationEntityFromxml(Element item) {
+    	return EvChargingStationEntity.builder()
+    			.statId(getTagValue(item, "statId"))
+    			.statNm(getTagValue(item, "statNm"))
+    			.addr(getTagValue(item, "addr"))
+    			.lat(getTagValue(item, "lat"))
+    			.lng(getTagValue(item, "lng"))
+    			.useTime(getTagValue(item, "useTime"))
+    			.busiId(getTagValue(item, "busiId"))
+    			.busiNm(getTagValue(item, "busiNm"))
+    			.busiCall(getTagValue(item, "busiCall"))
+    			.zcode(getTagValue(item, "zcode"))
+    			.parkingFree(getTagValue(item, "parkingFree"))
+    			.note(getTagValue(item, "note"))
+    			.build();
     }
 
-	public List<EvchagerEntity> findAll(Criteria criteria) {
+
+	public List<EvChargingStationEntity> findAll(Criteria criteria) {
 		
-		return evChargerRepository.findAll(criteria);
+		return evStationRepository.findAll(criteria);
 	}
 
 	public Long getTotalCount(Criteria criteria) {
 		
-		return evChargerRepository.getTotalCount(criteria);
+		return evStationRepository.getTotalCount(criteria);
 	}
+
+	public List<EvChagerEntity> findAll() {
+		
+		return evChargerRepository.findAll();
+	}
+
     
 }
