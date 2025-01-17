@@ -6,29 +6,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import kr.co.mbc.dto.Criteria;
-import kr.co.mbc.entity.EvChargingStationEntity;
+import kr.co.mbc.entity.EvStationEntity;
 
-public interface EvStationRepository extends JpaRepository<EvChargingStationEntity, Long> {
+public interface EvStationRepository extends JpaRepository<EvStationEntity, String> {
 	
-	// 검색 기능
 	@Query(nativeQuery = true, 
-		       value = "SELECT count(id) FROM tbl_evchargerstation WHERE " +
+		       value = "SELECT count(stat_id) FROM tbl_evstation WHERE " +
 		               "(:#{#criteria.type} IS NULL OR " +
 		               "(:#{#criteria.type} = 'stat_nm' AND stat_nm LIKE %:#{#criteria.keyword}%) OR " +
 		               "(:#{#criteria.type} = 'addr' AND addr LIKE %:#{#criteria.keyword}%))")
 	Long getTotalCount(Criteria criteria);
-	
+
 	@Query(nativeQuery = true, 
-		       value = "SELECT * FROM tbl_evchargerstation WHERE " +
+		       value = "SELECT * FROM tbl_evstation WHERE " +
 		               "(:#{#criteria.type} IS NULL OR " +
 		               "(:#{#criteria.type} = 'stat_nm' AND stat_nm LIKE %:#{#criteria.keyword}%) OR " +
 		               "(:#{#criteria.type} = 'addr' AND addr LIKE %:#{#criteria.keyword}%)) " +
-		               "ORDER BY id LIMIT :#{#criteria.perPageContent} OFFSET :#{#criteria.getOffset()}")
-	
-	List<EvChargingStationEntity> findAll(Criteria criteria);
+		               "ORDER BY stat_id LIMIT :#{#criteria.perPageContent} OFFSET :#{#criteria.getOffset()}")
+	List<EvStationEntity> findAll(Criteria criteria);
 
-	List<EvChargingStationEntity> findByStatNm(String statNm);
+	EvStationEntity findByStatId(String statId);
 
-	boolean existsByStatIdAndAddrAndLatAndLng(String statId, String addr, String lat, String lng);
-	
+
 }
