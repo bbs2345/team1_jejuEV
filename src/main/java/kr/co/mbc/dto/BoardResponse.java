@@ -32,4 +32,7 @@ public class BoardResponse {
 	
 	private List<AttachEntity> attachList;
 	
+	private Long likes = 0L;
+    private Long dislikes = 0L;
+	
 }
