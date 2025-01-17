@@ -49,6 +49,10 @@ public class BoardEntity {
 	private String createDate;
 	private String updateDate;
 	
+	
+	private Long likes = 0L;
+    private Long dislikes = 0L;
+	
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "user_id", nullable = false)
@@ -80,10 +84,27 @@ public class BoardEntity {
 				.createDate(boardEntity.getCreateDate())
 				.updateDate(boardEntity.getUpdateDate())
 				.attachList(boardEntity.getAttachList())
+				.likes(boardEntity.getLikes())
+				.dislikes(boardEntity.getDislikes())
 				.build();
 	}
+
 	
-	
+	 public Long getLikes() {
+	        return likes;
+	    }
+
+	    public void setLikes(Long likes) {
+	        this.likes = likes;
+	    }
+
+	    public Long getDislikes() {
+	        return dislikes;
+	    }
+
+	    public void setDislikes(Long dislikes) {
+	        this.dislikes = dislikes;
+	    }
 	
 	
 }

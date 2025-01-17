@@ -1,6 +1,7 @@
 package kr.co.mbc.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,6 +57,23 @@ public class BoardController {
 	private final UserService userService;
 	
 	private final ReplyService replyService;
+	
+	//===============================================
+	//좋아요 나빠요 ajax통신 메서드
+    @PostMapping("/reaction/{id}")
+    public ResponseEntity<String> reactToBoard(@PathVariable Long id, @RequestParam String reactionType) {
+        BoardEntity boardEntity = boardService.findById(id);  // 엔티티 조회
+
+        if ("like".equalsIgnoreCase(reactionType)) {
+            boardEntity.setLikes(boardEntity.getLikes() == null ? 1 : boardEntity.getLikes() + 1);  // 좋아요 처리
+        } else if ("dislike".equalsIgnoreCase(reactionType)) {
+            boardEntity.setDislikes(boardEntity.getDislikes() == null ? 1 : boardEntity.getDislikes() + 1);  // 나빠요 처리
+        }
+
+        boardService.save(boardEntity);  // DB에 업데이트
+        return ResponseEntity.ok("success");
+    }
+	//================================================
 	
 	@GetMapping("/insert400")
 	public String insert400() {

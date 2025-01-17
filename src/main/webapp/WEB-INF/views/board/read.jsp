@@ -54,6 +54,7 @@
 							<p>${boardResponse.content}</p>
 						</td>
 					</tr>
+					
 					<tr>
 						<td colspan="4">
 							<div class="images">
@@ -69,9 +70,17 @@
 		</div>
 
 		<div>
-			<a href="${criteria.page}" id="toBoardList">목록</a> <a
-				href="/board/update/${boardResponse.id}">수정</a> <a
-				id=delete_board_botton href="#">삭제</a>
+		    <a href="${criteria.page}" id="toBoardList">목록</a> 
+		    <a href="/board/update/${boardResponse.id}">수정</a> 
+		    <a id=delete_board_botton href="#">삭제</a>
+		    
+		    <input class="like-dislike-buttons" type="hidden" id="boardId" value="${boardResponse.id}">
+		    <button id="dislike-button" data-board-id="${boardResponse.id}" style="float: right; margin-right: 10px;">
+		        👎 <span id="dislike-count">${boardResponse.dislikes}</span>
+		    </button>
+		    <button id="like-button" data-board-id="${boardResponse.id}" style="float: right; margin-right: 10px;">
+		        👍 <span id="like-count">${boardResponse.likes}</span>
+		    </button>
 		</div>
 
 		<hr>
