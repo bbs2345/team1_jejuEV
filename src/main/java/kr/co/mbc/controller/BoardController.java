@@ -225,7 +225,7 @@ public class BoardController {
 	public String boardList(Criteria criteria, Model model) {
 		
 		List<BoardEntity> boardEntities = boardService.findAll(criteria);
-		
+
 	    List<BoardResponse> boardList = new ArrayList<>();
 	    for (BoardEntity boardEntity : boardEntities) {
 	        BoardResponse boardResponse = BoardEntity.toBoardResponse(boardEntity);

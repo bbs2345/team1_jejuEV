@@ -2,88 +2,116 @@ console.log("replyService.js파일 불러옴.");
 
 //
 function replyPaging(obj) {
-   
-   let tag =`
+
+	let tag = `
    <div>
        <ul class="pagination">`;
-      
-   if(!obj.first){
-      tag+=`
+
+	if (!obj.first) {
+		tag += `
       <li><a class="page-link" href="1">처음으로</a></li>
         <li><a class="page-link" href="${obj.number}"><</a></li>
       `;
-   }
-   
-   // 페이지 번호들
-    for (let i = 1; i <= obj.totalPages; i++) {
-        let activeClass = (i == obj.number+1) ? 'active' : '';  // 현재 페이지일 때 active 클래스 추가
-        tag += `
+	}
+
+	// 페이지 번호들
+	for (let i = 1; i <= obj.totalPages; i++) {
+		let activeClass = (i == obj.number + 1) ? 'active' : '';  // 현재 페이지일 때 active 클래스 추가
+		tag += `
         <li class="${activeClass}"><a class="page-link" href="${i}">${i}</a></li>
         `;
-    }
-               
-   if(!obj.last){
-      tag+=`
-      <li><a class="page-link" href="${obj.number +2}">></a></li>
+	}
+
+	if (!obj.last) {
+		tag += `
+      <li><a class="page-link" href="${obj.number + 2}">></a></li>
       <li><a class="page-link" href="${obj.totalPages}">마지막으로</a></li>
       `;
-   }
-   tag+=`
+	}
+	tag += `
       </ul>
    </div>`;
-   
-   $("#reply_pagenation").html(tag);
-   
-   // 페이지 이동
-   $("#reply_pagenation").find("a").click(function(event){
-      event.preventDefault();
-      let page = $(this).attr("href");
-      getReplyList(page);
-   });
+
+	$("#reply_pagenation").html(tag);
+
+	// 페이지 이동
+	$("#reply_pagenation").find("a").click(function(event) {
+		event.preventDefault();
+		let page = $(this).attr("href");
+		getReplyList(page);
+	});
 }
 
 //댓글 리스트 페이징
 /*
 function renderReplyPaging(currentPage, totalPages) {
-    let pagingTag = `
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" data-page="1">처음으로</a>
-                </li>
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" data-page="${currentPage - 1}">이전</a>
-                </li>`;
+	let pagingTag = `
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center">
+				<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+					<a class="page-link" href="#" data-page="1">처음으로</a>
+				</li>
+				<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+					<a class="page-link" href="#" data-page="${currentPage - 1}">이전</a>
+				</li>`;
 
-    for (let i = 1; i <= totalPages; i++) {
-        pagingTag += `
-            <li class="page-item ${i === currentPage ? 'active' : ''}">
-                <a class="page-link" href="#" data-page="${i}">${i}</a>
-            </li>`;
-    }
+	for (let i = 1; i <= totalPages; i++) {
+		pagingTag += `
+			<li class="page-item ${i === currentPage ? 'active' : ''}">
+				<a class="page-link" href="#" data-page="${i}">${i}</a>
+			</li>`;
+	}
 
-    pagingTag += `
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" data-page="${currentPage + 1}">다음</a>
-                </li>
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" data-page="${totalPages}">마지막으로</a>
-                </li>
-            </ul>
-        </nav>`;
+	pagingTag += `
+				<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+					<a class="page-link" href="#" data-page="${currentPage + 1}">다음</a>
+				</li>
+				<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+					<a class="page-link" href="#" data-page="${totalPages}">마지막으로</a>
+				</li>
+			</ul>
+		</nav>`;
 
-    $("#replyPaging").html(pagingTag);
+	$("#replyPaging").html(pagingTag);
 }
 */
 
+
+
 // 댓글 리스트 생성
 function makeReplyListTag(obj) {
+
 	let tag = ``;
 
 	for (i of obj) {
 		tag += `			
 		<div class='d-flex'>
-			작성자 : ${i.writer}  내용 : ${i.content}  작성일 : ${i.writeDate}  `;
+			<div>
+			작성자 : ${i.writer}  내용 : ${i.content}  작성일 : ${i.writeDate}  
+			</div>`;
+
+		tag += `
+		<button data-rId="${i.id}" class="reply-like-button" type='button' style="margin-right: 10px;">
+		👍<span id="reply-like-count">`;
+
+		if (i.likes == null) {
+			tag += `</span>`;
+		}
+		if (i.likes != null) {
+			tag += `${i.likes}</span>`;
+		}
+		tag += `
+		</button>
+		<button data-rId="${i.id}" class="reply-dislike-button" type='button' style="margin-right: 10px;">
+		👎<span id="reply-dislike-count">`;
+
+		if (i.dislikes != null) {
+			tag += `
+			${i.dislikes}</span>`;
+		}
+		tag += `</span>
+		</button>
+		`;
 		if (i.writer == $("input[name='username']").val()) {
 			tag += `
 			<div class="replyOriBtn" style="display: block;">
@@ -101,19 +129,21 @@ function makeReplyListTag(obj) {
 		tag += `
 		</div>
 		<hr>`;
+
 	}
 
 	return tag;
 }
 
+
 // 댓글 수정
 
 function getReplyList(page) {
 	let bId = $("input[name='boardId']").val();
-	
+
 	// page가 undefined일 경우 기본값 1로 설정
 	if (page === undefined) {
-	   page =1; 
+		page = 1;
 	}
 
 	$.ajax({
@@ -127,14 +157,95 @@ function getReplyList(page) {
 		dataType: "text",
 		success: function(result) {
 			let obj = JSON.parse(result);
-		
+
+			$("#qq").find("span").text(obj.otalElements);
+
 			let tag = makeReplyListTag(obj["content"]);
-			
+
 			console.log(obj);
 
 			$("#board_read_show_reply_list").html(tag);
-			
+
+			//===========================================
+			// 좋아요/나빠요 이벤트 통합
+			$("#board_read_show_reply_list").off('click', ".reply-like-button, .reply-dislike-button");
+			$("#board_read_show_reply_list").on('click', ".reply-like-button, .reply-dislike-button", function () {
+			    let rId = $(this).attr("data-rId"); // 댓글 ID 가져오기
+			    let isLike = $(this).hasClass("reply-like-button"); // 좋아요 버튼인지 확인
+			    let reactionType = isLike ? "like" : "dislike"; // 반응 타입 결정
+			    let countSpan = isLike ? $(this).siblings(".reply-like-count") : $(this).siblings(".reply-dislike-count"); // 카운트 요소 찾기
+
+			    $.ajax({
+			        url: "/replies/reaction/" + rId,
+			        type: "post",
+			        data: { reactionType: reactionType },
+			        success: function (response) {
+			            if (response === "success") {
+			                let count = countSpan.text();
+			                count = (count === "") ? 0 : Number(count); // 현재 카운트 값 가져오기
+			                if (!isNaN(count)) {
+			                    countSpan.text(count + 1);
+			                }
+			                getReplyList(1);
+			            }
+			        }
+			    });
+			});
+//			//좋아요 나빠요
+//			$("#board_read_show_reply_list").find(".reply-like-button").each(function() {
+//				$(this).click(function() {
+//					let rId = $(this).attr("data-rId");
+//					$.ajax({
+//						url: "/replies/reaction/" + rId,
+//						type: "post",
+//						data: { reactionType: "like" },
+//						success: function(response) {
+//							if (response === "success") {
+//								let likeCount = $("#reply-like-count").text();
+//								likeCount = (likeCount === "") ? 0 : Number(likeCount);
+//								if (!isNaN(likeCount)) {
+//									$("#reply-like-count").text(likeCount + 1);
+//								}
+//								getReplyList(1);
+//							}
+//						}
+//					});
+//
+//				});
+//			});
+//
+//			$("#board_read_show_reply_list").off('click', ".reply-dislike-button");
+//			$("#board_read_show_reply_list").on('click', ".reply-dislike-button", function() {
+//			    let rId = $(this).attr("data-rId");
+//			    let dislikeSpan = $(this).siblings(".reply-dislike-count"); // 근처 dislike 카운트 요소 찾기
+//
+//			    $.ajax({
+//			        url: "/replies/reaction/" + rId,
+//			        type: "post",
+//			        data: { reactionType: "dislike" },
+//			        success: function(response) {
+//			            if (response === "success") {
+//			                let dislikeCount = dislikeSpan.text();
+//			                dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
+//			                if (!isNaN(dislikeCount)) {
+//			                    dislikeSpan.text(dislikeCount + 1); // 해당 댓글 dislike 카운트 증가
+//			                }
+//			                getReplyList(1); // 댓글 리스트 새로고침
+//			            }
+//			        }
+//			    });
+//			});
+//
+
+			//===========================================
+
 			replyPaging(obj);
+
+
+
+
+
+
 
 			// 댓글 삭제 버튼 클릭 이벤트
 			$("#board_read_show_reply_list").find(".reply_btn_delete").each(function() {

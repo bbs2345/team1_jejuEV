@@ -37,6 +37,9 @@ public class ReplyEntity {
 	
 	private String writeDate;
 	
+	private Long Likes = 0L;
+    private Long Dislikes = 0L;
+	
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "board_id", nullable = false)
@@ -53,4 +56,13 @@ public class ReplyEntity {
 		// TODO Auto-generated method stub
 		return id+" : "+ writer;
 	}
+	
+	public void incrementContentLikes() {
+	    this.Likes += 1;
+	}
+
+	public void incrementContentDislikes() {
+	    this.Dislikes += 1;
+	}
+
 }

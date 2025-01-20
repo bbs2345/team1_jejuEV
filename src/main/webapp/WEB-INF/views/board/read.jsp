@@ -31,7 +31,7 @@
 		<div>
 			<h3>게시글 자세히 보기</h3>
 		</div>
-
+${paging.getTotalElements()}
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> <input
@@ -85,10 +85,12 @@
 
 		<hr>
 		<!-- 댓글 영역 -->
-		<div>
-			<h5>댓글 목록</h5>
+		<div id="qq">
+			<h5>댓글 목록<span></span></h5>
 			<div id="board_read_show_reply_list"></div>
 		</div>
+		
+
 
 		<div class="container">
 			<h5>댓글</h5>

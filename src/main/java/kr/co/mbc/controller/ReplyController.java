@@ -1,14 +1,11 @@
 package kr.co.mbc.controller;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +36,31 @@ public class ReplyController {
 
 	private final FormatDateUtil formatDateUtil;
 
+	//==========================
+    // 댓글 좋아요/싫어요 버튼 처리
+
+    @PostMapping("/reaction/{id}")
+    public ResponseEntity<String> reactToReply(@PathVariable Long id, @RequestParam String reactionType) {
+        Optional<ReplyEntity> optionalReplyEntity = replyService.findById(id);  // 엔티티 조회
+
+        if (!optionalReplyEntity.isPresent()) {
+            return ResponseEntity.notFound().build();  // 댓글이 존재하지 않는 경우
+        }
+
+        ReplyEntity replyEntity = optionalReplyEntity.get();  // Optional에서 값 가져오기
+
+        if ("like".equalsIgnoreCase(reactionType)) {
+            replyEntity.setLikes(replyEntity.getLikes() == null ? 1 : replyEntity.getLikes() + 1);  // 좋아요 처리
+        } else if ("dislike".equalsIgnoreCase(reactionType)) {
+            replyEntity.setDislikes(replyEntity.getDislikes() == null ? 1 : replyEntity.getDislikes() + 1);  // 나빠요 처리
+        }
+
+        replyService.save(replyEntity);  // DB에 업데이트
+        return ResponseEntity.ok("success");
+    }
+
+	//==========================
+	
 	// 댓글 삭제
 	@DeleteMapping("/")
 	public String deleteById(@RequestBody Map<String, String> map) {

@@ -21,7 +21,6 @@
 	<div>
 		<h3>글 목록</h3>
 	</div>
-	
 	<div>
 		<table class="table table-bordered">
 			<thead>
@@ -36,8 +35,8 @@
 				<c:forEach items="${boardList}" var="dto">
 					<tr>
 						<td>${dto.id}</td>
-						<td><a href="${dto.id}">${dto.title}</a></td>
-						<td>${dto.writer}</td>
+						<td><a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
+						<td>${dto.writer} | ${dto.user.username} | ${dto.user.name}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
