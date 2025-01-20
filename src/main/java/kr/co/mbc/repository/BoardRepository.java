@@ -27,7 +27,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 		               "(:#{#criteria.type} IS NULL OR " +
 		               "(:#{#criteria.type} = 'title' AND title LIKE %:#{#criteria.keyword}%) OR " +
 		               "(:#{#criteria.type} = 'writer' AND writer LIKE %:#{#criteria.keyword}%)) " +
-		               "ORDER BY id LIMIT :#{#criteria.perPageContent} OFFSET :#{#criteria.getOffset()}")
+		               "ORDER BY id desc LIMIT :#{#criteria.perPageContent} OFFSET :#{#criteria.getOffset()}")
 	List<BoardEntity> findAll(Criteria criteria);
 
 

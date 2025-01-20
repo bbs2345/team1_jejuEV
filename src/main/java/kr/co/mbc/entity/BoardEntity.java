@@ -66,6 +66,7 @@ public class BoardEntity {
 	@JsonIgnore
 	private List<AttachEntity> attachList;
 	
+	
 	//boardForm을 BoardEntity 변형
 	public static BoardEntity toBoardEntity(BoardForm boardForm) {
 		return BoardEntity.builder()
@@ -86,6 +87,8 @@ public class BoardEntity {
 				.attachList(boardEntity.getAttachList())
 				.likes(boardEntity.getLikes())
 				.dislikes(boardEntity.getDislikes())
+				.replyList(boardEntity.getReplyList())
+				.user(boardEntity.getUser())
 				.build();
 	}
 
