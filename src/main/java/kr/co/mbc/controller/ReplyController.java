@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.mbc.dto.ReplyResponse;
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.BoardService;
+import kr.co.mbc.service.ReactionService;
 import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
@@ -33,31 +35,32 @@ public class ReplyController {
 	private final ReplyService replyService;
 	private final BoardService boardService;
 	private final UserService userService;
+	private final ReactionService reactionService;
 
 	private final FormatDateUtil formatDateUtil;
 
 	//==========================
     // 댓글 좋아요/싫어요 버튼 처리
 
-    @PostMapping("/reaction/{id}")
-    public ResponseEntity<String> reactToReply(@PathVariable Long id, @RequestParam String reactionType) {
-        Optional<ReplyEntity> optionalReplyEntity = replyService.findById(id);  // 엔티티 조회
-
-        if (!optionalReplyEntity.isPresent()) {
-            return ResponseEntity.notFound().build();  // 댓글이 존재하지 않는 경우
-        }
-
-        ReplyEntity replyEntity = optionalReplyEntity.get();  // Optional에서 값 가져오기
-
-        if ("like".equalsIgnoreCase(reactionType)) {
-            replyEntity.setLikes(replyEntity.getLikes() == null ? 1 : replyEntity.getLikes() + 1);  // 좋아요 처리
-        } else if ("dislike".equalsIgnoreCase(reactionType)) {
-            replyEntity.setDislikes(replyEntity.getDislikes() == null ? 1 : replyEntity.getDislikes() + 1);  // 나빠요 처리
-        }
-
-        replyService.save(replyEntity);  // DB에 업데이트
-        return ResponseEntity.ok("success");
-    }
+//    @PostMapping("/reaction/{id}")
+//    public ResponseEntity<String> reactToReply(@PathVariable Long id, @RequestParam String reactionType) {
+//        Optional<ReplyEntity> optionalReplyEntity = replyService.findById(id);  // 엔티티 조회
+//
+//        if (!optionalReplyEntity.isPresent()) {
+//            return ResponseEntity.notFound().build();  // 댓글이 존재하지 않는 경우
+//        }
+//
+//        ReplyEntity replyEntity = optionalReplyEntity.get();  // Optional에서 값 가져오기
+//
+//        if ("like".equalsIgnoreCase(reactionType)) {
+//            replyEntity.setLikes(replyEntity.getLikes() == null ? 1 : replyEntity.getLikes() + 1);  // 좋아요 처리
+//        } else if ("dislike".equalsIgnoreCase(reactionType)) {
+//            replyEntity.setDislikes(replyEntity.getDislikes() == null ? 1 : replyEntity.getDislikes() + 1);  // 나빠요 처리
+//        }
+//
+//        reactionService.save(replyEntity);  // DB에 업데이트
+//        return ResponseEntity.ok("success");
+//    }
 
 	//==========================
 	
@@ -72,8 +75,9 @@ public class ReplyController {
 	}
 
     // 댓글 수정
-	@PutMapping("/{id}")
-	public String update(@PathVariable("id") Long id, @RequestBody Map<String, String> map) {
+	@PutMapping("/") // /
+	public String update(@RequestBody Map<String, String> map) {
+		Long id = Long.parseLong((String)map.get("rId"));
 	    Optional<ReplyEntity> optionalReply = replyService.findById(id);  // 댓글 존재 확인
 
 	    if (optionalReply.isPresent()) {
@@ -99,8 +103,9 @@ public class ReplyController {
     @GetMapping("/{bId}")
     public Page<ReplyEntity> list(@PathVariable("bId") Long bId, @RequestParam("page") int page) {
        
+    	
        page = page -1;
-
+       
         // 페이징 처리된 댓글 목록 반환
        Page<ReplyEntity> paging = replyService.findByBoardIdOrderByWriteDateDesc(bId, page);
        

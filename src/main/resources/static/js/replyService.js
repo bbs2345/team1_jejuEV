@@ -295,9 +295,10 @@ function getReplyList(page) {
 				let writer = $("input[name='username']").val(); // 작성자 이름			
 
 				$.ajax({
-					url: "/replies/" + rId,
+					url: "/replies/",
 					type: "put",
 					data: JSON.stringify({
+						rId : rId,
 						bId: bId,
 						writer: writer,
 						content: content.trim()

@@ -65,49 +65,96 @@ $(function() {
 	});
 
 	//=========================================
-	// 좋아요 버튼 클릭 이벤트
-	$("#like-button").click(function(event) {
+
+
+
+	//로그아웃 된상태의 좋아요 버튼 붛가
+	$(".ff").click(function() {
+		alert("로그인 후 이용하세요");
+	});
+
+	// 좋아요/나빠요 버튼 클릭 이벤트 공통 처리
+	
+	
+	$(".reaction-button").click(function(event) {
+		let button = $(this);
+		let boardId = button.data("board-id");
+		let username = $("#username").data("username");
+		console.log(username);
+
+		let reactionType = button.data("reaction-type");
+
 		
-	       let boardId = $(this).data("board-id");
-	       $.ajax({
-	           url: "/board/reaction/" + boardId,
-	           type: "post",
-	           data: { reactionType: "like" },
-	           success: function(response) {
-	               if (response === "success") {
-	                   let likeCount = $("#like-count").text();
-					   // 텍스트 값이 비어있을 때 처리
-					   likeCount = (likeCount === "") ? 0 : Number(likeCount);
+		$.ajax({
+			url: "/reaction/",
+			type: "post",
+			contentType: "application/json",
+			data:  JSON.stringify({ rId : boardId, reactionType: reactionType, username:username }),
+			success: function(response) {
+				if (response === "success") {
+					let countElement = (reactionType === "like") ? $("#like-count") : $("#dislike-count");
+					let count = countElement.text();
+					count = (count === "") ? 0 : Number(count);
 
-					   if (!isNaN(likeCount)) {
-					       $("#like-count").text(likeCount + 1);
-					   }
-	               }
-	           }
-	       });
-	   });
+					if (!isNaN(count)) {
+						countElement.text(count + 1);
+					}
+				}
+			}
+		});
 
-	   // 나빠요 버튼 클릭 이벤트
-	   $("#dislike-button").click(function(event) {
+	});
 
-	       let boardId = $(this).data("board-id");
-	       $.ajax({
-	           url: "/board/reaction/" + boardId,
-	           type: "post",
-	           data: { reactionType: "dislike" },
-	           success: function(response) {
-	               if (response === "success") {
-	                   let dislikeCount = $("#dislike-count").text();
-					   // 텍스트 값이 비어있을 때 처리
-					   dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
 
-					   if (!isNaN(dislikeCount)) {
-					       $("#dislike-count").text(dislikeCount + 1);
-					   }
-	               }
-	           }
-	       });
-	   });
+
+
+
+
+
+
+	//	// 좋아요 버튼 클릭 이벤트
+	//	$("#like-button").click(function(event) {
+	//		
+	//	       let boardId = $(this).data("board-id");
+	//	       $.ajax({
+	//	           url: "/board/reaction/" + boardId,
+	//	           type: "post",
+	//	           data: { reactionType: "like" },
+	//	           success: function(response) {
+	//	               if (response === "success") {
+	//	                   let likeCount = $("#like-count").text();
+	//					   // 텍스트 값이 비어있을 때 처리
+	//					   likeCount = (likeCount === "") ? 0 : Number(likeCount);
+	//
+	//					   if (!isNaN(likeCount)) {
+	//					       $("#like-count").text(likeCount + 1);
+	//					   }
+	//	               }
+	//	           }
+	//	       });
+	//	   });
+	//
+	//	   // 나빠요 버튼 클릭 이벤트
+	//	   $("#dislike-button").click(function(event) {
+	//
+	//	       let boardId = $(this).data("board-id");
+	//	       $.ajax({
+	//	           url: "/board/reaction/" + boardId,
+	//	           type: "post",
+	//	           data: { reactionType: "dislike" },
+	//	           success: function(response) {
+	//	               if (response === "success") {
+	//	                   let dislikeCount = $("#dislike-count").text();
+	//					   // 텍스트 값이 비어있을 때 처리
+	//					   dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
+	//
+	//					   if (!isNaN(dislikeCount)) {
+	//					       $("#dislike-count").text(dislikeCount + 1);
+	//					   }
+	//	               }
+	//	           }
+	//	       });
+	//	   });
 
 	//=========================================
 

@@ -71,26 +71,26 @@ public class BoardService {
 	
 	//========================================
 	
-	public void likeBoard(Long boardId) {
-        BoardEntity board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        board.setLikes(board.getLikes() + 1);  // 좋아요 수 증가
-        boardRepository.save(board);
-    }
-
-    public void dislikeBoard(Long boardId) {
-        BoardEntity board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        board.setDislikes(board.getDislikes() + 1);  // 나빠요 수 증가
-        boardRepository.save(board);
-    }
-
-    public long getLikesCount(Long boardId) {
-        return boardRepository.findById(boardId).map(BoardEntity::getLikes).orElse(0L);
-    }
-
-    public long getDislikesCount(Long boardId) {
-        return boardRepository.findById(boardId).map(BoardEntity::getDislikes).orElse(0L);
-    }
-	
+//	public void likeBoard(Long boardId) {
+//        BoardEntity board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+//        board.setLikes(board.getLikes() + 1);  // 좋아요 수 증가
+//        boardRepository.save(board);
+//    }
+//
+//    public void dislikeBoard(Long boardId) {
+//        BoardEntity board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+//        board.setDislikes(board.getDislikes() + 1);  // 나빠요 수 증가
+//        boardRepository.save(board);
+//    }
+//
+//    public long getLikesCount(Long boardId) {
+//        return boardRepository.findById(boardId).map(BoardEntity::getLikes).orElse(0L);
+//    }
+//
+//    public long getDislikesCount(Long boardId) {
+//        return boardRepository.findById(boardId).map(BoardEntity::getDislikes).orElse(0L);
+//    }
+//	
 	//========================================
 
 }

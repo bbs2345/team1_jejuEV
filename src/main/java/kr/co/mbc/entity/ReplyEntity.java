@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.mbc.dto.BoardResponse;
+import kr.co.mbc.dto.ReplyResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,10 +38,7 @@ public class ReplyEntity {
 	private String content;
 	
 	private String writeDate;
-	
-	private Long Likes = 0L;
-    private Long Dislikes = 0L;
-	
+
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "board_id", nullable = false)
@@ -51,18 +50,17 @@ public class ReplyEntity {
 	private UserEntity user;
 
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return id+" : "+ writer;
-	}
 	
-	public void incrementContentLikes() {
-	    this.Likes += 1;
-	}
+	//replyEntity를 replyresponse로 변환
+	public static ReplyResponse toReplyResponse(ReplyEntity replyEntity) {
+		return ReplyResponse.builder()
+				.id(replyEntity.getId())
+				.content(replyEntity.getContent())
+				.writeDate(replyEntity.getWriteDate())
 
-	public void incrementContentDislikes() {
-	    this.Dislikes += 1;
+				.board(replyEntity.getBoard())
+				.user(replyEntity.getUser())
+				.build();
 	}
 
 }
