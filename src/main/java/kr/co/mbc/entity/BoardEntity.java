@@ -1,11 +1,13 @@
 package kr.co.mbc.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,10 +51,12 @@ public class BoardEntity {
 	private String createDate;
 	private String updateDate;
 	
-	
-	private Long likes = 0L;
+    private Long likes = 0L;
     private Long dislikes = 0L;
 	
+
+    
+    
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "user_id", nullable = false)
@@ -65,6 +69,10 @@ public class BoardEntity {
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<AttachEntity> attachList;
+	
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private List<ReactionEntity> reactionList;
 	
 	
 	//boardForm을 BoardEntity 변형
@@ -85,29 +93,13 @@ public class BoardEntity {
 				.createDate(boardEntity.getCreateDate())
 				.updateDate(boardEntity.getUpdateDate())
 				.attachList(boardEntity.getAttachList())
-				.likes(boardEntity.getLikes())
-				.dislikes(boardEntity.getDislikes())
 				.replyList(boardEntity.getReplyList())
 				.user(boardEntity.getUser())
+				.likes(boardEntity.getLikes())
+				.dislikes(boardEntity.getDislikes())
+				.reactionList(boardEntity.getReactionList())
 				.build();
 	}
 
-	
-	 public Long getLikes() {
-	        return likes;
-	    }
-
-	    public void setLikes(Long likes) {
-	        this.likes = likes;
-	    }
-
-	    public Long getDislikes() {
-	        return dislikes;
-	    }
-
-	    public void setDislikes(Long dislikes) {
-	        this.dislikes = dislikes;
-	    }
-	
 	
 }

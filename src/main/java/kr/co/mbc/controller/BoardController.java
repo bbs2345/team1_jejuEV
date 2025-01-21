@@ -1,13 +1,10 @@
 package kr.co.mbc.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.sampled.ReverbType;
-
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+
 import kr.co.mbc.dto.BoardForm;
 import kr.co.mbc.dto.BoardResponse;
 import kr.co.mbc.dto.Criteria;
@@ -32,6 +30,7 @@ import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
 import kr.co.mbc.service.BoardService;
+import kr.co.mbc.service.ReactionService;
 import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
@@ -58,21 +57,33 @@ public class BoardController {
 	
 	private final ReplyService replyService;
 	
+	private final ReactionService reactionService;
+	
 	//===============================================
-	//좋아요 나빠요 ajax통신 메서드
-    @PostMapping("/reaction/{id}")
-    public ResponseEntity<String> reactToBoard(@PathVariable Long id, @RequestParam String reactionType) {
-        BoardEntity boardEntity = boardService.findById(id);  // 엔티티 조회
+//	//좋아요 나빠요 ajax통신 메서드
+//	@PostMapping("/reaction/")
+//	public ResponseEntity<String> reactToBoard(@RequestBody Map<String, String> map) {
+//	    Long id = Long.parseLong(map.get("rId"));
+//	    String username = map.get("username");
+//	    
+//	    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+//	    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+username);
+//	    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+//	    
+//
+//	    BoardEntity boardEntity = boardService.findById(id);  // 엔티티 조회
+//
+//	    if ("like".equalsIgnoreCase(map.get("reactionType"))) {
+//	        boardEntity.setLikes(boardEntity.getLikes() == null ? 1 : boardEntity.getLikes() + 1);  // 좋아요 처리
+//	     
+//	    } else if ("dislike".equalsIgnoreCase(map.get("reactionType"))) {
+//	        boardEntity.setDislikes(boardEntity.getDislikes() == null ? 1 : boardEntity.getDislikes() + 1);  // 나빠요 처리
+//	    }
+//
+//	    reactionService.save(boardEntity);  // DB에 업데이트
+//	    return ResponseEntity.ok("success");
+//	}
 
-        if ("like".equalsIgnoreCase(reactionType)) {
-            boardEntity.setLikes(boardEntity.getLikes() == null ? 1 : boardEntity.getLikes() + 1);  // 좋아요 처리
-        } else if ("dislike".equalsIgnoreCase(reactionType)) {
-            boardEntity.setDislikes(boardEntity.getDislikes() == null ? 1 : boardEntity.getDislikes() + 1);  // 나빠요 처리
-        }
-
-        boardService.save(boardEntity);  // DB에 업데이트
-        return ResponseEntity.ok("success");
-    }
 	//================================================
 	
 	@GetMapping("/insert400")

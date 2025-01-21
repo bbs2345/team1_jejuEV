@@ -34,8 +34,8 @@
 ${paging.getTotalElements()}
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
-				<input type="hidden" name="id" value="${boardResponse.id}" /> <input
-					type="hidden" name="username" value="${userEntity.username}">
+				<input type="hidden" name="id" value="${boardResponse.id}" /> 
+				<input type="hidden" name="username" value="${userEntity.username}">
 				<table class="table table-bordered">
 					<tr>
 						<th>글번호</th>
@@ -74,15 +74,26 @@ ${paging.getTotalElements()}
 		    <a href="/board/update/${boardResponse.id}">수정</a> 
 		    <a id=delete_board_botton href="#">삭제</a>
 		    
-		    <input class="like-dislike-buttons" type="hidden" id="boardId" value="${boardResponse.id}">
-		    <button id="dislike-button" data-board-id="${boardResponse.id}" style="float: right; margin-right: 10px;">
-		        👎 <span id="dislike-count">${boardResponse.dislikes}</span>
-		    </button>
-		    <button id="like-button" data-board-id="${boardResponse.id}" style="float: right; margin-right: 10px;">
-		        👍 <span id="like-count">${boardResponse.likes}</span>
-		    </button>
+			<input class="like-dislike-buttons" type="hidden" id="boardId" value="${boardResponse.id}">
+			<c:if test="${not empty userEntity}">
+			<button class="reaction-button" data-board-id="${boardResponse.id}" data-reaction-type="dislike" style="float: right; margin-right: 10px;">
+			    👎 <span id="dislike-count">${boardResponse.dislikes}</span>
+			</button>
+			<button class="reaction-button" data-board-id="${boardResponse.id}" data-reaction-type="like" style="float: right; margin-right: 10px;">
+			    👍 <span id="like-count">${boardResponse.likes}</span>
+			</button>
+			</c:if>
+			<c:if test="${empty userEntity}" >
+			<button type="button" class="ff" style="float: right; margin-right: 10px;">
+			    👎 <span id="dislike-count">${boardResponse.dislikes}</span>
+			</button>
+			<button type="button" class="ff" style="float: right; margin-right: 10px;">
+			    👍 <span id="like-count">${boardResponse.likes}</span>
+			</button>
+			</c:if>
+		    <div id="username" data-username="${userEntity.username}"></div>
 		</div>
-
+	
 		<hr>
 		<!-- 댓글 영역 -->
 		<div id="qq">
@@ -149,6 +160,8 @@ ${paging.getTotalElements()}
 	      form.appendTo("body").submit();
 	      
 	   });
+	
+
 </script>
 </body>
 </html>

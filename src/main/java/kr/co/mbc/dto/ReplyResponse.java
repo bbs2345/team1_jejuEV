@@ -26,8 +26,7 @@ public class ReplyResponse {
 
 	private String writeDate;
 
-	private Long Likes = 0L;
-	private Long Dislikes = 0L;
+
 	private BoardEntity board;
 	private UserEntity user;
 

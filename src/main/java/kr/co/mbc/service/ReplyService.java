@@ -60,25 +60,25 @@ public class ReplyService {
 	 // 댓글 좋아요/싫어요 처리 메서드
 	
 	
-	public void likeBoard(Long id) {
-        ReplyEntity replyEntity = replyRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-        replyEntity.setLikes(replyEntity.getLikes() + 1);  // 좋아요 수 증가
-        replyRepository.save(replyEntity);
-    }
-
-    public void dislikeBoard(Long id) {
-    	ReplyEntity replyEntity = replyRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
-    	replyEntity.setDislikes(replyEntity.getDislikes() + 1);  // 나빠요 수 증가
-        replyRepository.save(replyEntity);
-    }
-
-    public long getLikesCount(Long boardId) {
-        return replyRepository.findById(boardId).map(ReplyEntity::getLikes).orElse(0L);
-    }
-
-    public long getDislikesCount(Long boardId) {
-        return replyRepository.findById(boardId).map(ReplyEntity::getDislikes).orElse(0L);
-    }
+//	public void likeBoard(Long id) {
+//        ReplyEntity replyEntity = replyRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+//        replyEntity.setLikes(replyEntity.getLikes() + 1);  // 좋아요 수 증가
+//        replyRepository.save(replyEntity);
+//    }
+//
+//    public void dislikeBoard(Long id) {
+//    	ReplyEntity replyEntity = replyRepository.findById(id).orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+//    	replyEntity.setDislikes(replyEntity.getDislikes() + 1);  // 나빠요 수 증가
+//        replyRepository.save(replyEntity);
+//    }
+//
+//    public long getLikesCount(Long boardId) {
+//        return replyRepository.findById(boardId).map(ReplyEntity::getLikes).orElse(0L);
+//    }
+//
+//    public long getDislikesCount(Long boardId) {
+//        return replyRepository.findById(boardId).map(ReplyEntity::getDislikes).orElse(0L);
+//    }
 
 
 	

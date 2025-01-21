@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.entity.BoardEntity;
+import kr.co.mbc.entity.ReactionEntity;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 
@@ -29,6 +30,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 		               "(:#{#criteria.type} = 'writer' AND writer LIKE %:#{#criteria.keyword}%)) " +
 		               "ORDER BY id desc LIMIT :#{#criteria.perPageContent} OFFSET :#{#criteria.getOffset()}")
 	List<BoardEntity> findAll(Criteria criteria);
+
 
 
 }
