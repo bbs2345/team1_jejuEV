@@ -50,13 +50,8 @@ public class BoardEntity {
 	
 	private String createDate;
 	private String updateDate;
-	
-    private Long likes = 0L;
-    private Long dislikes = 0L;
-	
 
-    
-    
+	
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "user_id", nullable = false)
@@ -72,7 +67,7 @@ public class BoardEntity {
 	
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	@JsonIgnore
-	private List<ReactionEntity> reactionList;
+	private List<BoardReactionEntity> boardReactionList;
 	
 	
 	//boardForm을 BoardEntity 변형
@@ -95,9 +90,7 @@ public class BoardEntity {
 				.attachList(boardEntity.getAttachList())
 				.replyList(boardEntity.getReplyList())
 				.user(boardEntity.getUser())
-				.likes(boardEntity.getLikes())
-				.dislikes(boardEntity.getDislikes())
-				.reactionList(boardEntity.getReactionList())
+				.boardReactionList(boardEntity.getBoardReactionList())
 				.build();
 	}
 

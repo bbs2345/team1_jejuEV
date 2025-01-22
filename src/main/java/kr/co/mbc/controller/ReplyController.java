@@ -21,7 +21,7 @@ import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.BoardService;
-import kr.co.mbc.service.ReactionService;
+import kr.co.mbc.service.BoardReactionService;
 import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
@@ -35,7 +35,7 @@ public class ReplyController {
 	private final ReplyService replyService;
 	private final BoardService boardService;
 	private final UserService userService;
-	private final ReactionService reactionService;
+	private final BoardReactionService reactionService;
 
 	private final FormatDateUtil formatDateUtil;
 

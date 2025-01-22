@@ -2,6 +2,7 @@ select * from tbl_member;
 select * from tbl_board;
 select * from attach;
 select * from tbl_reply;
+select * from tbl_reaction where reaction_type='like';
 select * from tbl_reaction;
 
 select * from tbl_board;
@@ -12,6 +13,7 @@ alter table tbl_board drop column likes;
 alter table tbl_board drop column dislikes;
 alter table tbl_reply drop column likes;
 alter table tbl_reply drop column dislikes;
+alter table tbl_reaction drop column reply_id;
 
 SELECT * FROM tbl_user LIMIT 10 OFFSET 0;
 
