@@ -26,12 +26,12 @@ import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardEntity;
-import kr.co.mbc.entity.ReactionEntity;
+import kr.co.mbc.entity.BoardReactionEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
 import kr.co.mbc.service.BoardService;
-import kr.co.mbc.service.ReactionService;
+import kr.co.mbc.service.BoardReactionService;
 import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
@@ -58,7 +58,7 @@ public class BoardController {
 	
 	private final ReplyService replyService;
 	
-	private final ReactionService reactionService;
+	private final BoardReactionService reactionService;
 	
 	//===============================================
 //	//좋아요 나빠요 ajax통신 메서드

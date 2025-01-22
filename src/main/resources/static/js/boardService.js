@@ -11,7 +11,7 @@ function getReaction() {
 	let bId = $("input[name='id']").val();
 	
 	$.ajax({
-		url : `/reactions/${bId}`,
+		url : `/boardReactions/${bId}`,
 		type: "get",
 		dataType : "text",
 		success : function(map){
@@ -114,7 +114,7 @@ $(function() {
 			let username = $("input[name='username']").val();
 			
 			$.ajax({
-				url : "/reactions/",
+				url : "/boardReactions/",
 				type : "post",
 				data : JSON.stringify({
 					bId : bId,

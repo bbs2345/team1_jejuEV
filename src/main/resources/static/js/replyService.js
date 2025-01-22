@@ -1,7 +1,43 @@
 console.log("replyService.js파일 불러옴.");
 
-//
+
+//=================================================================
+//댓글아이디 별로 좋아요,나빠요 카운트
+function getReplyReaction(obj) {
+    for (let el of obj) {
+
+        $.ajax({
+            url: `/replyReactions/${el.id}`,
+            type: "get",
+            dataType: "text",
+            success: function (map) {
+                let obj = JSON.parse(map);
+
+                $(`#reply-like-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-up");
+                $(`#reply-dislike-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-down");
+
+                for (let user of obj.likes) {
+                    if (user.username == $("input[name='username']").val()) {
+                        $(`#reply-like-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-up-fill");
+                    }
+                }
+                for (let user of obj.dislikes) {
+                    if (user.username == $("input[name='username']").val()) {
+                        $(`#reply-dislike-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-down-fill");
+                    }
+                }
+                $(`#reply-like-count-${el.id}`).text(obj.likes.length);
+                $(`#reply-dislike-count-${el.id}`).text(obj.dislikes.length);
+            },
+        });
+    }
+}
+
+
+//=================================================================
+
 function replyPaging(obj) {
+
 
 	let tag = `
    <div>
@@ -81,6 +117,7 @@ function renderReplyPaging(currentPage, totalPages) {
 // 댓글 리스트 생성
 function makeReplyListTag(obj) {
 
+
 	let tag = ``;
 
 	for (i of obj) {
@@ -91,8 +128,9 @@ function makeReplyListTag(obj) {
 			</div>`;
 
 		tag += `
-		<button data-rId="${i.id}" class="reply-like-button" type='button' style="margin-right: 10px;">
-		👍<span id="reply-like-count">`;
+		<div class="reply_list_btns_reaction">
+		<button class="reply-reaction-button" data-reaction-type="like" data-rId="${i.id}">
+		<i class="bi bi-hand-thumbs-up"></i>0<span id="reply-like-count-${i.id}">`;
 
 		if (i.likes == null) {
 			tag += `</span>`;
@@ -102,8 +140,8 @@ function makeReplyListTag(obj) {
 		}
 		tag += `
 		</button>
-		<button data-rId="${i.id}" class="reply-dislike-button" type='button' style="margin-right: 10px;">
-		👎<span id="reply-dislike-count">`;
+		<button class="reply-dislike-button" data-reaction-type="dislike" data-rId="${i.id}">
+		<i class="bi bi-hand-thumbs-down"></i>0<span id="reply-dislike-count-${i.id}">`;
 
 		if (i.dislikes != null) {
 			tag += `
@@ -111,6 +149,7 @@ function makeReplyListTag(obj) {
 		}
 		tag += `</span>
 		</button>
+		</div>
 		`;
 		if (i.writer == $("input[name='username']").val()) {
 			tag += `
@@ -140,6 +179,7 @@ function makeReplyListTag(obj) {
 
 function getReplyList(page) {
 	let bId = $("input[name='boardId']").val();
+	let username = $("input[name='username']").val();
 
 	// page가 undefined일 경우 기본값 1로 설정
 	if (page === undefined) {
@@ -162,80 +202,119 @@ function getReplyList(page) {
 
 			let tag = makeReplyListTag(obj["content"]);
 
-			console.log(obj);
-
 			$("#board_read_show_reply_list").html(tag);
+			
+			getReplyReaction(obj["content"]);
 
+
+			//========================================================			
+			//좋아요 나빠요 로그인시 클릭 기능
+			$(".reply_list_btns_reaction").find("button").each(function() {
+				$(this).click(function() {
+					let reactionType = $(this).attr("data-reaction-type");
+					let rId = $(this).attr("data-rId");
+					let username = $("input[name='username']").val();
+					if (username == '') {
+						alert("로그인 완료 후 이용바랍니다.");
+						return;
+					}
+
+					$.ajax({
+						url: "/replyReactions/",
+						type: "post",
+						data: JSON.stringify({
+							rId: rId,
+							username: username,
+							reactionType: reactionType
+						}),
+						headers: {
+							"Content-Type": "application/json",
+							"X-Http-Method-Override": "POST"
+						},
+						dataType: "text",
+						success: function(result) {
+							//alert(result);
+							getReplyList(1);
+
+						}
+					});
+
+
+				});
+			})
 			//===========================================
-			// 좋아요/나빠요 이벤트 통합
-			$("#board_read_show_reply_list").off('click', ".reply-like-button, .reply-dislike-button");
-			$("#board_read_show_reply_list").on('click', ".reply-like-button, .reply-dislike-button", function () {
-			    let rId = $(this).attr("data-rId"); // 댓글 ID 가져오기
-			    let isLike = $(this).hasClass("reply-like-button"); // 좋아요 버튼인지 확인
-			    let reactionType = isLike ? "like" : "dislike"; // 반응 타입 결정
-			    let countSpan = isLike ? $(this).siblings(".reply-like-count") : $(this).siblings(".reply-dislike-count"); // 카운트 요소 찾기
 
-			    $.ajax({
-			        url: "/replies/reaction/" + rId,
-			        type: "post",
-			        data: { reactionType: reactionType },
-			        success: function (response) {
-			            if (response === "success") {
-			                let count = countSpan.text();
-			                count = (count === "") ? 0 : Number(count); // 현재 카운트 값 가져오기
-			                if (!isNaN(count)) {
-			                    countSpan.text(count + 1);
-			                }
-			                getReplyList(1);
-			            }
-			        }
-			    });
-			});
-//			//좋아요 나빠요
-//			$("#board_read_show_reply_list").find(".reply-like-button").each(function() {
-//				$(this).click(function() {
-//					let rId = $(this).attr("data-rId");
-//					$.ajax({
-//						url: "/replies/reaction/" + rId,
-//						type: "post",
-//						data: { reactionType: "like" },
-//						success: function(response) {
-//							if (response === "success") {
-//								let likeCount = $("#reply-like-count").text();
-//								likeCount = (likeCount === "") ? 0 : Number(likeCount);
-//								if (!isNaN(likeCount)) {
-//									$("#reply-like-count").text(likeCount + 1);
-//								}
-//								getReplyList(1);
-//							}
-//						}
-//					});
-//
-//				});
-//			});
-//
-//			$("#board_read_show_reply_list").off('click', ".reply-dislike-button");
-//			$("#board_read_show_reply_list").on('click', ".reply-dislike-button", function() {
-//			    let rId = $(this).attr("data-rId");
-//			    let dislikeSpan = $(this).siblings(".reply-dislike-count"); // 근처 dislike 카운트 요소 찾기
-//
-//			    $.ajax({
-//			        url: "/replies/reaction/" + rId,
-//			        type: "post",
-//			        data: { reactionType: "dislike" },
-//			        success: function(response) {
-//			            if (response === "success") {
-//			                let dislikeCount = dislikeSpan.text();
-//			                dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
-//			                if (!isNaN(dislikeCount)) {
-//			                    dislikeSpan.text(dislikeCount + 1); // 해당 댓글 dislike 카운트 증가
-//			                }
-//			                getReplyList(1); // 댓글 리스트 새로고침
-//			            }
-//			        }
-//			    });
-//			});
-//
+
+
+			//			// 좋아요/나빠요 이벤트 통합
+			//			$("#board_read_show_reply_list").off('click', ".reply-like-button, .reply-dislike-button");
+			//			$("#board_read_show_reply_list").on('click', ".reply-like-button, .reply-dislike-button", function () {
+			//			    let rId = $(this).attr("data-rId"); // 댓글 ID 가져오기
+			//			    let isLike = $(this).hasClass("reply-like-button"); // 좋아요 버튼인지 확인
+			//			    let reactionType = isLike ? "like" : "dislike"; // 반응 타입 결정
+			//			    let countSpan = isLike ? $(this).siblings(".reply-like-count") : $(this).siblings(".reply-dislike-count"); // 카운트 요소 찾기
+			//
+			//			    $.ajax({
+			//			        url: "/replies/reaction/" + rId,
+			//			        type: "post",
+			//			        data: { reactionType: reactionType },
+			//			        success: function (response) {
+			//			            if (response === "success") {
+			//			                let count = countSpan.text();
+			//			                count = (count === "") ? 0 : Number(count); // 현재 카운트 값 가져오기
+			//			                if (!isNaN(count)) {
+			//			                    countSpan.text(count + 1);
+			//			                }
+			//			                getReplyList(1);
+			//			            }
+			//			        }
+			//			    });
+			//			});
+			//			//좋아요 나빠요
+			//			$("#board_read_show_reply_list").find(".reply-like-button").each(function() {
+			//				$(this).click(function() {
+			//					let rId = $(this).attr("data-rId");
+			//					$.ajax({
+			//						url: "/replies/reaction/" + rId,
+			//						type: "post",
+			//						data: { reactionType: "like" },
+			//						success: function(response) {
+			//							if (response === "success") {
+			//								let likeCount = $("#reply-like-count").text();
+			//								likeCount = (likeCount === "") ? 0 : Number(likeCount);
+			//								if (!isNaN(likeCount)) {
+			//									$("#reply-like-count").text(likeCount + 1);
+			//								}
+			//								getReplyList(1);
+			//							}
+			//						}
+			//					});
+			//
+			//				});
+			//			});
+			//
+			//			$("#board_read_show_reply_list").off('click', ".reply-dislike-button");
+			//			$("#board_read_show_reply_list").on('click', ".reply-dislike-button", function() {
+			//			    let rId = $(this).attr("data-rId");
+			//			    let dislikeSpan = $(this).siblings(".reply-dislike-count"); // 근처 dislike 카운트 요소 찾기
+			//
+			//			    $.ajax({
+			//			        url: "/replies/reaction/" + rId,
+			//			        type: "post",
+			//			        data: { reactionType: "dislike" },
+			//			        success: function(response) {
+			//			            if (response === "success") {
+			//			                let dislikeCount = dislikeSpan.text();
+			//			                dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
+			//			                if (!isNaN(dislikeCount)) {
+			//			                    dislikeSpan.text(dislikeCount + 1); // 해당 댓글 dislike 카운트 증가
+			//			                }
+			//			                getReplyList(1); // 댓글 리스트 새로고침
+			//			            }
+			//			        }
+			//			    });
+			//			});
+			//
 
 			//===========================================
 
@@ -298,7 +377,7 @@ function getReplyList(page) {
 					url: "/replies/",
 					type: "put",
 					data: JSON.stringify({
-						rId : rId,
+						rId: rId,
 						bId: bId,
 						writer: writer,
 						content: content.trim()
@@ -336,6 +415,7 @@ $(function() {
 	let replyWriter = $("#replyWriter");
 	let replyContent = $("#replyContent");
 
+
 	// 댓글 작성
 	$("#board_read_reply_insert").click(function() {
 
@@ -346,6 +426,7 @@ $(function() {
 				bId: bId.val(),
 				writer: replyWriter.val(),
 				content: replyContent.val()
+
 			}),
 			headers: {
 				"Content-Type": "application/json",

@@ -3,7 +3,7 @@ package kr.co.mbc.dto;
 import java.util.List;
 
 import kr.co.mbc.entity.AttachEntity;
-import kr.co.mbc.entity.ReactionEntity;
+import kr.co.mbc.entity.BoardReactionEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -39,10 +39,6 @@ public class BoardResponse {
 	
 	private List<ReplyEntity> replyList;
 	
-    private Long likes = 0L;
-    private Long dislikes = 0L;
-	
-	
-	private List<ReactionEntity> reactionList;
+	private List<BoardReactionEntity> boardReactionList;
 	
 }

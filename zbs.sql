@@ -13,6 +13,7 @@ alter table tbl_board drop column likes;
 alter table tbl_board drop column dislikes;
 alter table tbl_reply drop column likes;
 alter table tbl_reply drop column dislikes;
+alter table tbl_reaction drop column reply_id;
 
 SELECT * FROM tbl_user LIMIT 10 OFFSET 0;
 

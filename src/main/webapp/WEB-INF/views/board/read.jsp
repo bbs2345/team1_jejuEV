@@ -32,7 +32,7 @@
 		<div>
 			<h3>게시글 자세히 보기</h3>
 		</div>
-
+${boardReactionResponse.dislikes}
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> 
@@ -90,10 +90,10 @@
 				</c:if>
 				<c:if test="${empty userEntity}" >
 					<button type="button" class="ff">
-					    <i class="bi bi-hand-thumbs-up"></i> <span id="dislike-count">0</span>
+					    <i class="bi bi-hand-thumbs-down"></i> <span id="like-count">0</span>
 					</button>
 					<button type="button" class="ff">
-					    <i class="bi bi-hand-thumbs-down"></i> <span id="like-count"></span>
+					    <i class="bi bi-hand-thumbs-up"></i> <span id="dislike-count">0</span>
 					</button>
 				</c:if>
 		    </div>

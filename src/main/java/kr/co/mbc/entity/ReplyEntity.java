@@ -1,7 +1,10 @@
 package kr.co.mbc.entity;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import kr.co.mbc.dto.BoardResponse;
 import kr.co.mbc.dto.ReplyResponse;
@@ -48,8 +52,10 @@ public class ReplyEntity {
 	@JsonIgnore
 	@JoinColumn(name = "user_id", nullable = false)
 	private UserEntity user;
-
-
+	
+	@OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private List<ReplyReactionEntity> replyReactionList;
 	
 	//replyEntity를 replyresponse로 변환
 	public static ReplyResponse toReplyResponse(ReplyEntity replyEntity) {
@@ -57,9 +63,9 @@ public class ReplyEntity {
 				.id(replyEntity.getId())
 				.content(replyEntity.getContent())
 				.writeDate(replyEntity.getWriteDate())
-
 				.board(replyEntity.getBoard())
 				.user(replyEntity.getUser())
+				.replyReactionList(replyEntity.getReplyReactionList())
 				.build();
 	}
 

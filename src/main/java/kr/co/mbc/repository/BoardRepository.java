@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.entity.BoardEntity;
-import kr.co.mbc.entity.ReactionEntity;
+import kr.co.mbc.entity.BoardReactionEntity;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 
