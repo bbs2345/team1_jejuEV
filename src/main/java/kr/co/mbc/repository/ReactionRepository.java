@@ -1,5 +1,6 @@
 package kr.co.mbc.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,6 @@ public interface ReactionRepository extends JpaRepository<ReactionEntity, Long>{
 	ReactionEntity findByBoardIdAndUsername(Long boardId, String username);
 
 	Object deleteByBoardIdAndUsername(Long boardId, String username);
+
+	List<ReactionEntity> findByBoardAndReactionType(BoardEntity dto, String like);
 }

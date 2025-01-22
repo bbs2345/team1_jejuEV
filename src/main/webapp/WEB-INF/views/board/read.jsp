@@ -22,6 +22,7 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -31,11 +32,13 @@
 		<div>
 			<h3>게시글 자세히 보기</h3>
 		</div>
-${paging.getTotalElements()}
+
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> 
 				<input type="hidden" name="username" value="${userEntity.username}">
+				<input type="hidden" name="reactionLike" value="${reactionResponse.likes}">
+				<input type="hidden" name="reactionDislike" value="${reactionResponse.dislikes}">
 				<table class="table table-bordered">
 					<tr>
 						<th>글번호</th>
@@ -69,29 +72,31 @@ ${paging.getTotalElements()}
 			</form>
 		</div>
 
-		<div>
-		    <a href="${criteria.page}" id="toBoardList">목록</a> 
-		    <a href="/board/update/${boardResponse.id}">수정</a> 
-		    <a id=delete_board_botton href="#">삭제</a>
+		<div class="d-flex justify-content-between">
+			<div class="board_read_btns">
+			    <a href="${criteria.page}" id="toBoardList">목록</a> 
+			    <a href="/board/update/${boardResponse.id}">수정</a> 
+			    <a id=delete_board_botton href="#">삭제</a>
+		    </div>
 		    
-			<input class="like-dislike-buttons" type="hidden" id="boardId" value="${boardResponse.id}">
-			<c:if test="${not empty userEntity}">
-			<button class="reaction-button" data-board-id="${boardResponse.id}" data-reaction-type="dislike" style="float: right; margin-right: 10px;">
-			    👎 <span id="dislike-count">${boardResponse.dislikes}</span>
-			</button>
-			<button class="reaction-button" data-board-id="${boardResponse.id}" data-reaction-type="like" style="float: right; margin-right: 10px;">
-			    👍 <span id="like-count">${boardResponse.likes}</span>
-			</button>
-			</c:if>
-			<c:if test="${empty userEntity}" >
-			<button type="button" class="ff" style="float: right; margin-right: 10px;">
-			    👎 <span id="dislike-count">${boardResponse.dislikes}</span>
-			</button>
-			<button type="button" class="ff" style="float: right; margin-right: 10px;">
-			    👍 <span id="like-count">${boardResponse.likes}</span>
-			</button>
-			</c:if>
-		    <div id="username" data-username="${userEntity.username}"></div>
+			<div class="board_read_btns_reaction">
+				<c:if test="${not empty userEntity}">
+					<button class="reaction-button" data-reaction-type="like">
+					    <i class="bi bi-hand-thumbs-up"></i> <span id="like-count">0</span>
+					</button>
+					<button class="reaction-button" data-reaction-type="dislike">
+					    <i class="bi bi-hand-thumbs-down"></i> <span id="dislike-count">0</span>
+					</button>
+				</c:if>
+				<c:if test="${empty userEntity}" >
+					<button type="button" class="ff">
+					    <i class="bi bi-hand-thumbs-up"></i> <span id="dislike-count">0</span>
+					</button>
+					<button type="button" class="ff">
+					    <i class="bi bi-hand-thumbs-down"></i> <span id="like-count"></span>
+					</button>
+				</c:if>
+		    </div>
 		</div>
 	
 		<hr>

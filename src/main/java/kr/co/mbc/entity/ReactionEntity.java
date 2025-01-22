@@ -23,7 +23,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+
 public class ReactionEntity {
 	
 	

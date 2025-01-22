@@ -1,5 +1,6 @@
 package kr.co.mbc.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -56,6 +57,11 @@ public class ReactionService {
 	public void save(ReactionEntity reactionEntity) {
 		// TODO Auto-generated method stub
 		reactionRepository.save(reactionEntity);
+	}
+
+
+	public List<ReactionEntity> findByBoardAndReactionType(BoardEntity dto, String like) {
+		return reactionRepository.findByBoardAndReactionType(dto, like);
 	}
 	
 	

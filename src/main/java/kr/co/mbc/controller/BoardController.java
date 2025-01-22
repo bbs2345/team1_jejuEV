@@ -26,6 +26,7 @@ import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardEntity;
+import kr.co.mbc.entity.ReactionEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
@@ -217,6 +218,10 @@ public class BoardController {
 			return "redirect:/board/list";
 		}
 		
+		int likesCount = reactionService.findByBoardAndReactionType(dto, "like").size();
+		int dislikesCount = reactionService.findByBoardAndReactionType(dto, "dislike").size();
+		
+		
 		BoardResponse boardResponse = BoardEntity.toBoardResponse(dto);
 		
 		String con = dto.getContent();
@@ -228,6 +233,7 @@ public class BoardController {
 		model.addAttribute("boardResponse", boardResponse);
 		model.addAttribute("fileList", fileList);
 		model.addAttribute("criteria", criteria);
+		model.addAttribute("reactionCounts", Map.of("likes", likesCount, "dislikes", dislikesCount));
 		
 		return "board/read";
 	}

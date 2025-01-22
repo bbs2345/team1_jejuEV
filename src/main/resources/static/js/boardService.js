@@ -7,7 +7,40 @@ function makeImg(result) {
 	return tag;
 }
 
+function getReaction() {
+	let bId = $("input[name='id']").val();
+	
+	$.ajax({
+		url : `/reactions/${bId}`,
+		type: "get",
+		dataType : "text",
+		success : function(map){
+			let obj = JSON.parse(map);
+			$("#like-count").prev().attr("class", "bi-hand-thumbs-up");
+			$("#dislike-count").prev().attr("class", "bi-hand-thumbs-down");
+			for(el of obj.likes) {
+				if(el.username == $("input[name='username']").val()){
+					$("#like-count").prev().attr("class", "bi-hand-thumbs-up-fill");
+				}
+			}
+			for(el of obj.dislikes) {
+				if(el.username == $("input[name='username']").val()){
+					$("#dislike-count").prev().attr("class", "bi-hand-thumbs-down-fill");
+				}
+			}			
+			$(".board_read_btns_reaction").find("#like-count").text(obj.likes.length);
+			$(".board_read_btns_reaction").find("#dislike-count").text(obj.dislikes.length);
+			
+		}
+		
+	});
+	
+	
+}
+
 $(function() {
+	
+	getReaction();
 
 	// 이미지 삭제 버튼 클릭 이벤트 처리
 	$("#deleteImage").click(function(event) {
@@ -74,35 +107,33 @@ $(function() {
 	});
 
 	// 좋아요/나빠요 버튼 클릭 이벤트 공통 처리
-	
-	
-	$(".reaction-button").click(function(event) {
-		let button = $(this);
-		let boardId = button.data("board-id");
-		let username = $("#username").data("username");
-		console.log(username);
-
-		let reactionType = button.data("reaction-type");
-
-		
-		$.ajax({
-			url: "/reaction/",
-			type: "post",
-			contentType: "application/json",
-			data:  JSON.stringify({ rId : boardId, reactionType: reactionType, username:username }),
-			success: function(response) {
-				if (response === "success") {
-					let countElement = (reactionType === "like") ? $("#like-count") : $("#dislike-count");
-					let count = countElement.text();
-					count = (count === "") ? 0 : Number(count);
-
-					if (!isNaN(count)) {
-						countElement.text(count + 1);
-					}
+	$(".reaction-button").each(function(){
+		$(this).click(function(){
+			let reactionType = $(this).attr("data-reaction-type");
+			let bId = $("input[name='id']").val();
+			let username = $("input[name='username']").val();
+			
+			$.ajax({
+				url : "/reactions/",
+				type : "post",
+				data : JSON.stringify({
+					bId : bId,
+					username : username,
+					reactionType : reactionType
+				}),
+				headers : {
+					"Content-Type" : "application/json",
+					"X-Http-Method-Override" : "POST"
+				},
+				dataType : "text",
+				success : function(result){
+					
+					getReaction();
+					
 				}
-			}
+			});
 		});
-
+		
 	});
 
 
