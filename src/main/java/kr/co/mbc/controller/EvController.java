@@ -84,19 +84,18 @@ public class EvController {
 	
 	
 	
-	
 	// 충전소 목록
 	@GetMapping("/list")
 	public String list(Criteria criteria, Model model) {
-		
+		// 목록페이지로 이동하면 밑에줄 다 실행 --> criteria 
 		List<EvStationEntity> stList = evStationService.findAll(criteria);
 		
 		Long totalCount = evStationService.getTotalCount(criteria);
 		
 		Pagination pagination = new Pagination(criteria, totalCount);
 		
-		model.addAttribute("pagination", pagination);
 		model.addAttribute("stList", stList);
+		model.addAttribute("pagination", pagination);
 		model.addAttribute("criteria", criteria);
 		
 		return "/ev/list";

@@ -18,7 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import kr.co.mbc.entity.CsvDataEntity;
 
 @Component
 @PropertySource(value = "classpath:fileUpload/fileUpload.properties") // src/main/resources/fileUpload/fileUpload.properties
@@ -26,6 +30,8 @@ public class UploadFileUtils {
 	
 	@Value("${file.upload-dir}")
 	private String uploadDir; // "C:/team1_fileRepo/upload"
+	
+
 	
 	// 파일삭제
 	public void deleteFile(String fullFileName) {

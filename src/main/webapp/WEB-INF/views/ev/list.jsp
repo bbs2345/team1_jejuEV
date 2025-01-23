@@ -25,16 +25,40 @@
             width: 100%;
             height: 500px;
         }
+        
+		.si {
+	    	float: right; /* 오른쪽으로 띄움 */
+		}
+	
+		.si a {
+	    	display: inline-block; /* 링크가 한 줄에 나란히 나오게 함 */
+	    	margin-left: 10px; /* 링크 간 간격을 조정 */
+		}
     </style>
 
 </head>
 <body>
 <%@ include file="../part/part_header.jsp" %>
 <div class="container">
+	<div class="si">
+		<a id="list_ten_btn" href="/ev/list">10개</a>
+		<a id="list_ten_btn" href="/ev/list?perPageContent=20">20개</a>
+		<a id="list_twn_btn" href="/ev/list?perPageContent=30">30개</a>
+		<a href="제주시">제주시</a>
+		<a href="서귀포시">서귀포시</a>
+	</div>
+	
 	<div>
-		<h3>전기차 충전소 목록</h3>
+		<h3>전기차 충전소 목록</h3>  
 	</div>
 
+	        <div id="map"></div>
+		    <c:forEach items="${stList}" var="modal">
+			    <input type="hidden" name="lat" value="${modal.lat}">   
+			    <input type="hidden" name="lng" value="${modal.lng}"> 
+			    <input type="hidden" name="statNm" value="${modal.statNm}">
+			    <input type="hidden" name="statId" value="${modal.statId}">
+	        </c:forEach>
 	<div>
 		
 		<table class="table table-bordered">
@@ -55,7 +79,12 @@
 						<td><a href="/ev/read/${dto.statId}">${dto.statNm}</a></td>
 						<td>${dto.addr}</td>
 						<td>${dto.useTime}</td>
-						<td>${dto.parkingFree}</td>
+						<td>
+							<c:choose>
+								<c:when test="${dto.parkingFree == 'Y'}">무료</c:when>
+								<c:when test="${dto.parkingFree == 'N'}">유료</c:when>
+							</c:choose>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -64,7 +93,9 @@
 	
 	<!-- 검색 -->
 	<div class="d-flex justify-content-center">
-		<form method="get">
+		<form id="ev_searchForm" method="get">
+			<input type="hidden" name="page" value="${criteria.page}">
+			<input type="hidden" name="perPageContent" value="${criteria.perPageContent}">
 			<select name="type">
 				<option value="stat_nm" ${criteria.type == 'stat_nm' ? 'selected':''}>이름</option>
 				<option value="addr" ${criteria.type == 'addr' ? 'selected':''}>주소</option>
@@ -76,6 +107,7 @@
 	
 	<!-- 페이징 -->
 	<input type="hidden" name="page" value="${criteria.page}">
+	<input type="hidden" name="perPageContent" value="${criteria.perPageContent}">
 	<div id="pagination" class="d-flex justify-content-center">
 		<ul class="pagination">
 			<c:if test="${pagination.prev}">
@@ -103,30 +135,24 @@
 	
 	
 	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-	  지도 보기
-	</button>
+<!-- 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> -->
+<!-- 	  지도 보기 -->
+<!-- 	</button> -->
 	
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h1 class="modal-title fs-5" id="exampleModalLabel">지도 보기</h1>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
+<!-- 	<!-- Modal --> -->
+<!-- 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
+<!-- 	  <div class="modal-dialog modal-lg"> -->
+<!-- 	    <div class="modal-content"> -->
+<!-- 	      <div class="modal-header"> -->
+<!-- 	        <h1 class="modal-title fs-5" id="exampleModalLabel">지도 보기</h1> -->
+<!-- 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+<!-- 	      </div> -->
+<!-- 	      <div class="modal-body"> -->
 	        
-	        <div id="map"></div>
-		    <c:forEach items="${stList}" var="modal">
-			    <input type="hidden" name="lat" value="${modal.lat}">   
-			    <input type="hidden" name="lng" value="${modal.lng}"> 
-			    <input type="hidden" name="statNm" value="${modal.statNm}">
-	        </c:forEach>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+<!-- 	      </div> -->
+<!-- 	    </div> -->
+<!-- 	  </div> -->
+<!-- 	</div> -->
 	
 
 </div>
@@ -137,12 +163,29 @@
 <!-- 	<button id="getChargerInfo" type="button">충전소정보 가져오기</button> -->
 <!-- </div> -->
 
+<script type="text/javascript" src="/js/pageing.js"></script>
 <script type="text/javascript" src="/js/evchargerstation.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
-
+	
+	
+	$(".si").find("a").eq("3").click(function(event){
+		event.preventDefault();
+		let keyword = $(this).attr("href");
+		$("#ev_searchForm").find("input[type='search']").val(keyword);
+		$("#ev_searchForm").submit();
+		
+	});
+	$(".si").find("a").eq("4").click(function(event){
+		event.preventDefault();
+		let keyword = $(this).attr("href");
+		$("#ev_searchForm").find("input[type='search']").val(keyword);
+		$("#ev_searchForm").submit();
+	});
 	
 	let page = $("input[name='page']");
+	let perPageContent = $("input[name='perPageContent']").val();
+	//let perPageContent = getSearchParam("perPageContent");
 	let type = getSearchParam("type");
 	let keyword = getSearchParam("keyword");
 
@@ -150,8 +193,8 @@
 	$("#pagination").find("a").click(function(event) {
 		event.preventDefault();
 	
-		let form = $("<form>").attr("action", "/ev/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
-	
+		let form = $("<form>").attr("action", "/ev/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href"))).append(getHiddenTag("perPageContent", perPageContent));
+		
 		if (type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
 			form.append(getHiddenTag("keyword", keyword));

@@ -1,13 +1,19 @@
 console.log("evchargerstation.js 입니다~~")
 
-let lat = $("#ev_read_hidden_lat").val();
-let lng = $("#ev_read_hidden_lng").val();
-let popupText = $("#ev_read_hidden_statNm").val();
+//let lat = $("#ev_read_hidden_lat").val();
+//let lng = $("#ev_read_hidden_lng").val();
+//let popupText = $("#ev_read_hidden_statNm").val();
+//
+
+
+
+
 
 // 숨겨진 필드 값 가져오기
 let latElements = document.getElementsByName('lat');
 let lngElements = document.getElementsByName('lng');
 let statNmElements = document.getElementsByName('statNm');
+let statIdElements = document.getElementsByName('statId');
 
 // 값을 배열로 저장
 let locations = [];
@@ -16,6 +22,7 @@ for (let i = 0; i < latElements.length; i++) {
 		lat: parseFloat(latElements[i].value),
 		lng: parseFloat(lngElements[i].value),
 		statNm: statNmElements[i].value,
+		statId: statIdElements[i].value
 	});
 }
 
@@ -39,7 +46,7 @@ function addMarkers(map, locations) {
 	locations.forEach((location) => {
 		let lat = location.lat;
 		let lng = location.lng;
-		let popupText = location.statNm;
+		let popupText = `<a href="/ev/read/${location.statId}">${location.statNm}</a>`;
 
 		// 마커 생성 및 지도에 추가
 		let marker = L.marker([lat, lng]).addTo(map);

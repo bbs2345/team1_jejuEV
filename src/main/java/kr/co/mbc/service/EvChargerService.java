@@ -10,9 +10,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EvChargerService {
 
+	
 	private final EvChargerRepository evChargerRepository;
 
 	public void save(EvChargerEntity chargerEntity) {
 		evChargerRepository.save(chargerEntity);
 	}
+	
 }
