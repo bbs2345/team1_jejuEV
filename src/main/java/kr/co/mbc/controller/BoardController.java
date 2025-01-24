@@ -170,6 +170,7 @@ public class BoardController {
 		}
 
 	    boardEntity.setUpdateDate(formatDateUtil.getCurrentDate());
+	    boardEntity.setContent(boardForm.getContent());
 
 	    boardService.update(boardEntity);  // 수정된 게시글 저장
 
