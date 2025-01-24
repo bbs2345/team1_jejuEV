@@ -13,6 +13,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link href="/css/evlist.css" rel="stylesheet">
 
 <meta charset="UTF-8">
     <title>지도 표시</title>
@@ -41,7 +42,7 @@
 <%@ include file="../part/part_header.jsp" %>
 <div class="container">
 	<div class="si">
-		<a id="list_ten_btn" href="/ev/list">10개</a>
+		<a id="list_ten_btn" href="/ev/list?perPageContent=10">10개</a>
 		<a id="list_ten_btn" href="/ev/list?perPageContent=20">20개</a>
 		<a id="list_twn_btn" href="/ev/list?perPageContent=30">30개</a>
 		<a href="제주시">제주시</a>
@@ -139,7 +140,7 @@
 <!-- 	  지도 보기 -->
 <!-- 	</button> -->
 	
-<!-- 	<!-- Modal --> -->
+<!-- 	<!-- Modal --> 
 <!-- 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
 <!-- 	  <div class="modal-dialog modal-lg"> -->
 <!-- 	    <div class="modal-content"> -->
@@ -166,7 +167,7 @@
 <script type="text/javascript" src="/js/evchargerstation.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
-	
+
 	
 	$(".si").find("a").eq("3").click(function(event){
 		event.preventDefault();

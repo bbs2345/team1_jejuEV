@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+body {
+	background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+				url('/images/jeju-landscape.jpg') center/cover fixed;
+	color: #333;
+	font-family: 'Noto Sans KR', sans-serif;
+	min-height: 100vh;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    background: linear-gradient(135deg, #fffbf0, #f0f8ff); 
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 제목 스타일 */
+h3 {
+    color: #ff7f32; 
+    font-size: 32px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+/* 링크 스타일 */
+.si a {
+    text-decoration: none;
+    color: #FF9F00; 
+    font-weight: bold;
+    font-size: 16px;
+    border: 2px solid #FF9F00;
+    padding: 8px 20px;
+    margin-right: 10px;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.si a:hover {
+    background-color: #FF9F00;
+    color: white;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+table, th, td {
+    border: 1px solid #ff7f32; 
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+th {
+    background-color: #FF9F00; 
+    color: white;
+}
+
+td {
+    background-color: #FF9F00; 
+}
+
+/* 검색 폼 스타일 */
+#ev_searchForm {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+#ev_searchForm select, #ev_searchForm input[type="search"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #FF9F00; 
+    border-radius: 5px;
+    background-color: #fff8f0;
+}
+
+#ev_searchForm button {
+    background-color: #FF9F00; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#ev_searchForm button:hover {
+    background-color: #FF9F00; 
+}
+
+/* 페이징 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 30px;
+}
+
+.page-item {
+    border: 2px solid #FF9F00;
+    border-radius: 5px;
+}
+
+.page-item a {
+    text-decoration: none;
+    color: #FF9F00;
+    padding: 8px 15px;
+    display: block;
+}
+
+.page-item.active a {
+    background-color: #FF9F00;
+    color: white;
+}
+
+.page-item a:hover {
+    background-color: #FF9F00;
+    color: white;
+}
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+    .si a {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    #ev_searchForm {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #ev_searchForm select, #ev_searchForm input[type="search"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
