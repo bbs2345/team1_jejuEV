@@ -163,7 +163,6 @@
 <!-- 	<button id="getChargerInfo" type="button">충전소정보 가져오기</button> -->
 <!-- </div> -->
 
-<script type="text/javascript" src="/js/pageing.js"></script>
 <script type="text/javascript" src="/js/evchargerstation.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
@@ -172,6 +171,7 @@
 	$(".si").find("a").eq("3").click(function(event){
 		event.preventDefault();
 		let keyword = $(this).attr("href");
+		$("#ev_searchForm").find("select[name='type']").val("addr");
 		$("#ev_searchForm").find("input[type='search']").val(keyword);
 		$("#ev_searchForm").submit();
 		
@@ -179,6 +179,7 @@
 	$(".si").find("a").eq("4").click(function(event){
 		event.preventDefault();
 		let keyword = $(this).attr("href");
+		$("#ev_searchForm").find("select[name='type']").val("addr");
 		$("#ev_searchForm").find("input[type='search']").val(keyword);
 		$("#ev_searchForm").submit();
 	});
