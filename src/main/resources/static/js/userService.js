@@ -1,7 +1,7 @@
 console.log("userService.js파일 불러옴.");
 
 function makeImg(result){
-	let tag =`<img src="${result}" width="100" height="100">`;
+	let tag =`<img src="${result}" width="267" height="298">`;
 	return tag;
 }
 
