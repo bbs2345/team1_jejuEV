@@ -13,11 +13,70 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<style type="text/css">
+
+.table {
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: #FFCC80;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background: #FFF3E0;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #FF9F00;
+    border-color: #FF9F00;
+    color: white;
+}
+
+.pagination .page-link {
+    color: #FF6F00;
+}
+
+.pagination .page-link:hover {
+    color: #FF8A00;
+}
+
+form input[type="search"] {
+    width: 200px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+form select {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+}
+
+.btn-primary {
+    background-color: #FF9F00;
+    border-color: #FF9F00;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #FFA726;
+    border-color: #FFA726;
+}
+
+
+</style>
+    <link href="/css/boardStyle.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../part/part_header.jsp"%>
 
-<div class="container">
+<div class="container" id="board_list_css">
 	<div>
 		<h3>글 목록</h3>
 	</div>

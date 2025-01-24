@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+/* ===============리플 스타일 start============== */
+
+#replies_list {
+    margin-top: 40px;
+     margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+
+#board_read_show_reply_list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.reply-item {
+    background: #f0f8ff;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.reply-item:hover {
+    transform: translateY(-5px);
+    background: #e3f5ff;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.reply-author {
+    font-weight: bold;
+    color: #0066cc;
+    font-size: 1.1em;
+}
+
+.reply-date {
+    color: #777;
+    font-size: 0.9em;
+}
+
+.reply-content {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 댓글 작성 폼 스타일 */
+.container h5 {
+    font-size: 1.4em;
+    color: #FF9F00;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+textarea {
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 1em;
+    background: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+textarea:focus {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+}
+
+#board_read_reply_insert {
+    background: #FF9F00;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    margin-top: 15px;
+}
+
+#board_read_reply_insert:hover {
+    background: #FF9F00;
+    cursor: pointer;
+}
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+    #replies_list {
+        margin-top: 20px;
+        padding: 15px;
+    }
+
+    .reply-item {
+        padding: 12px;
+    }
+
+    textarea {
+        font-size: 0.9em;
+    }
+
+    #board_read_reply_insert {
+        padding: 10px;
+    }
+}
+
+
+
+/* ===============리플 스타일 end============== */
