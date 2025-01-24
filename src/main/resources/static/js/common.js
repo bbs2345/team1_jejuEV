@@ -4,6 +4,10 @@ function getSearchParam(key) {
 	return new URLSearchParams(location.search).get(key);
 }
 
+function test(a) {
+	URLS
+}
+
 function getHiddenTag(name, value) {
 	return $("<input/>", { type: "hidden", "name": name, "value": value });
 

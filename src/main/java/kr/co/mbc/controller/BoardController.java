@@ -1,5 +1,7 @@
 package kr.co.mbc.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -27,10 +29,12 @@ import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.entity.BoardReactionEntity;
+import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
 import kr.co.mbc.service.BoardService;
+import kr.co.mbc.service.CateService;
 import kr.co.mbc.service.BoardReactionService;
 import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
@@ -59,6 +63,8 @@ public class BoardController {
 	private final ReplyService replyService;
 	
 	private final BoardReactionService reactionService;
+	
+	private final CateService cateService;
 	
 	//===============================================
 //	//좋아요 나빠요 ajax통신 메서드
@@ -211,8 +217,6 @@ public class BoardController {
 	@GetMapping("/read/{id}")
 	public String read(@PathVariable("id") Long id, Model model, Criteria criteria) {
 		
-
-		
 		BoardEntity dto = boardService.findById(id);
 		
 		if (dto == null) {
@@ -239,15 +243,21 @@ public class BoardController {
 		return "board/read";
 	}
 	
-	@GetMapping("/list")
-	public String boardList(Criteria criteria, Model model) {
+	@GetMapping("{cname}/list")
+	public String boardList(@PathVariable("cname") String cname,Criteria criteria, Model model) {
+
+		CateEntity cateEntity = cateService.findByCname(cname);
 		
 		List<BoardEntity> boardEntities = boardService.findAll(criteria);
-
+		
 	    List<BoardResponse> boardList = new ArrayList<>();
 	    for (BoardEntity boardEntity : boardEntities) {
-	        BoardResponse boardResponse = BoardEntity.toBoardResponse(boardEntity);
-	        boardList.add(boardResponse);
+	    	
+	    	if(!boardEntity.getCate().getCname().equals(cateEntity.getCname())) {
+	    		continue;
+	    	}
+	    	BoardResponse boardResponse = BoardEntity.toBoardResponse(boardEntity);
+	    	boardList.add(boardResponse);
 	    }
 		
 		Long totalCount = boardService.getTotalCount(criteria);
@@ -280,13 +290,16 @@ public class BoardController {
 	*/
 
 	// 게시글 입력 기능
-	@PostMapping("/insert")
-	public String insert(BoardForm boardForm, MultipartHttpServletRequest mRequest) {
+	@PostMapping("/{cname}/insert")
+	public String insert(@PathVariable("cname")String cname, BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {
 		
 		UserEntity userEntity = userService.findByUsername(boardForm.getWriter());
 		
 		BoardEntity boardEntity = BoardEntity.toBoardEntity(boardForm);
 		
+		CateEntity cateEntity = cateService.findByCname(cname);
+		
+		boardEntity.setCate(cateEntity);
 		boardEntity.setUser(userEntity);
 		boardEntity.setCreateDate(formatDateUtil.getCurrentDate());
 		boardEntity.setUpdateDate(formatDateUtil.getCurrentDate());
@@ -302,12 +315,16 @@ public class BoardController {
 			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
 		}
 		
-		return "redirect:/board/list";
+		System.out.println(cateEntity.getCname());
+		
+		return "redirect:/board/"+ URLEncoder.encode(cateEntity.getCname(),"UTF-8")+ "/list";
 	}
 
 	// 게시글 입력 화면
-	@GetMapping("/insert")
-	public void insert() {
+	@GetMapping("/{cname}/insert")
+	public String insert(@PathVariable("cname")String cname, Model model) {
+		model.addAttribute("cname", cname);
+		return "/board/insert";
 	}
 
 

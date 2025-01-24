@@ -69,6 +69,10 @@ public class BoardEntity {
 	@JsonIgnore
 	private List<BoardReactionEntity> boardReactionList;
 	
+	@ManyToOne
+	@JsonIgnore
+	@JoinColumn(name = "cate_id", nullable = false)
+	private CateEntity cate;
 	
 	//boardForm을 BoardEntity 변형
 	public static BoardEntity toBoardEntity(BoardForm boardForm) {
@@ -91,6 +95,7 @@ public class BoardEntity {
 				.replyList(boardEntity.getReplyList())
 				.user(boardEntity.getUser())
 				.boardReactionList(boardEntity.getBoardReactionList())
+				.cate(boardEntity.getCate())
 				.build();
 	}
 

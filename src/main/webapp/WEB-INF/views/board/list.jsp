@@ -92,6 +92,7 @@ form select {
 			</thead>
 			<tbody class="board_list_boardList">
 				<c:forEach items="${boardList}" var="dto">
+				<input id="cate_cname_val" name="cname" type="hidden" value="${dto.cate.cname}">
 					<tr>
 						<td>${dto.id}</td>
 						<td><a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
@@ -133,7 +134,7 @@ form select {
 	</div>
 	
 	<div>
-		<a href="/board/insert" class="btn btn-primary">글쓰기</a>
+		<a id="board_list_write_btn" class="btn btn-primary">글쓰기</a>
 	</div>
 
 </div>
@@ -175,7 +176,12 @@ form select {
 		form.appendTo("body").submit();
 	
 	});
+	
+	// 주소값에 cname 적용하기
+	let cname = $("#cate_cname_val").val();
+	$('#board_list_write_btn').attr('href', '/board/' + cate + '/insert');
 
+	
 </script>
 </body>
 </html>
