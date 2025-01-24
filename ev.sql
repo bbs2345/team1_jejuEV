@@ -2,6 +2,8 @@ select * from tbl_evstation;
 select * from tbl_evcharger;
 select * from tbl_csvdt;
 
+select * from tbl_chger_counts
+select count(*) from tbl_chger_counts;
 
 drop table tbl_evcharger;
 drop table tbl_evstation;
