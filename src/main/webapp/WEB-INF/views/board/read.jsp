@@ -32,7 +32,7 @@
 		<div>
 			<h3>게시글 자세히 보기</h3>
 		</div>
-${boardReactionResponse.dislikes}
+		
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> 
@@ -89,10 +89,10 @@ ${boardReactionResponse.dislikes}
 					</button>
 				</c:if>
 				<c:if test="${empty userEntity}" >
-					<button type="button" class="ff">
+					<button type="button" class="empty_user_reaction-button">
 					    <i class="bi bi-hand-thumbs-down"></i> <span id="like-count">0</span>
 					</button>
-					<button type="button" class="ff">
+					<button type="button" class="empty_user_reaction-button">
 					    <i class="bi bi-hand-thumbs-up"></i> <span id="dislike-count">0</span>
 					</button>
 				</c:if>
@@ -101,12 +101,11 @@ ${boardReactionResponse.dislikes}
 	
 		<hr>
 		<!-- 댓글 영역 -->
-		<div id="qq">
+		<div id="replies_list">
 			<h5>댓글 목록<span></span></h5>
 			<div id="board_read_show_reply_list"></div>
 		</div>
 		
-
 
 		<div class="container">
 			<h5>댓글</h5>
@@ -138,10 +137,7 @@ ${boardReactionResponse.dislikes}
 		</div>
 	</div>
 <!-- ---------------------------------------------------- -->
-		<div class=" d-flex justify-content-center" id="reply_pagenation">
-
-
-		</div>
+		<div class=" d-flex justify-content-center" id="reply_pagenation"></div>
 <!-- --------------------------------------------------------------------------- -->
 
 	<script type="text/javascript" src="/js/common.js"></script>

@@ -71,9 +71,6 @@ $(function() {
 		$("#board_delete_service").submit();
 	})
 
-
-	//보더 상세보기 이미지 삭제 기능
-
 	// 이미지 미리보기
 	$("input[name='myfile']").change(function() {
 
@@ -98,11 +95,9 @@ $(function() {
 	});
 
 	//=========================================
-
-
-
+	
 	//로그아웃 된상태의 좋아요 버튼 붛가
-	$(".ff").click(function() {
+	$(".empty_user_reaction-button").click(function() {
 		alert("로그인 후 이용하세요");
 	});
 
@@ -135,57 +130,6 @@ $(function() {
 		});
 		
 	});
-
-
-
-
-
-
-
-
-	//	// 좋아요 버튼 클릭 이벤트
-	//	$("#like-button").click(function(event) {
-	//		
-	//	       let boardId = $(this).data("board-id");
-	//	       $.ajax({
-	//	           url: "/board/reaction/" + boardId,
-	//	           type: "post",
-	//	           data: { reactionType: "like" },
-	//	           success: function(response) {
-	//	               if (response === "success") {
-	//	                   let likeCount = $("#like-count").text();
-	//					   // 텍스트 값이 비어있을 때 처리
-	//					   likeCount = (likeCount === "") ? 0 : Number(likeCount);
-	//
-	//					   if (!isNaN(likeCount)) {
-	//					       $("#like-count").text(likeCount + 1);
-	//					   }
-	//	               }
-	//	           }
-	//	       });
-	//	   });
-	//
-	//	   // 나빠요 버튼 클릭 이벤트
-	//	   $("#dislike-button").click(function(event) {
-	//
-	//	       let boardId = $(this).data("board-id");
-	//	       $.ajax({
-	//	           url: "/board/reaction/" + boardId,
-	//	           type: "post",
-	//	           data: { reactionType: "dislike" },
-	//	           success: function(response) {
-	//	               if (response === "success") {
-	//	                   let dislikeCount = $("#dislike-count").text();
-	//					   // 텍스트 값이 비어있을 때 처리
-	//					   dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
-	//
-	//					   if (!isNaN(dislikeCount)) {
-	//					       $("#dislike-count").text(dislikeCount + 1);
-	//					   }
-	//	               }
-	//	           }
-	//	       });
-	//	   });
 
 	//=========================================
 

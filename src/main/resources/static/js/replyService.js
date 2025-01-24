@@ -78,41 +78,7 @@ function replyPaging(obj) {
 	});
 }
 
-//댓글 리스트 페이징
-/*
-function renderReplyPaging(currentPage, totalPages) {
-	let pagingTag = `
-		<nav aria-label="Page navigation">
-			<ul class="pagination justify-content-center">
-				<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-					<a class="page-link" href="#" data-page="1">처음으로</a>
-				</li>
-				<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-					<a class="page-link" href="#" data-page="${currentPage - 1}">이전</a>
-				</li>`;
-
-	for (let i = 1; i <= totalPages; i++) {
-		pagingTag += `
-			<li class="page-item ${i === currentPage ? 'active' : ''}">
-				<a class="page-link" href="#" data-page="${i}">${i}</a>
-			</li>`;
-	}
-
-	pagingTag += `
-				<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-					<a class="page-link" href="#" data-page="${currentPage + 1}">다음</a>
-				</li>
-				<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-					<a class="page-link" href="#" data-page="${totalPages}">마지막으로</a>
-				</li>
-			</ul>
-		</nav>`;
-
-	$("#replyPaging").html(pagingTag);
-}
-*/
-
-
+//===========================================================
 
 // 댓글 리스트 생성
 function makeReplyListTag(obj) {
@@ -130,7 +96,7 @@ function makeReplyListTag(obj) {
 		tag += `
 		<div class="reply_list_btns_reaction">
 		<button class="reply-reaction-button" data-reaction-type="like" data-rId="${i.id}">
-		<i class="bi bi-hand-thumbs-up"></i>0<span id="reply-like-count-${i.id}">`;
+		<i class="bi bi-hand-thumbs-up"></i><span id="reply-like-count-${i.id}">`;
 
 		if (i.likes == null) {
 			tag += `</span>`;
@@ -141,7 +107,7 @@ function makeReplyListTag(obj) {
 		tag += `
 		</button>
 		<button class="reply-dislike-button" data-reaction-type="dislike" data-rId="${i.id}">
-		<i class="bi bi-hand-thumbs-down"></i>0<span id="reply-dislike-count-${i.id}">`;
+		<i class="bi bi-hand-thumbs-down"></i><span id="reply-dislike-count-${i.id}">`;
 
 		if (i.dislikes != null) {
 			tag += `
@@ -187,7 +153,6 @@ function getReplyList(page) {
 	}
 
 	$.ajax({
-		//url: "/replies/" + bId+"?page="+num+"&size=5",
 		url: `/replies/${bId}?page=${page}`,
 		type: "get",
 		headers: {
@@ -198,7 +163,7 @@ function getReplyList(page) {
 		success: function(result) {
 			let obj = JSON.parse(result);
 
-			$("#qq").find("span").text(obj.otalElements);
+			$("#replies_list").find("span").text(obj.otalElements);
 
 			let tag = makeReplyListTag(obj["content"]);
 
@@ -215,7 +180,7 @@ function getReplyList(page) {
 					let rId = $(this).attr("data-rId");
 					let username = $("input[name='username']").val();
 					if (username == '') {
-						alert("로그인 완료 후 이용바랍니다.");
+						alert("로그인 후 이용하세요.");
 						return;
 					}
 
@@ -244,88 +209,10 @@ function getReplyList(page) {
 			})
 			//===========================================
 
-
-
-			//			// 좋아요/나빠요 이벤트 통합
-			//			$("#board_read_show_reply_list").off('click', ".reply-like-button, .reply-dislike-button");
-			//			$("#board_read_show_reply_list").on('click', ".reply-like-button, .reply-dislike-button", function () {
-			//			    let rId = $(this).attr("data-rId"); // 댓글 ID 가져오기
-			//			    let isLike = $(this).hasClass("reply-like-button"); // 좋아요 버튼인지 확인
-			//			    let reactionType = isLike ? "like" : "dislike"; // 반응 타입 결정
-			//			    let countSpan = isLike ? $(this).siblings(".reply-like-count") : $(this).siblings(".reply-dislike-count"); // 카운트 요소 찾기
-			//
-			//			    $.ajax({
-			//			        url: "/replies/reaction/" + rId,
-			//			        type: "post",
-			//			        data: { reactionType: reactionType },
-			//			        success: function (response) {
-			//			            if (response === "success") {
-			//			                let count = countSpan.text();
-			//			                count = (count === "") ? 0 : Number(count); // 현재 카운트 값 가져오기
-			//			                if (!isNaN(count)) {
-			//			                    countSpan.text(count + 1);
-			//			                }
-			//			                getReplyList(1);
-			//			            }
-			//			        }
-			//			    });
-			//			});
-			//			//좋아요 나빠요
-			//			$("#board_read_show_reply_list").find(".reply-like-button").each(function() {
-			//				$(this).click(function() {
-			//					let rId = $(this).attr("data-rId");
-			//					$.ajax({
-			//						url: "/replies/reaction/" + rId,
-			//						type: "post",
-			//						data: { reactionType: "like" },
-			//						success: function(response) {
-			//							if (response === "success") {
-			//								let likeCount = $("#reply-like-count").text();
-			//								likeCount = (likeCount === "") ? 0 : Number(likeCount);
-			//								if (!isNaN(likeCount)) {
-			//									$("#reply-like-count").text(likeCount + 1);
-			//								}
-			//								getReplyList(1);
-			//							}
-			//						}
-			//					});
-			//
-			//				});
-			//			});
-			//
-			//			$("#board_read_show_reply_list").off('click', ".reply-dislike-button");
-			//			$("#board_read_show_reply_list").on('click', ".reply-dislike-button", function() {
-			//			    let rId = $(this).attr("data-rId");
-			//			    let dislikeSpan = $(this).siblings(".reply-dislike-count"); // 근처 dislike 카운트 요소 찾기
-			//
-			//			    $.ajax({
-			//			        url: "/replies/reaction/" + rId,
-			//			        type: "post",
-			//			        data: { reactionType: "dislike" },
-			//			        success: function(response) {
-			//			            if (response === "success") {
-			//			                let dislikeCount = dislikeSpan.text();
-			//			                dislikeCount = (dislikeCount === "") ? 0 : Number(dislikeCount);
-			//			                if (!isNaN(dislikeCount)) {
-			//			                    dislikeSpan.text(dislikeCount + 1); // 해당 댓글 dislike 카운트 증가
-			//			                }
-			//			                getReplyList(1); // 댓글 리스트 새로고침
-			//			            }
-			//			        }
-			//			    });
-			//			});
-			//
-
-			//===========================================
-
 			replyPaging(obj);
 
-
-
-
-
-
-
+			//===========================================
+			
 			// 댓글 삭제 버튼 클릭 이벤트
 			$("#board_read_show_reply_list").find(".reply_btn_delete").each(function() {
 
