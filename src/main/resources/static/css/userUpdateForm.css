@@ -1,0 +1,87 @@
+@charset "UTF-8";
+
+
+body {
+	background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+				url('/images/jeju-landscape.jpg') center/cover fixed;
+	color: #333;
+	font-family: 'Noto Sans KR', sans-serif;
+	min-height: 100vh;
+}
+
+/* 기본 배경 설정 */
+body {
+    background-color: #f0f8ff; 
+    font-family: 'Noto Sans', sans-serif;
+    color: #333; 
+    margin: 0;
+    padding: 0;
+}
+
+/* 회원정보 수정화면 스타일 */
+.jeju-form-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.jeju-image-upload {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.file-input {
+    border: 2px solid #FF9F00; 
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #fff8f0; 
+    width: 100%;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 18px;
+    color: #264653;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #FF9F00; 
+    background-color: #fff8f0;
+}
+
+.jeju-button {
+    background-color: #FF9F00; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.jeju-button:hover {
+    background-color: #e36c00; 
+}
+
+.container {
+    background: linear-gradient(135deg, #fffbf0, #f0f8ff); 
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}

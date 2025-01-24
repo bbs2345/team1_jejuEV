@@ -146,6 +146,7 @@ $(function() {
 					$("#auth_joinForm_checkId").next().attr("style", "color: red").text("이미사용중인 아이디");
 				}
 			}
+			
 		});
 	});
 

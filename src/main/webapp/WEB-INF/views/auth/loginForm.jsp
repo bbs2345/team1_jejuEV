@@ -17,37 +17,37 @@
 <body>
 <%@ include file="../part/part_header.jsp" %>
 
-	<div class="container">
-		<div class="login-wrapper">
-			<div class="login-image">
-				<div class="image-overlay">
-					<div class="image-text">
-						<h3>제주도 전기차 충전소</h3>
-						<p>친환경 제주도 여행의 시작<br>편리한 전기차 충전소 찾기</p>
-					</div>
-				</div>
-			</div>
-			
-			<div class="login-container">
-				<h2 class="login-title">로그인</h2>
-				<form action="/auth/login" method="post">
-					<div class="form-group">
-						<label for="id">아이디</label>
-						<input type="text" class="form-control" id="id" name="username" required>
-					</div>
-					<div class="form-group">
-						<label for="pw">비밀번호</label>
-						<input type="password" class="form-control" id="pw" name="password" required>
-					</div>
-					<button type="submit" class="login-btn">로그인</button>
-					
-					<div class="login-links">
-						<a href="/auth/joinForm">회원가입</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+   <div class="container">
+      <div class="login-wrapper">
+         <div class="login-image">
+            <div class="image-overlay">
+               <div class="image-text">
+                  <h3>제주도 전기차 충전소</h3>
+                  <p>친환경 제주도 여행의 시작<br>편리한 전기차 충전소 찾기</p>
+               </div>
+            </div>
+         </div>
+         
+         <div class="login-container">
+            <h2 class="login-title">로그인</h2>
+            <form action="/auth/login" method="post">
+               <div class="form-group">
+                  <label for="id">아이디</label>
+                  <input type="text" class="form-control" id="id" name="username" required>
+               </div>
+               <div class="form-group">
+                  <label for="pw">비밀번호</label>
+                  <input type="password" class="form-control" id="pw" name="password" required>
+               </div>
+               <button type="submit" class="login-btn">로그인</button>
+               
+               <div class="login-links">
+                  <a href="/auth/joinForm">회원가입</a>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
 
 </body>
 </html>
