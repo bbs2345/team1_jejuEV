@@ -34,13 +34,14 @@
 
 			<c:forEach items="${cateList}" var="dto">
 				<tr>
-					<td>${dto.cid}</td>
+					<td>${dto.id}</td>
 					<td>${dto.cname}<a href="/cate/delete/${dto.cname}">삭제</a></td>
 				</tr>
 			</c:forEach>
 		</table>
 
 		<a href="/admin/cateInsert">게시판등록</a>
+		<a href="/admin/noticeInsert">공지사항등록</a>
 	</div>
 
 

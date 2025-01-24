@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardReactionEntity;
+import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -40,5 +41,7 @@ public class BoardResponse {
 	private List<ReplyEntity> replyList;
 	
 	private List<BoardReactionEntity> boardReactionList;
+	
+	private CateEntity cate;
 	
 }

@@ -11,6 +11,7 @@ import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.AttachEntity.AttachEntityBuilder;
 import kr.co.mbc.entity.BoardEntity;
+import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.repository.BoardRepository;
 import kr.co.mbc.utils.UploadFileUtils;
 import lombok.RequiredArgsConstructor;

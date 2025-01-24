@@ -12,7 +12,7 @@ select count(*) from tbl_evchargerstation;
 select count(*) from tbl_evcharger;
 select * from maincate;
 
-
+drop table tbl_cate;
 drop table tbl_reply;
 drop table tbl_attach;
 drop table tbl_board;
@@ -32,3 +32,8 @@ WHERE ('stat_nm' = 'stat_nm' AND stat_nm LIKE '%someValue%')
    OR ('addr' = 'addr' AND addr LIKE '%someOtherValue%') 
 ORDER BY stat_id 
 LIMIT 10 OFFSET 0;
+
+
+
+INSERT INTO tbl_cate (cname) VALUES ('후기');
+select * from tbl_cate
