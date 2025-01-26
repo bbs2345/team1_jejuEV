@@ -28,19 +28,19 @@
 		
 		<table class="table">
 			<tr>
-				<th>카테고리 아이디</th>
+				<th>카테고리 영어명</th>
 				<th>카테고리 명</th>
 			</tr>
 
 			<c:forEach items="${cateList}" var="dto">
 				<tr>
-					<td>${dto.id}</td>
+					<td>${dto.cid}</td>
 					<td>${dto.cname}<a href="/cate/delete/${dto.cname}">삭제</a></td>
 				</tr>
 			</c:forEach>
 		</table>
 
-		<a href="/admin/cateInsert">게시판등록</a>
+		<a href="/admin/cateInsert">카테고리등록</a>
 		<a href="/admin/noticeInsert">공지사항등록</a>
 	</div>
 

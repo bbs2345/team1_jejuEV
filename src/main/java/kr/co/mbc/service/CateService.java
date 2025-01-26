@@ -1,6 +1,7 @@
 package kr.co.mbc.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -33,4 +34,10 @@ public class CateService {
 	public void delete(CateEntity cateEntity) {
 		cateRepository.delete(cateEntity);
 	}
+
+	public CateEntity findByCid(String cid) {
+		return cateRepository.findByCid(cid);
+	}
+
+
 }

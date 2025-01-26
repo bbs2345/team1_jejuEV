@@ -92,10 +92,9 @@ form select {
 			</thead>
 			<tbody class="board_list_boardList">
 				<c:forEach items="${boardList}" var="dto">
-				<input id="cate_cname_val" name="cname" type="hidden" value="${dto.cate.cname}">
 					<tr>
 						<td>${dto.id}</td>
-						<td><a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
+						<td>[${dto.cate.cname}] <a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
 						<td>${dto.writer} | ${dto.user.username} | ${dto.user.name}</td>
 					</tr>
 				</c:forEach>
@@ -177,9 +176,22 @@ form select {
 	
 	});
 	
-	// 주소값에 cname 적용하기
-	let cname = $("#cate_cname_val").val();
-	$('#board_list_write_btn').attr('href', '/board/' + cate + '/insert');
+	// 전체 URI 가져오기
+    let uri = document.location.pathname; // /board/{id}/insert
+    // '/' 기준으로 분리
+    let parts = uri.split("/");
+ 	// 배열의 두 번째 요소가 카테고리
+    let cid = parts[2]; 
+ 	
+// 	// 주소값에 cate 적용하기
+// 	$('#board_list_write_btn').attr('href', '/board/' + cate + '/insert');
+    
+	// 만약 cate이 '공지사항'이면 글쓰기 버튼을 숨김
+    if (cid === "notice") {
+        $('#board_list_write_btn').remove(); 
+    } else {
+        $('#board_list_write_btn').attr('href', '/board/' + cid + '/insert');
+    }
 
 	
 </script>

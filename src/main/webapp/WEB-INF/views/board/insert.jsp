@@ -69,7 +69,7 @@ button:hover {
 			<h3>게시글 입력</h3>
 		</div>
 		<div>
-			<form:form modelAttribute="boardForm" action="/board/${cname}/insert" method="post" enctype="multipart/form-data">
+			<form:form modelAttribute="boardForm" action="/board/${cid}/insert" method="post" enctype="multipart/form-data">
 				<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
 
 				<div>
