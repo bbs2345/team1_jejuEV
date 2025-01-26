@@ -70,16 +70,17 @@ public class AdminController {
 			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
 		}
 		
-		System.out.println(cateEntity.getCname());
-		
-		return "redirect:/board/"+ URLEncoder.encode(cateEntity.getCname(),"UTF-8")+ "/list";
+		return "redirect:/board/"+ cateEntity.getCid() + "/list";
 	}
 	
 	// 공지사항 입력 화면
 	@GetMapping("/noticeInsert")
-	public String noticeInsert() {
+	public String noticeInsert(Model model) {
+		CateEntity cateEntity = cateService.findByCname("공지사항");
 		
-		return "/board/insert";
+		model.addAttribute("cateEntity", cateEntity);
+		
+		return "/admin/noticeInsert";
 	}
 	
 	// 관리자화면
@@ -96,7 +97,6 @@ public class AdminController {
 	// 카테고리 추가화면
 	@GetMapping("/cateInsert")
 	public String cateInsert() {
-			
 		return "/admin/cateInsert";
 	}
 	

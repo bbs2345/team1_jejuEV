@@ -243,21 +243,27 @@ public class BoardController {
 		return "board/read";
 	}
 	
-	@GetMapping("{cname}/list")
-	public String boardList(@PathVariable("cname") String cname,Criteria criteria, Model model) {
+	@GetMapping("/{cid}/list")
+	public String boardList(@PathVariable("cid") String cid,Criteria criteria, Model model) {
 
-		CateEntity cateEntity = cateService.findByCname(cname);
+		CateEntity cateEntity = cateService.findByCid(cid);
 		
 		List<BoardEntity> boardEntities = boardService.findAll(criteria);
 		
 	    List<BoardResponse> boardList = new ArrayList<>();
-	    for (BoardEntity boardEntity : boardEntities) {
-	    	
-	    	if(!boardEntity.getCate().getCname().equals(cateEntity.getCname())) {
-	    		continue;
-	    	}
-	    	BoardResponse boardResponse = BoardEntity.toBoardResponse(boardEntity);
-	    	boardList.add(boardResponse);
+	    if (!"board".equals(cid)) {
+	        
+	        for (BoardEntity boardEntity : boardEntities) {
+	        	
+	            if (boardEntity.getCate().getCname().equals(cateEntity.getCname())) {
+	                boardList.add(BoardEntity.toBoardResponse(boardEntity));
+	            }
+	            
+	        }
+	    } else {
+	        for (BoardEntity boardEntity : boardEntities) {
+	            boardList.add(BoardEntity.toBoardResponse(boardEntity));
+	        }
 	    }
 		
 		Long totalCount = boardService.getTotalCount(criteria);
@@ -268,7 +274,7 @@ public class BoardController {
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("criteria", criteria);
 		
-		return "board/list";
+		return "/board/list";
 	}
 
 	/*
@@ -290,14 +296,14 @@ public class BoardController {
 	*/
 
 	// 게시글 입력 기능
-	@PostMapping("/{cname}/insert")
-	public String insert(@PathVariable("cname")String cname, BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {
+	@PostMapping("/{cid}/insert")
+	public String insert(@PathVariable("cid")String cid, BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {
 		
 		UserEntity userEntity = userService.findByUsername(boardForm.getWriter());
 		
 		BoardEntity boardEntity = BoardEntity.toBoardEntity(boardForm);
 		
-		CateEntity cateEntity = cateService.findByCname(cname);
+		CateEntity cateEntity = cateService.findByCid(cid);
 		
 		boardEntity.setCate(cateEntity);
 		boardEntity.setUser(userEntity);
@@ -315,18 +321,15 @@ public class BoardController {
 			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
 		}
 		
-		System.out.println(cateEntity.getCname());
-		
-		return "redirect:/board/"+ URLEncoder.encode(cateEntity.getCname(),"UTF-8")+ "/list";
+		return "redirect:/board/"+ cid + "/list";
 	}
 
 	// 게시글 입력 화면
-	@GetMapping("/{cname}/insert")
-	public String insert(@PathVariable("cname")String cname, Model model) {
-		model.addAttribute("cname", cname);
+	@GetMapping("/{cid}/insert")
+	public String insert(@PathVariable("cid")String cid, Model model) {
+		model.addAttribute("cid", cid);
 		return "/board/insert";
 	}
-
 
 
 }

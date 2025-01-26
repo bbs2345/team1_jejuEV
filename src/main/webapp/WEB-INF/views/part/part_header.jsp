@@ -41,7 +41,7 @@
 			<li class="nav-item"><a class="nav-link" href="/">메인</a></li>
 			<li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a></li>
 			<c:forEach items="${cateList}" var="cate">
-				<li class="nav-item"><a class="nav-link" href="/board/${cate.cname}/list">${cate.cname}</a></li>
+				<li class="nav-item"><a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a></li>
 			</c:forEach>
 		</ul>
 	</nav>

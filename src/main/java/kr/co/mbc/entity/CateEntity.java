@@ -29,11 +29,15 @@ import lombok.ToString;
 public class CateEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String cid;
 	
 	private String cname;
 	
+	public CateEntity(String cid, String cname) {
+		this.cid = cid;
+		this.cname = cname;
+	}
+
 	@OneToMany(mappedBy = "cate", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<BoardEntity> boardList;

@@ -20,6 +20,21 @@ public class CateConfig {
 	        @Override
 	        public void run(String... args) throws Exception {
 	            List<CateEntity> cateList = cateService.findAll();
+	            
+	            // 데이터가 없으면 기본 카테고리 삽입
+                if (cateList.isEmpty()) {
+                    CateEntity board = new CateEntity("board", "전체게시판");
+                    CateEntity notice = new CateEntity("notice", "공지사항");
+                    CateEntity free = new CateEntity("free", "자유게시판");
+                    CateEntity qna = new CateEntity("qna", "QnA");
+                    cateService.save(board); 
+                    cateService.save(notice); 
+                    cateService.save(free); 
+                    cateService.save(qna); 
+                    cateList = cateService.findAll();
+                    System.out.println("기본 카테고리 삽입");
+                }
+	            
 	            servletContext.setAttribute("cateList", cateList);
 	            System.out.println("카테고리 리스트가 Spring Bean 설정에서 초기화되었습니다.");
 	        }

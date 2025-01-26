@@ -24,6 +24,7 @@
 		<form action="/cate/insert" method="post">
 	
 		카테고리명 : <input name="cname"> <br>
+		카테고리영어명 : <input name="cid"> <br>
 		<button>입력 완료</button>
 		</form>
 		

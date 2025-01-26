@@ -17,7 +17,7 @@
 
 	<div class="container">
 		<div>
-			<h3>게시글 입력</h3>
+			<h3>공지사항 입력</h3>
 		</div>
 		<div>
 			<form:form modelAttribute="boardForm" action="/admin/noticeInsert" method="post" enctype="multipart/form-data">
@@ -41,7 +41,7 @@
 				<div>
 					<button type="submit">글 입력 완료</button>
 				</div>
-				<a href="/board/list">목록</a>
+				<a href="/board/${cateEntity.cid}/list">목록</a>
 			</form:form>
 		</div>
 	</div>
