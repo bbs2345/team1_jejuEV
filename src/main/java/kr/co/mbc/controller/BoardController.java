@@ -67,32 +67,6 @@ public class BoardController {
 	
 	private final CateService cateService;
 	
-	//===============================================
-//	//좋아요 나빠요 ajax통신 메서드
-//	@PostMapping("/reaction/")
-//	public ResponseEntity<String> reactToBoard(@RequestBody Map<String, String> map) {
-//	    Long id = Long.parseLong(map.get("rId"));
-//	    String username = map.get("username");
-//	    
-//	    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-//	    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+username);
-//	    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-//	    
-//
-//	    BoardEntity boardEntity = boardService.findById(id);  // 엔티티 조회
-//
-//	    if ("like".equalsIgnoreCase(map.get("reactionType"))) {
-//	        boardEntity.setLikes(boardEntity.getLikes() == null ? 1 : boardEntity.getLikes() + 1);  // 좋아요 처리
-//	     
-//	    } else if ("dislike".equalsIgnoreCase(map.get("reactionType"))) {
-//	        boardEntity.setDislikes(boardEntity.getDislikes() == null ? 1 : boardEntity.getDislikes() + 1);  // 나빠요 처리
-//	    }
-//
-//	    reactionService.save(boardEntity);  // DB에 업데이트
-//	    return ResponseEntity.ok("success");
-//	}
-
-	//================================================
 	
 	@GetMapping("/insert400")
 	public String insert400() {
@@ -249,7 +223,13 @@ public class BoardController {
 	@GetMapping({"/list" , "/{cid}/list"})
 	public String boardList(@PathVariable(value = "cid", required = false) String cid, Criteria criteria, Model model) {
 	    
-		criteria.setCateId(cid);
+		if (cid != null) {
+			criteria.setCateId(cid);
+			CateEntity cateEntity = cateService.findByCid(cid);
+			String cname = cateEntity.getCname();
+			model.addAttribute("cname", cname);
+		}
+		
 		
 	    // 게시판 목록 가져오기
 	    List<BoardEntity> boardEntities = boardService.findAll(criteria);  // `cid`와 `criteria`를 전달
@@ -268,7 +248,7 @@ public class BoardController {
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("pagination", pagination);
 	    model.addAttribute("criteria", criteria);
-
+	    
 	    return "board/list";
 	}
 	

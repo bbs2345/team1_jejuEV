@@ -5,6 +5,9 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
+<sec:authorize access="isAuthenticated( )">
+   <sec:authentication property="principal" var="principal"/>
+</sec:authorize> 
 
 <!DOCTYPE html>
 <html>
@@ -136,12 +139,12 @@ button{
 		<div>
 			<h3>게시글 자세히 보기</h3>
 		</div>
-		
+
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> 
-				<input type="hidden" name="username" value="${userEntity.username}">
+				<input type="hidden" name="username" value="${principal.username}">
 				<input type="hidden" name="reactionLike" value="${reactionResponse.likes}">
 				<input type="hidden" name="reactionDislike" value="${reactionResponse.dislikes}">
 				<table class="table">
@@ -185,7 +188,7 @@ button{
 		    </div>
 		    
 			<div class="board_read_btns_reaction">
-				<c:if test="${not empty userEntity}">
+				<c:if test="${not empty principal}">
 					<button class="reaction-button" data-reaction-type="like">
 					    <i class="bi bi-hand-thumbs-up"></i> <span id="like-count">0</span>
 					</button>
@@ -193,7 +196,7 @@ button{
 					    <i class="bi bi-hand-thumbs-down"></i> <span id="dislike-count">0</span>
 					</button>
 				</c:if>
-				<c:if test="${empty userEntity}" >
+				<c:if test="${empty principal}" >
 					<button type="button" class="empty_user_reaction-button">
 					    <i class="bi bi-hand-thumbs-down"></i> <span id="like-count">0</span>
 					</button>
@@ -212,18 +215,20 @@ button{
 				<!-- 댓글 작성 -->
 				<form action="/replies/" method="post" id="replyForm"
 					enctype="application/json">
+				<input type="hidden" id="csrf_token_value" name="${_csrf.parameterName}" value="${_csrf.token}">
+					
 					<input id="ttt" type="hidden" name="boardId"
 						value="${boardResponse.id}" />
 	
 					<!-- 로그인해야만 댓글작성 할 수 있도록 바꾸기 -->
 					<div>
-						<c:if test="${empty userEntity}">
-							<input type="text" id="replyWriter" class="form-control"
+						<c:if test="${empty principal}">
+							<input type="text" id="replyWriter" class="empty-form-control"
 								placeholder="작성자" required />
 						</c:if>
-						<c:if test="${not empty userEntity}">
+						<c:if test="${not empty principal}">
 							<input type="text" id="replyWriter" class="form-control"
-								readonly="readonly" value="${userEntity.username}" />
+								readonly="readonly" value="${principal.username}" />
 						</c:if>
 					</div>
 	

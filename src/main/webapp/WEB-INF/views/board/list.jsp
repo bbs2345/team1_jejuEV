@@ -77,8 +77,18 @@ form select {
 
 <div class="container" id="board_list_css">
 	<div>
-			<h3>${dto.cate.cname} 글 목록</h3>
+	    <!-- 게시판 전체 목록일 때 -->
+	    <c:if test="${empty cname}">
+	        <h3>전체 목록</h3>
+	    </c:if>
+	
+	    <!-- 각 게시판 목록일 때 -->
+	        <c:if test="${not empty cname}">
+	            <h3>${cname} 목록</h3>
+	        </c:if>
 	</div>
+
+	
 	<div>
 		<table class="table table-bordered">
 			<thead>
@@ -94,7 +104,7 @@ form select {
 					<tr>
 						<td>${dto.id}</td>
 						<td>[ ${dto.cate.cname} ] <a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
-						<td>${dto.writer} | ${dto.user.username} | ${dto.user.name}</td>
+						<td>${dto.writer} | ${dto.user.name}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -133,7 +143,7 @@ form select {
 	</div>
 	
 	<div>
-		<a id="board_list_write_btn" class="btn btn-primary">글쓰기</a>
+		<a id="board_list_write_btn" class="btn btn-success ">글쓰기</a>
 	</div>
 
 </div>
