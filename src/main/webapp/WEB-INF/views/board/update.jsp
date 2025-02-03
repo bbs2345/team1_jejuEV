@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html>
 <html>
@@ -115,7 +115,9 @@ a:hover {
 
 	<form:form modelAttribute="boardForm" action="/board/update" method="post" enctype="multipart/form-data">
 		<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
-
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		
+		
 		<div>
 			<input type="hidden" id="id" name="id" value="${boardResponse.id}" />
 		</div>

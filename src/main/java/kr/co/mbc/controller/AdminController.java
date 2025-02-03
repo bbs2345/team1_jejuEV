@@ -80,7 +80,7 @@ public class AdminController {
 		
 		model.addAttribute("cateEntity", cateEntity);
 		
-		return "/admin/noticeInsert";
+		return "admin/noticeInsert";
 	}
 	
 	// 관리자화면
@@ -91,13 +91,13 @@ public class AdminController {
 		ServletContext context = request.getServletContext();
 		context.setAttribute("cateList", cateList);
 		
-		return "/admin/home";
+		return "admin/home";
 	}
 	
 	// 카테고리 추가화면
 	@GetMapping("/cateInsert")
 	public String cateInsert() {
-		return "/admin/cateInsert";
+		return "admin/cateInsert";
 	}
 	
 	// 회원목록

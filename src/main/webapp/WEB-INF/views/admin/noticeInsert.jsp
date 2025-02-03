@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +24,7 @@
 		<div>
 			<form:form modelAttribute="boardForm" action="/admin/noticeInsert" method="post" enctype="multipart/form-data">
 				<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
 				<div>
 					<label>제목</label> <input name="title">

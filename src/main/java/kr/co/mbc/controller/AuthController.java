@@ -2,8 +2,11 @@ package kr.co.mbc.controller;
 
 import java.util.Map;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.co.mbc.dto.UserForm;
@@ -36,12 +41,24 @@ public class AuthController {
 	
 	private final FormatDateUtil formatDateUtil;
 	
+	private final BCryptPasswordEncoder bCryptPasswordEncoder; 
 	
+//	@GetMapping("/logout")
+//	public String logout(HttpSession session) {
+//		
+//		session.removeAttribute("userEntity");
+//		
+//		return "redirect:/";
+//	}
 	
+	// 로그아웃 처리
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
-		session.removeAttribute("userEntity");
+		if(authentication != null) {
+			new SecurityContextLogoutHandler().logout(request, response, authentication);
+		}
 		
 		return "redirect:/";
 	}
@@ -50,11 +67,12 @@ public class AuthController {
 	@PostMapping("/login")
 	public String login(String username, String password, HttpSession session) {
 		
-		UserEntity userEntity = userService.findByUsernameAndPassword(username, password);
+		UserEntity userEntity = userService.findByUsername(username);
 		
-		if (userEntity == null) {
-			return "auth/loginForm";
-		}
+		if (userEntity == null || !bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
+	        // 사용자 없음 또는 비밀번호 불일치
+	        return "auth/loginForm";
+	    }
 		
 		session.setAttribute("userEntity", userEntity);
 		

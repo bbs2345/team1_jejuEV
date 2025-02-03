@@ -122,6 +122,8 @@ $(function() {
 	$("#auth_joinForm_checkId").click(function() {
 		// name속성값이 username인 input태그
 		let usernameValue = $("input[name='username']").val();
+		// 토큰 값 가져오기
+		let csrfToken = $("#csrfToken").val();
 
 		// usernameValue가 비어있으면 알림창 띄우기
 		if (usernameValue == '') {
@@ -132,6 +134,9 @@ $(function() {
 		$.ajax({
 			url: "/auth/checkId",
 			type: "post",
+			headers: {
+		        "X-CSRF-TOKEN": csrfToken  // CSRF 토큰을 헤더에 포함
+			},
 			data: {
 				username: usernameValue
 			},
