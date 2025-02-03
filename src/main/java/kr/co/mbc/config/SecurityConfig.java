@@ -25,7 +25,7 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		String[] permitUrls = {"/**", "/oauth2/**", "/login/**", "/logout/**", "/auth/**"};
+//		String[] permitUrls = {"/**", "/oauth2/**", "/login/**", "/logout/**", "/auth/**"};
 		
 //		http
 //		.csrf((auth)-> auth.disable());
@@ -64,7 +64,7 @@ public class SecurityConfig {
 				(auth) -> auth
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/board/**").hasAnyRole("ADMIN", "USER")
-				.requestMatchers(permitUrls).permitAll()
+				.requestMatchers("/**").permitAll()
 				);
 		return http.build();
 	}

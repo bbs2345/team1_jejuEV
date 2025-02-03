@@ -10,7 +10,7 @@
 
  <sec:authorize access="isAuthenticated( )">
   <sec:authentication property="principal" var="principal"/>
-</sec:authorize> >
+</sec:authorize>
 
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
@@ -23,26 +23,8 @@
 	<div class="d-flex justify-content-between">
 		
 		
-		<div>
-			<c:if test="${principal.role == 'ROLE_ADMIN'}">
-			<a href="/admin/userList">회원목록</a>
-			<a href="/admin/home">관리자페이지</a>
-			</c:if>
-		</div>
 		
 		
-<!-- 		<div> -->
-<%-- 			<c:if test="${empty principal}"> --%>
-<!-- 				<a href="/auth/loginForm">로그인</a> -->
-<!-- 				<a href="/auth/joinForm">회원가입</a> -->
-<%-- 			</c:if> --%>
-<%-- 			<c:if test="${not empty principal}"> --%>
-<%-- 				<span>${principal.name}님 환영합니다.</span> --%>
-<!-- 				<a href="/auth/logout">로그아웃</a> -->
-<%-- 				<a href="/user/read/${principal.username}">회원정보</a> --%>
-<!-- ======= -->
-<!-- 			<a href="/admin/userList">회원목록</a> <a href="/admin/home">관리자페이지</a> -->
-<!-- 		</div> -->
 	</div>
 	<!-- 로그인 -->
 
@@ -88,24 +70,46 @@
 						</c:forEach>
 					</div>
 				</li>
+				
+				<c:if test="${principal.role == 'ROLE_ADMIN'}">
+					<li class="nav-item"><a class="nav-link" href="/board/list">관리자</a>
+						<div  class="submenu">
+								<a href="/admin/userList">회원목록</a>
+								<a href="/admin/home">관리자페이지</a>
+						</div>
+					</li>
+				</c:if>
 			</ul>
-			
 		</div>
 
-
 		<!-- 로그인/회원가입 버튼 영역 -->
+		
 		<div class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto">
-			<c:if test="${empty userEntity}">
+			<c:if test="${empty principal}">
 				<a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a>
 				<a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a>
 			</c:if>
-			<c:if test="${not empty userEntity}">
-				<span>${userEntity.username}님 환영합니다.</span>
+			<c:if test="${not empty principal}">
+				<span>${principal.name}님 환영합니다.</span>
 				<a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a>
-				<a class="btn btn-outline-primary mx-2"
-					href="/user/read/${userEntity.username}">회원정보</a>
+				<a class="btn btn-outline-primary mx-2" href="/user/read/${principal.username}">회원정보</a>
 			</c:if>
+				
 		</div>
+		
+		
+<!-- 		<div class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto"> -->
+<%-- 			<c:if test="${empty userEntity}"> --%>
+<!-- 				<a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a> -->
+<!-- 				<a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a> -->
+<%-- 			</c:if> --%>
+<%-- 			<c:if test="${not empty userEntity}"> --%>
+<%-- 				<span>${userEntity.username}님 환영합니다.</span> --%>
+<!-- 				<a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a> -->
+<!-- 				<a class="btn btn-outline-primary mx-2" -->
+<%-- 					href="/user/read/${userEntity.username}">회원정보</a> --%>
+<%-- 			</c:if> --%>
+<!-- 		</div> -->
 		
 	</div>
 
@@ -132,7 +136,7 @@
 /* 전체 컨테이너 스타일 */
 .container-fluid {
     width: 90%;
-    height: 130px;
+    height: 100px;
     background: linear-gradient(rgba(0, 204, 255, 0.5), rgba(0, 153, 255, 0.5)),
                 url('/images/jeju-background.jpg') center/cover;
     padding: 0;
