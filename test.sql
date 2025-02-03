@@ -2,6 +2,7 @@ select * from tbl_user;
 SELECT * FROM tbl_user LIMIT 10 OFFSET 0;
 delete from tbl_user;
 
+<<<<<<< HEAD
 UPDATE tbl_user
 SET role = 'ROLE_ADMIN' 
 WHERE username = 'm001';
@@ -10,6 +11,8 @@ select * from tbl_board where id=840;
 
 delete from tbl_board where id=1;
 
+=======
+>>>>>>> c1aad48 (전기차 충전소 상세보기 v1.3.0)
 select * from tbl_cate;
 select * from tbl_board;
 select * from tbl_reply;
@@ -21,7 +24,11 @@ select count(*) from tbl_evchargerstation;
 select count(*) from tbl_evcharger;
 select * from maincate;
 
-drop table tbl_cate;
+ALTER TABLE tbl_cate DROP COLUMN id;
+ALTER TABLE tbl_cate ADD PRIMARY KEY (cid);
+
+
+drop table tbl_cate ;
 drop table tbl_reply;
 drop table tbl_reply_reaction;
 drop table tbl_attach;
@@ -32,6 +39,7 @@ drop table tbl_evchargerstation;
 drop table tbl_evcharger;
 
 delete from tbl_reply;
+delete from tbl_board;
 delete from tbl_evchargerstation;
 delete from tbl_evcharger;
 delete from maincate;

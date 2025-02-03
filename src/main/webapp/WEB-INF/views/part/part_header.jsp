@@ -30,6 +30,7 @@
 
 	<div class="d-flex">
 	
+<<<<<<< HEAD
 		<!-- 로고 영역 -->
 		<div class="p-2 logo-container">
 			<a href="/"><img src="/images/logo2.png" width="100px" height="100px" alt="로고"></a>
@@ -129,6 +130,20 @@
 <!-- </div> -->
 
 
+=======
+	<!-- 메뉴 -->
+	<nav class="navbar" style="background-color: #e3f2fd;">
+		<ul class="nav">
+			<li class="nav-item"><a class="nav-link" href="/">메인</a></li>
+			<li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a></li>
+			<li class="nav-item"><a class="nav-link" href="/ev/chart">전기차 충전소 그래프</a></li>
+			<c:forEach items="${cateList}" var="cate">
+				<li class="nav-item"><a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a></li>
+			</c:forEach>
+		</ul>
+	</nav>
+	
+>>>>>>> 6e4a589 (그래프 작업 완료)
 </div>
 
 

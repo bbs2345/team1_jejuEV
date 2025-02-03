@@ -3,7 +3,11 @@ package kr.co.mbc.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +26,8 @@ import kr.co.mbc.entity.EvChargerEntity;
 import kr.co.mbc.entity.EvStationEntity;
 import kr.co.mbc.service.EvChargerService;
 import kr.co.mbc.service.EvStationService;
+import kr.co.mbc.service.EvUserCateChargerCountService;
+import kr.co.mbc.service.EvYoilChgerCountService;
 import kr.co.mbc.utils.Pagination;
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +38,119 @@ public class EvController {
 	
 	private final EvStationService evStationService;
 	private final EvChargerService evChargerService;
+	private final EvUserCateChargerCountService evUserCateChargerCountService;
+	private final EvYoilChgerCountService evYoilChgerCountService;
+	
+	
+	@GetMapping("/getYoilChgerCountByBaseDayOfTheWeek")
+	@ResponseBody
+	public Map<String, Integer> getYoilChgerCountByBaseDayOfTheWeek(){
+		return evYoilChgerCountService.getYoilChgerCountByBaseDayOfTheWeek();
+	}
+	
+	
+	// 사용자 유형별 충전횟수
+	@GetMapping("/getuserCateCountByUserCate")
+	@ResponseBody
+	public Map<String, Integer> getUsercateCount() {
+		return evUserCateChargerCountService.getUsercateCount();
+	}
+		
+	
+	
+	@GetMapping("/getChgerTypeCountByChgerType")
+	@ResponseBody
+	public Map<String, Integer> getChgerTypeCountByChgerType() {
+	    // 충전기 타입 비율 계산
+	    Map<String, Integer> ratio = evChargerService.getChargingTypeRatio();
+	    
+	    // 비율 계산 (소수점 없이)
+	    int slowCount = ratio.get("slowCount");
+	    int fastCount = ratio.get("fastCount");
+	    int totalCount = ratio.get("totalCount");
+
+	    int slowRatio = (int) Math.round(((double) slowCount / totalCount) * 100);
+	    int fastRatio = (int) Math.round(((double) fastCount / totalCount) * 100);
+
+	    // 결과를 Map으로 반환
+	    Map<String, Integer> chgerType = new HashMap<>();
+	    chgerType.put("slowRatio", slowRatio);
+	    chgerType.put("fastRatio", fastRatio);
+	    chgerType.put("totalCount", totalCount);
+
+	    return chgerType;
+	}
+	
+	@GetMapping("/getStationCountByBusiNm")
+	@ResponseBody
+	public Map<String, Long> getStationCountByBusiNm() {
+	    // 데이터 가져오기
+	    List<EvStationEntity> stations = evStationService.findAll();
+	    
+	    // 운영기관별 충전소 갯수 계산
+	    Map<String, Long> map = new HashMap<>();
+	    
+	    for (EvStationEntity station : stations) {
+	        // 운영기관명 가져오기
+	        String busiNm = station.getBusiNm();
+	        
+	        // 운영기관명이 null이 아니면 map에 충전소 갯수 증가
+	        if (busiNm != null && !busiNm.isEmpty()) {
+	            map.put(busiNm, map.getOrDefault(busiNm, 0L) + 1);
+	        }
+	    }
+	    
+	    // 충전소 갯수가 많은 순으로 정렬
+	    List<Map.Entry<String, Long>> sortedList = new ArrayList<>(map.entrySet());
+	    sortedList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())); // 내림차순 정렬
+
+	    // 상위 20개만 추출
+	    Map<String, Long> top20Map = new LinkedHashMap<>();
+	    int count = 0;
+	    for (Map.Entry<String, Long> entry : sortedList) {
+	        if (count >= 20) break;
+	        top20Map.put(entry.getKey(), entry.getValue());
+	        count++;
+	    }
+	    
+	    return top20Map;
+	}
+	
+	@GetMapping("/getStationCountByDistrict")
+	@ResponseBody
+	public Map<String, Long> getStationCountByDistrict() {
+		
+		// 데이터 가져오기
+		List<EvStationEntity> stations = evStationService.findAll();
+		
+		// 제주도의 주요 행정구역 리스트
+		List<String> districts = Arrays.asList("제주시", "애월읍", "한림읍", "한경면", "대정읍", "안덕면","서귀포시","남원읍", "표선면", "성산읍", "구좌읍", "조천읍", "우도면", "추자면");
+		
+		Map<String, Long> map = new HashMap<>();
+		
+		for (EvStationEntity station : stations) {
+	        // 주소 가져오기
+	        String addr = station.getAddr();
+	        
+	        // 주소에서 행정구역 정보 추출
+	        String districtName = evStationService.extractDistrictName(addr, districts);
+	        
+	        // districtName이 null이 아니고, districts 리스트에 포함된 값만 처리
+	        if (districtName != null && districts.contains(districtName)) {
+	            map.put(districtName, map.getOrDefault(districtName, 0L) + 1);
+	        }
+	    }
+		
+		
+		return map;
+	}
+	
+	// 페이지이동
+	@GetMapping("/chart")
+	public String test() {
+		return "ev/chart";
+	}
+	
 	
 	@GetMapping("/getChargerInfo/{statId}")
 	@ResponseBody

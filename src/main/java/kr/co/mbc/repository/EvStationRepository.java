@@ -26,6 +26,8 @@ public interface EvStationRepository extends JpaRepository<EvStationEntity, Stri
 	List<EvStationEntity> findAll(Criteria criteria);
 
 	EvStationEntity findByStatId(String statId);
-
+	
+	
+	
 
 }

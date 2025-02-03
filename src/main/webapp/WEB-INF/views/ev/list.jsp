@@ -168,6 +168,33 @@
 <script type="text/javascript">
 
 	
+	$(".si").find("a").eq("0").click(function(event){
+	    event.preventDefault();
+	    let perPageContent = 10; // 10개 버튼 클릭 시 perPageContent를 10으로 설정
+	    let form = $("#ev_searchForm"); 
+	    form.find("input[name='perPageContent']").val(perPageContent); // perPageContent 값을 10으로 변경
+	    form.submit(); // 폼 제출
+	});
+	
+	
+	$(".si").find("a").eq("1").click(function(event){
+	    event.preventDefault();
+	    let perPageContent = 20; // 20개 버튼 클릭 시 perPageContent를 20으로 설정
+	    let form = $("#ev_searchForm"); 
+	    form.find("input[name='perPageContent']").val(perPageContent); // perPageContent 값을 20으로 변경
+	    form.submit(); 
+	});
+	
+	
+	$(".si").find("a").eq("2").click(function(event){
+	    event.preventDefault();
+	    let perPageContent = 30; // 30개 버튼 클릭 시 perPageContent를 30으로 설정
+	    let form = $("#ev_searchForm");
+	    form.find("input[name='perPageContent']").val(perPageContent); // perPageContent 값을 30으로 변경
+	    form.submit(); 
+	});
+	
+	
 	$(".si").find("a").eq("3").click(function(event){
 		event.preventDefault();
 		let keyword = $(this).attr("href");
@@ -176,6 +203,7 @@
 		$("#ev_searchForm").submit();
 		
 	});
+	
 	$(".si").find("a").eq("4").click(function(event){
 		event.preventDefault();
 		let keyword = $(this).attr("href");

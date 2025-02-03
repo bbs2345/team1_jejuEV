@@ -1,13 +1,20 @@
 select * from tbl_evstation;
 select * from tbl_evcharger;
 select * from tbl_csvdt;
+select * from tbl_month_chger_counts;
+select * from tbl_user_cate_chger_counts;
+select * from tbl_yoil_chger_count;
+SHOW COLUMNS FROM tbl_user_cate_chger_counts;
+
 
 select * from tbl_chger_counts
-select count(*) from tbl_chger_counts;
+select count(*) from tbl_user_cate_chger_counts;
 
 drop table tbl_evcharger;
 drop table tbl_evstation;
 drop table tbl_csvdt;
+drop table tbl_user_cate_chger_counts;
+drop table tbl_chger_counts;
 
 
 
@@ -21,6 +28,8 @@ select count(*) from tbl_csvdt;
 
 select * from tbl_evcharger where stat_id = 'JD000098';
 select * from tbl_evcharger where stat_id='JD000098';
+
+desc tbl_user_cate_chger_counts;
 
 
 SELECT 
