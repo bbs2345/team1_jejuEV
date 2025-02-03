@@ -5,6 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri= "http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri= "http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html>
 <html>
@@ -22,6 +23,7 @@
 	<h3>카테고리 입력</h3>
 	
 		<form action="/cate/insert" method="post">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	
 		카테고리명 : <input name="cname"> <br>
 		카테고리영어명 : <input name="cid"> <br>

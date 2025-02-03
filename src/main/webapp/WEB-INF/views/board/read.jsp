@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 
 <!DOCTYPE html>
@@ -27,12 +28,6 @@
 	<link href="/css/boardStyle.css" rel="stylesheet">
 	<style type="text/css">
 	
-
-
-
-
-
-
 table {
     width: 100%;
     margin-bottom: 20px;
@@ -100,8 +95,6 @@ table td {
 }
 
 
-
-
 button{
     background: linear-gradient(90deg, #00ACC1, #26C6DA);
     border: none;
@@ -146,6 +139,7 @@ button{
 		
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> 
 				<input type="hidden" name="username" value="${userEntity.username}">
 				<input type="hidden" name="reactionLike" value="${reactionResponse.likes}">

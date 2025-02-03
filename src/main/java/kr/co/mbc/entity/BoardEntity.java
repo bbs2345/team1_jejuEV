@@ -71,7 +71,7 @@ public class BoardEntity {
 	
 	@ManyToOne
 	@JsonIgnore
-	@JoinColumn(name = "cate_id", nullable = false)
+	@JoinColumn(name = "cate_id")
 	private CateEntity cate;
 	
 	//boardForm을 BoardEntity 변형

@@ -98,7 +98,7 @@ public class EvController {
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("criteria", criteria);
 		
-		return "/ev/list";
+		return "ev/list";
 	}
 	
 	

@@ -3,6 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
+<sec:authorize access="isAuthenticated( )">
+   <sec:authentication property="principal" var="principal"/>
+</sec:authorize> 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +18,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-
-
+    
+    
 *, *::before, *::after {
     box-sizing: inherit;
 }
@@ -69,12 +75,29 @@ button:hover {
 			<h3>게시글 입력</h3>
 		</div>
 		<div>
-			<form:form modelAttribute="boardForm" action="/board/${cid}/insert" method="post" enctype="multipart/form-data">
+			<form:form modelAttribute="boardForm" id="boardForm" action="/board/${cid}/insert" method="post" enctype="multipart/form-data">
 				<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
 
 				<div>
 					<label>제목</label> <input name="title">
 				</div>
+				
+				<!-- 카테고리 드롭다운 추가 -->
+	            <div>
+	                <label>카테고리</label>
+	                <select name="category" id="cate_select" class="form-control">
+	                    <option value="" disabled selected>카테고리를 선택하세요</option>
+	                    <c:forEach var="cateList" items="${cateList}">
+	                        <c:if test="${cateList.cid != 'notice' || principal.role == 'ROLE_ADMIN'}">
+               					 <option value="${cateList.cid}">${cateList.cname}</option>
+            				</c:if>
+	                    </c:forEach>
+	                </select>
+	            </div>
+	            
+	            
+	            
+				
 				<div>
 					<label>작성자</label> <input name="writer" value="${userEntity.username}">
 				</div>
@@ -95,5 +118,14 @@ button:hover {
 		</div>
 	</div>
 	<script type="text/javascript" src="/js/boardService.js"></script>
+	<script type="text/javascript">
+	
+	// 카테고리 선택에 따라 form 태그 action이 변경됨
+	$("#cate_select").change(function(){
+		let cate = $(this).val();
+		$("#boardForm").attr("action", "/board/"+cate+"/insert");
+	});
+	
+	</script>
 </body>
 </html>

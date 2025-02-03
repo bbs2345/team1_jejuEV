@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html>
 <html>
@@ -31,6 +32,8 @@
          <div class="login-container">
             <h2 class="login-title">로그인</h2>
             <form action="/auth/login" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            
                <div class="form-group">
                   <label for="id">아이디</label>
                   <input type="text" class="form-control" id="id" name="username" required>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -98,11 +99,13 @@ public class BoardController {
 		
 		UserEntity userEntity = userService.findByUsername("m001");
 		String currentDate = formatDateUtil.getCurrentDate();
+		CateEntity freecate = cateService.findByCid("qna");
 		
-		for (int i = 1; i < 412; i++) {
+		for (int i = 1; i < 311; i++) {
 			BoardEntity boardEntity = BoardEntity.builder()
+					.cate(freecate)
 					.title("제목"+i)
-					.content("내용입니다.")
+					.content("QnA내용입니다.")
 					.writer(userEntity.getUsername())
 					.createDate(currentDate)
 					.user(userEntity).build();
@@ -209,7 +212,7 @@ public class BoardController {
 	        model.addAttribute("preview", preview);
 	    }
 
-	    return "/board/update";
+	    return "board/update";
 	}
 
 
@@ -243,39 +246,65 @@ public class BoardController {
 		return "board/read";
 	}
 	
-	@GetMapping("/{cid}/list")
-	public String boardList(@PathVariable("cid") String cid,Criteria criteria, Model model) {
-
-		CateEntity cateEntity = cateService.findByCid(cid);
+	@GetMapping({"/list" , "/{cid}/list"})
+	public String boardList(@PathVariable(value = "cid", required = false) String cid, Criteria criteria, Model model) {
+	    
+		criteria.setCateId(cid);
 		
-		List<BoardEntity> boardEntities = boardService.findAll(criteria);
-		
+	    // 게시판 목록 가져오기
+	    List<BoardEntity> boardEntities = boardService.findAll(criteria);  // `cid`와 `criteria`를 전달
+	    
 	    List<BoardResponse> boardList = new ArrayList<>();
-	    if (!"board".equals(cid)) {
-	        
-	        for (BoardEntity boardEntity : boardEntities) {
-	        	
-	            if (boardEntity.getCate().getCname().equals(cateEntity.getCname())) {
-	                boardList.add(BoardEntity.toBoardResponse(boardEntity));
-	            }
-	            
-	        }
-	    } else {
-	        for (BoardEntity boardEntity : boardEntities) {
-	            boardList.add(BoardEntity.toBoardResponse(boardEntity));
-	        }
+	    for (BoardEntity boardEntity : boardEntities) {
+	        boardList.add(BoardEntity.toBoardResponse(boardEntity));
 	    }
-		
-		Long totalCount = boardService.getTotalCount(criteria);
-		
-		Pagination pagination = new Pagination(criteria, totalCount);
-		
-		model.addAttribute("boardList", boardList);
-		model.addAttribute("pagination", pagination);
-		model.addAttribute("criteria", criteria);
-		
-		return "/board/list";
+	    
+	    // 게시글 수 가져오기
+	    Long totalCount = boardService.getTotalCount(criteria);
+
+	    // Pagination 객체 생성
+	    Pagination pagination = new Pagination(criteria, totalCount);
+
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("pagination", pagination);
+	    model.addAttribute("criteria", criteria);
+
+	    return "board/list";
 	}
+	
+//	@GetMapping("/{cid}/list")
+//	public String boardList(@PathVariable(value = "cid", required = false) String cid,Criteria criteria, Model model) {
+//
+//		CateEntity cateEntity = cateService.findByCid(cid);
+//		
+//		List<BoardEntity> boardEntities = boardService.findAll(criteria, cid);
+//		
+//	    List<BoardResponse> boardList = new ArrayList<>();
+//	    if (!"board".equals(cid)) {
+//	        
+//	        for (BoardEntity boardEntity : boardEntities) {
+//	        	
+//	            if (boardEntity.getCate().getCname().equals(cateEntity.getCname())) {
+//	                boardList.add(BoardEntity.toBoardResponse(boardEntity));
+//	            }
+//	            
+//	        }
+//	    } else {
+//	        for (BoardEntity boardEntity : boardEntities) {
+//	            boardList.add(BoardEntity.toBoardResponse(boardEntity));
+//	        }
+//	    }
+//		
+//		Long totalCount = boardService.getTotalCount(criteria, cid);
+//		
+//		Pagination pagination = new Pagination(criteria, totalCount);
+//		
+//		model.addAttribute("boardList", boardList);
+//		model.addAttribute("pagination", pagination);
+//		model.addAttribute("criteria", criteria);
+//		
+//		return "board/list";
+//	}
 
 	/*
 	// 목록 보기
@@ -303,7 +332,16 @@ public class BoardController {
 		
 		BoardEntity boardEntity = BoardEntity.toBoardEntity(boardForm);
 		
-		CateEntity cateEntity = cateService.findByCid(cid);
+		CateEntity cateEntity = new CateEntity();
+		String formCid = boardForm.getCategory();  // 선택한 카테고리 cid 값 가져오기
+		
+		// cid가 없으면 사용자가 선택한 카테고리 값 사용
+	    if (cid == null) {
+	        cateEntity = cateService.findByCid(formCid);
+	    } else {
+	    	cateEntity = cateService.findByCid(cid);
+		}
+	    
 		
 		boardEntity.setCate(cateEntity);
 		boardEntity.setUser(userEntity);
@@ -321,14 +359,19 @@ public class BoardController {
 			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
 		}
 		
-		return "redirect:/board/"+ cid + "/list";
+		return "redirect:/board/"+ formCid + "/list";
 	}
 
 	// 게시글 입력 화면
-	@GetMapping("/{cid}/insert")
-	public String insert(@PathVariable("cid")String cid, Model model) {
+	@GetMapping({"/insert", "/{cid}/insert"})
+	public String insert(@PathVariable(value = "cid", required = false)String cid, Model model) {
+		
+		List<CateEntity> cateList = cateService.findAll();
+		
+		model.addAttribute("cateList", cateList);
 		model.addAttribute("cid", cid);
-		return "/board/insert";
+		
+		return "board/insert";
 	}
 
 

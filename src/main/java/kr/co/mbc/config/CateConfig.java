@@ -23,11 +23,9 @@ public class CateConfig {
 	            
 	            // 데이터가 없으면 기본 카테고리 삽입
                 if (cateList.isEmpty()) {
-                    CateEntity board = new CateEntity("board", "전체게시판");
                     CateEntity notice = new CateEntity("notice", "공지사항");
                     CateEntity free = new CateEntity("free", "자유게시판");
                     CateEntity qna = new CateEntity("qna", "QnA");
-                    cateService.save(board); 
                     cateService.save(notice); 
                     cateService.save(free); 
                     cateService.save(qna); 
@@ -40,5 +38,6 @@ public class CateConfig {
 	        }
 	    };
 	}
+	
 
 }

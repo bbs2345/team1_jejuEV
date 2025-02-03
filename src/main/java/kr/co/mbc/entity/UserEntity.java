@@ -46,6 +46,8 @@ public class UserEntity {
 	
 	private String profileImage; // 프로필이미지
 	
+	private String role;
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<BoardEntity> boardList;
@@ -61,6 +63,7 @@ public class UserEntity {
 				.username(userForm.getUsername())
 				.password(userForm.getPassword())
 				.name(userForm.getName())
+				.role("ROLE_USER")
 				.build();
 	}
 

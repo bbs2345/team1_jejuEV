@@ -4,7 +4,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,7 +77,7 @@ form select {
 
 <div class="container" id="board_list_css">
 	<div>
-		<h3>글 목록</h3>
+			<h3>${dto.cate.cname} 글 목록</h3>
 	</div>
 	<div>
 		<table class="table table-bordered">
@@ -94,7 +93,7 @@ form select {
 				<c:forEach items="${boardList}" var="dto">
 					<tr>
 						<td>${dto.id}</td>
-						<td>[${dto.cate.cname}] <a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
+						<td>[ ${dto.cate.cname} ] <a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
 						<td>${dto.writer} | ${dto.user.username} | ${dto.user.name}</td>
 					</tr>
 				</c:forEach>
@@ -105,6 +104,7 @@ form select {
 	<!-- 검색 -->
 	<div class="d-flex justify-content-center">
 		<form method="get">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<select name="type">
 				<option value="title" ${criteria.type == 'title' ? 'selected':''}>제목</option>
 				<option value="writer" ${criteria.type == 'writer' ? 'selected':''}>작성자</option>
@@ -144,7 +144,16 @@ form select {
 	let page = $("input[name='page']");
 	let type = getSearchParam("type");
 	let keyword = getSearchParam("keyword");
-
+	
+	// 전체 URI 가져오기
+    let uri = document.location.pathname; // /board/{id}/insert
+    // '/' 기준으로 분리
+    let parts = uri.split("/");
+ 	// 배열의 두 번째 요소가 카테고리
+    let cid = parts[2]; 
+	
+ 	
+ 	
 	// 상세페이지로 이동
 	$(".board_list_boardList").find("a").click(function(event) {
 		event.preventDefault();
@@ -165,8 +174,14 @@ form select {
 	$("#pagination").find("a").click(function(event) {
 		event.preventDefault();
 	
-		let form = $("<form>").attr("action", "/board/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
-	
+		let form;
+		
+		if(cid == null || cid =='list') {
+			form = $("<form>").attr("action", "/board/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
+		}else{
+			form = $("<form>").attr("action", "/board/"+cid+"/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
+		}
+		
 		if (type != null && keyword != null) {
 			form.append(getHiddenTag("type", type));
 			form.append(getHiddenTag("keyword", keyword));
@@ -175,13 +190,6 @@ form select {
 		form.appendTo("body").submit();
 	
 	});
-	
-	// 전체 URI 가져오기
-    let uri = document.location.pathname; // /board/{id}/insert
-    // '/' 기준으로 분리
-    let parts = uri.split("/");
- 	// 배열의 두 번째 요소가 카테고리
-    let cid = parts[2]; 
  	
 // 	// 주소값에 cate 적용하기
 // 	$('#board_list_write_btn').attr('href', '/board/' + cate + '/insert');
@@ -189,10 +197,11 @@ form select {
 	// 만약 cate이 '공지사항'이면 글쓰기 버튼을 숨김
     if (cid === "notice") {
         $('#board_list_write_btn').remove(); 
-    } else {
+    } else if(cid === "list") {
+    	$('#board_list_write_btn').attr('href', '/board/insert');
+    }else{
         $('#board_list_write_btn').attr('href', '/board/' + cid + '/insert');
     }
-
 	
 </script>
 </body>

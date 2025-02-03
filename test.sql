@@ -2,7 +2,15 @@ select * from tbl_user;
 SELECT * FROM tbl_user LIMIT 10 OFFSET 0;
 delete from tbl_user;
 
-select * from tbl_cate
+UPDATE tbl_user
+SET role = 'ROLE_ADMIN' 
+WHERE username = 'm001';
+
+select * from tbl_board where id=840;
+
+delete from tbl_board where id=1;
+
+select * from tbl_cate;
 select * from tbl_board;
 select * from tbl_reply;
 select * from tbl_attach;
@@ -27,6 +35,9 @@ delete from tbl_reply;
 delete from tbl_evchargerstation;
 delete from tbl_evcharger;
 delete from maincate;
+delete from tbl_cate where cname='전체게시판';
+
+ALTER TABLE tbl_board_attach_entity DROP FOREIGN KEY FKsugd6flygjqiohcnwlfeehtat;
 
 DESCRIBE tbl_evchargerstation;
 
@@ -36,5 +47,3 @@ WHERE ('stat_nm' = 'stat_nm' AND stat_nm LIKE '%someValue%')
 ORDER BY stat_id 
 LIMIT 10 OFFSET 0;
 
-
-ALTER TABLE tbl_cate DROP COLUMN c_eng_name;
