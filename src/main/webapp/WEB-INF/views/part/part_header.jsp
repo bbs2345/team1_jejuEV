@@ -72,7 +72,7 @@
 				</li>
 				
 				<c:if test="${principal.role == 'ROLE_ADMIN'}">
-					<li class="nav-item"><a class="nav-link" href="/board/list">관리자</a>
+					<li class="nav-item"><a class="nav-link" href="/admin/home">관리자</a>
 						<div  class="submenu">
 								<a href="/admin/userList">회원목록</a>
 								<a href="/admin/home">관리자페이지</a>

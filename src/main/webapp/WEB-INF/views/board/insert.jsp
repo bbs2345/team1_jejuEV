@@ -99,7 +99,7 @@ button:hover {
 	            
 				
 				<div>
-					<label>작성자</label> <input name="writer" value="${userEntity.username}">
+					<label>작성자</label> <input name="writer" value="${principal.username}" readonly="readonly">
 				</div>
 				<div>
 					<label>내용</label>
@@ -113,7 +113,7 @@ button:hover {
 				<div>
 					<button type="submit">글 입력 완료</button>
 				</div>
-				<a href="/board/list">목록</a>
+				<a href="/board/list" class="btn btn-success">목록</a>
 			</form:form>
 		</div>
 	</div>

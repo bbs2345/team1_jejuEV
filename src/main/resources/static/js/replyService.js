@@ -146,7 +146,9 @@ function makeReplyListTag(obj) {
 function getReplyList(page) {
 	let bId = $("input[name='boardId']").val();
 	let username = $("input[name='username']").val();
-
+	let csrfToken = $("#board_delete_service").find("input").eq(0).val();
+	
+	
 	// page가 undefined일 경우 기본값 1로 설정
 	if (page === undefined) {
 		page = 1;
@@ -155,8 +157,9 @@ function getReplyList(page) {
 	$.ajax({
 		url: `/replies/${bId}?page=${page}`,
 		type: "get",
+		contentType: "application/json",
 		headers: {
-			"Content-Type": "application/json",
+			"X-CSRF-TOKEN": csrfToken,
 			"X-HTTP-Method-Override": "GET"
 		},
 		dataType: "text",
@@ -192,8 +195,9 @@ function getReplyList(page) {
 							username: username,
 							reactionType: reactionType
 						}),
+						contentType: "application/json",
 						headers: {
-							"Content-Type": "application/json",
+							"X-CSRF-TOKEN": csrfToken,
 							"X-Http-Method-Override": "POST"
 						},
 						dataType: "text",
@@ -227,8 +231,9 @@ function getReplyList(page) {
 							data: JSON.stringify({
 								rId: rId
 							}),
+							contentType: "application/json",
 							headers: {
-								"Content-Type": "application/json",
+								"X-CSRF-TOKEN": csrfToken,
 								"X-HTTP-Method-Override": "DELETE"
 							},
 							dataType: "text",
@@ -269,7 +274,9 @@ function getReplyList(page) {
 						writer: writer,
 						content: content.trim()
 					}),
+					contentType: "application/json",
 					headers: {
+						"X-CSRF-TOKEN": csrfToken,
 						"Content-Type": "application/json"
 					},
 					dataType: "text",
@@ -301,29 +308,43 @@ $(function() {
 	let bId = $("input[name='boardId']");
 	let replyWriter = $("#replyWriter");
 	let replyContent = $("#replyContent");
-
-
-	// 댓글 작성
+	let tokenValue = $("#csrf_token_value").val();
+	
+	$(".empty-form-control").click(function(){
+		alert("로그인 후 작성해주세요.");
+		return;  // 작성자가 비어 있으면 함수 종료
+	})
+	
 	$("#board_read_reply_insert").click(function() {
 
-		$.ajax({
-			url: "/replies/",
-			type: "post",
-			data: JSON.stringify({
-				bId: bId.val(),
-				writer: replyWriter.val(),
-				content: replyContent.val()
-
-			}),
-			headers: {
-				"Content-Type": "application/json",
-				"X-HTTP-Method-Override": "POST"
-			},
-			dataType: "text",
-			success: function(result) {
-				getReplyList(1);
-				$("#replyContent").val("");
-			}
+		// replyContent 값 확인
+		if (replyContent.val() === '') {
+		    alert("댓글 내용을 입력해 주세요.");
+		    return;
+		}
+		if(replyWriter.val() === ''){
+			alert("로그인 후 작성해주세요.");
+			return;
+		}
+			$.ajax({
+				url: "/replies/",
+				type: "post",
+				data: JSON.stringify({
+					bId: bId.val(),
+					writer: replyWriter.val(),
+					content: replyContent.val(),
+				}),
+				headers: {
+					"Content-Type": "application/json",
+					"X-HTTP-Method-Override": "POST",
+					"X-CSRF-TOKEN": tokenValue
+				},
+				dataType: "text",
+				success: function(result) {
+					getReplyList(1);
+					$("#replyContent").val("");
+				}
+			});
 		});
-	});
+
 });

@@ -107,6 +107,7 @@ $(function() {
 			let reactionType = $(this).attr("data-reaction-type");
 			let bId = $("input[name='id']").val();
 			let username = $("input[name='username']").val();
+			let csrfToken = $("#board_delete_service").find("input").eq(0).val();
 			
 			$.ajax({
 				url : "/boardReactions/",
@@ -116,8 +117,9 @@ $(function() {
 					username : username,
 					reactionType : reactionType
 				}),
+				contentType: "application/json",
 				headers : {
-					"Content-Type" : "application/json",
+					"X-CSRF-TOKEN": csrfToken,
 					"X-Http-Method-Override" : "POST"
 				},
 				dataType : "text",
