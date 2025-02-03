@@ -14,5 +14,19 @@ public class MainController {
 
 		return "main";
 	}
+	
+// 메인 서브 메뉴 start	-------------------------------
+	
+    @GetMapping("/tourist")
+    public String tourist() {
+        return "tourist";
+    }
+    
+    @GetMapping("/process")
+    public String process() {
+        return "process"; 
+    }
+    
+ // 메인 서브 메뉴	end ---------------------------------
 
 }
