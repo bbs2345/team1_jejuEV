@@ -19,131 +19,77 @@
 
 
 <div class="container-fluid">
-	<!-- 로그인 -->
-	<div class="d-flex justify-content-between">
-		
-		
-		
-		
-	</div>
-	<!-- 로그인 -->
-
-	<div class="d-flex">
-	
-<<<<<<< HEAD
-		<!-- 로고 영역 -->
-		<div class="p-2 logo-container">
-			<a href="/"><img src="/images/logo2.png" width="100px" height="100px" alt="로고"></a>
-		</div>
-		
-		<!-- 메뉴 -->
-		<div class="flex-grow-1">
-			<ul class="d-flex justify-content-center main-menu">
-			
-				<li class="nav-item"><a class="nav-link" href="/">메인</a></li>
+   <!-- 로그인 -->
+   <div class="d-flex">
+   
+      <!-- 로고 영역 -->
+      <div class="p-2 logo-container">
+         <a href="/"><img src="/images/logo2.png" width="100px" height="100px" alt="로고"></a>
+      </div>
+      
+      <!-- 메뉴 -->
+      <div class="flex-grow-1">
+         <ul class="d-flex justify-content-center main-menu">
+         
+            <li class="nav-item"><a class="nav-link" href="/">메인</a></li>
 
 
-				<li class="nav-item"><a href="/process">개요</a> 
-				<!-- 서브메뉴 -->
-					<div class="submenu">
-						<a class="nav-link" href="/process">개발 과정</a>
-					</div>
-				</li>
-				
-				<li class="nav-item"><a href="/tourist">제주 관광지</a>
-					<div class="submenu">
-						<a href="/tourist">제주 관광지</a>
-					</div>
-				</li>
+            <li class="nav-item"><a href="/process">개요</a> 
+            <!-- 서브메뉴 -->
+               <div class="submenu">
+                  <a class="nav-link" href="/process">개발 과정</a>
+               </div>
+            </li>
+            
+            <li class="nav-item"><a href="/tourist">제주 관광지</a>
+               <div class="submenu">
+                  <a href="/tourist">제주 관광지</a>
+               </div>
+            </li>
 
-				<li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a>
-				<!-- 서브메뉴 -->
-					<div class="submenu">
-						<a href="#">서브메뉴 5-1</a> 
-						<a href="#">서브메뉴 5-2</a>
-					</div></li>
+            <li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a>
+            <!-- 서브메뉴 -->
+               <div class="submenu">
+                  <a href="/ev/list">전기차 충전소</a>
+                  <a href="/ev/chart">전기차 충전소 그래프</a>
+               </div>
+               </li>
 
-				<li class="nav-item"><a class="nav-link" href="/board/list">게시판</a>
-				<!-- 서브메뉴 -->
-					<div class="submenu">
-						<c:forEach items="${cateList}" var="cate">
-							<a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a>
-						</c:forEach>
-					</div>
-				</li>
-				
-				<c:if test="${principal.role == 'ROLE_ADMIN'}">
-					<li class="nav-item"><a class="nav-link" href="/admin/home">관리자</a>
-						<div  class="submenu">
-								<a href="/admin/userList">회원목록</a>
-								<a href="/admin/home">관리자페이지</a>
-						</div>
-					</li>
-				</c:if>
-			</ul>
-		</div>
+            <li class="nav-item"><a class="nav-link" href="/board/list">게시판</a>
+            <!-- 서브메뉴 -->
+               <div class="submenu">
+                  <c:forEach items="${cateList}" var="cate">
+                     <a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a>
+                  </c:forEach>
+               </div>
+            </li>
+            
+            <c:if test="${principal.role == 'ROLE_ADMIN'}">
+               <li class="nav-item"><a class="nav-link" href="/admin/home">관리자</a>
+                  <div  class="submenu">
+                        <a href="/admin/userList">회원목록</a>
+                        <a href="/admin/home">관리자페이지</a>
+                  </div>
+               </li>
+            </c:if>
+         </ul>
+      </div>
 
-		<!-- 로그인/회원가입 버튼 영역 -->
-		
-		<div class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto">
-			<c:if test="${empty principal}">
-				<a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a>
-				<a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a>
-			</c:if>
-			<c:if test="${not empty principal}">
-				<span>${principal.name}님 환영합니다.</span>
-				<a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a>
-				<a class="btn btn-outline-primary mx-2" href="/user/read/${principal.username}">회원정보</a>
-			</c:if>
-				
-		</div>
-		
-		
-<!-- 		<div class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto"> -->
-<%-- 			<c:if test="${empty userEntity}"> --%>
-<!-- 				<a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a> -->
-<!-- 				<a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a> -->
-<%-- 			</c:if> --%>
-<%-- 			<c:if test="${not empty userEntity}"> --%>
-<%-- 				<span>${userEntity.username}님 환영합니다.</span> --%>
-<!-- 				<a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a> -->
-<!-- 				<a class="btn btn-outline-primary mx-2" -->
-<%-- 					href="/user/read/${userEntity.username}">회원정보</a> --%>
-<%-- 			</c:if> --%>
-<!-- 		</div> -->
-		
-	</div>
+      <!-- 로그인/회원가입 버튼 영역 -->
+      
+      <div class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto">
+         <c:if test="${empty principal}">
+            <a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a>
+            <a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a>
+         </c:if>
+         <c:if test="${not empty principal}">
+            <span>${principal.name}님 환영합니다.</span>
+            <a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a>
+            <a class="btn btn-outline-primary mx-2" href="/user/read/${principal.username}">회원정보</a>
+         </c:if>
+            
+      </div>
 
-
-<!-- 	<!-- 메뉴 -->
-<!-- 	<nav class="navbar" style="background-color: #e3f2fd;"> -->
-<!-- 		<ul class="nav"> -->
-<!-- 			<li class="nav-item"><a class="nav-link" href="/">메인</a></li> -->
-<!-- 			<li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a></li> -->
-<!-- 			<li class="nav-item"><a class="nav-link" href="/board/list">전체글보기</a></li> -->
-<%-- 			<c:forEach items="${cateList}" var="cate"> --%>
-<%-- 				<li class="nav-item"><a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a></li> --%>
-<%-- 			</c:forEach> --%>
-<!-- 		</ul> -->
-<!-- 	</nav> -->
-
-<!-- </div> -->
-
-
-=======
-	<!-- 메뉴 -->
-	<nav class="navbar" style="background-color: #e3f2fd;">
-		<ul class="nav">
-			<li class="nav-item"><a class="nav-link" href="/">메인</a></li>
-			<li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a></li>
-			<li class="nav-item"><a class="nav-link" href="/ev/chart">전기차 충전소 그래프</a></li>
-			<c:forEach items="${cateList}" var="cate">
-				<li class="nav-item"><a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a></li>
-			</c:forEach>
-		</ul>
-	</nav>
-	
->>>>>>> 6e4a589 (그래프 작업 완료)
 </div>
 
 
@@ -152,9 +98,7 @@
 .container-fluid {
     width: 90%;
     height: 100px;
-    background: linear-gradient(rgba(0, 204, 255, 0.5), rgba(0, 153, 255, 0.5)),
-                url('/images/jeju-background.jpg') center/cover;
-    padding: 0;
+    background: linear-gradient(rgba(0, 204, 255, 0.5), rgba(0, 153, 255, 0.5));
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
