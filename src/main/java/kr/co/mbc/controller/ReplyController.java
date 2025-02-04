@@ -72,10 +72,6 @@ public class ReplyController {
 	    return "ok";
 	}
 
-
-        
- 
-
 	// 댓글 리스트 (페이징 처리)
     @GetMapping("/{bId}")
     public Page<ReplyEntity> list(@PathVariable("bId") Long bId, @RequestParam("page") int page) {

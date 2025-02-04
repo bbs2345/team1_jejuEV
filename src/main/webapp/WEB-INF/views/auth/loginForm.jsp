@@ -48,6 +48,11 @@
                   <a href="/auth/joinForm">회원가입</a>
                </div>
             </form>
+            
+            <a href="/oauth2/authorization/naver">
+			    <button type="button" class="login-btn">네이버 로그인</button>
+			</a>
+			
          </div>
       </div>
    </div>
