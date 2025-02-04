@@ -34,6 +34,18 @@
 
 		<!--dependency
 		추가 시작-->
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+		
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.security</groupId>-->
+<!--			<artifactId>spring-security-oauth2-client</artifactId>-->
+<!--		</dependency>-->
 
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -41,7 +53,6 @@
 		    <version>4.0.1</version>
 		    <scope>provided</scope>
 		</dependency>
-
 
 		
 <!--		https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->

@@ -326,6 +326,33 @@ $(function() {
 			alert("로그인 후 작성해주세요.");
 			return;
 		}
+
+
+	// 댓글 작성
+//	$("#board_read_reply_insert").click(function() {
+//
+//		$.ajax({
+//			url: "/replies/",
+//			type: "post",
+//			data: JSON.stringify({
+//				bId: bId.val(),
+//				writer: replyWriter.val(),
+//				content: replyContent.val()
+//
+//			}),
+//			headers: {
+//				"Content-Type": "application/json",
+//				"X-HTTP-Method-Override": "POST"
+//			},
+//			dataType: "text",
+//			success: function(result) {
+//				getReplyList(1);
+//				$("#replyContent").val("");
+//			}
+//		});
+//	});
+
+	$("#board_read_reply_insert").click(function() {
 			$.ajax({
 				url: "/replies/",
 				type: "post",

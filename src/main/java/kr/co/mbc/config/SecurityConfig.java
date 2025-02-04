@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
+import kr.co.mbc.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
-//	private final CustomerOAuth2UserService customerOAuth2UserService;
+	private final CustomOAuth2UserService customOAuth2UserService;
 	
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -41,7 +41,7 @@ public class SecurityConfig {
 		
 		http
 		.formLogin((auth)-> auth
-				.loginPage("/auth/loginForm")
+				.loginPage("/oauth2/authorization/naver")
 				.loginProcessingUrl("/auth/login")
 				.permitAll()
 				);
@@ -52,13 +52,12 @@ public class SecurityConfig {
 //		http
 //		.oauth2Login(Customizer.withDefaults());
 		
-//		http
-//		.oauth2Login((auth)-> auth
-//				.loginPage("/auth/login")
-//				.userInfoEndpoint((config)-> config
-//						.userService(customerOAuth2UserService)
-//						)
-//		);
+		http.oauth2Login((auth) -> auth
+				.loginPage("/auth/oauth2login")
+				.userInfoEndpoint((config) -> config
+						.userService(customOAuth2UserService)
+						)
+				);
 		
 		http.authorizeHttpRequests(
 				(auth) -> auth
