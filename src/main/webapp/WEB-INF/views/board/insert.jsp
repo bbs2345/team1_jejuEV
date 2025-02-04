@@ -99,7 +99,7 @@ button:hover {
 	            
 				
 				<div>
-					<label>작성자</label> <input name="writer" value="${principal.username}" readonly="readonly">
+					<label>작성자</label> <input name="writer" value="${principal.username}"  readonly="readonly">
 				</div>
 				<div>
 					<label>내용</label>
@@ -125,6 +125,16 @@ button:hover {
 		let cate = $(this).val();
 		$("#boardForm").attr("action", "/board/"+cate+"/insert");
 	});
+	
+	// 카테고리 선택하지 않으면 alert창 뜨게 함.
+	$("#boardForm").submit(function () {
+        let category = $("#cate_select").val();
+        
+        if (!category) {
+            alert("카테고리를 선택하세요!");
+            return false;  // 제출 막기
+        }
+    });
 	
 	</script>
 </body>

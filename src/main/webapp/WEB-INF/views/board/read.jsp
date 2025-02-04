@@ -183,8 +183,11 @@ button{
 		<div class="d-flex justify-content-between">
 			<div class="board_read_btns">
 			    <a href="${criteria.page}" id="toBoardList">목록</a> 
-			    <a href="/board/update/${boardResponse.id}">수정</a> 
-			    <a id=delete_board_botton href="#">삭제</a>
+			    
+			    <c:if test="${principal.role == 'ROLE_ADMIN' or principal.username == boardResponse.writer}">
+				    <a href="/board/update/${boardResponse.id}">수정</a> 
+				    <a id=delete_board_botton href="#">삭제</a>
+			    </c:if>
 		    </div>
 		    
 			<div class="board_read_btns_reaction">

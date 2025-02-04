@@ -3,7 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
+<sec:authorize access="isAuthenticated( )">
+   <sec:authentication property="principal" var="principal"/>
+</sec:authorize> 
 
 <!DOCTYPE html>
 <html>
@@ -40,9 +44,15 @@
 	
 	<div class="jeju-links">
 		<a href="/" class="jeju-link">메인페이지</a>
-		<a id="toUserList" href="${criteria.page}" class="jeju-link">목록</a>
+		
+		<c:if test="${principal != null and principal.role == 'ROLE_ADMIN'}">
+			<a id="toUserList" href="${criteria.page}" class="jeju-link">목록</a>
+		</c:if>
+		
+		
 		<a href="/user/updateForm/${userResponse.username}" class="jeju-link">회원정보 수정</a>
 		<a id="user_read_deleteuser" href="${userResponse.username}" class="jeju-link">회원탈퇴</a>
+		<input id="csrf_value" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</div>
 </div>
 

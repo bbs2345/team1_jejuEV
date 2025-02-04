@@ -16,9 +16,16 @@ $(function() {
 		if(isDelete) {
 			let usernameValue = $(this).attr("href");
 			let input = $("<input>").attr("name", "username").val(usernameValue);
+			
+			// CSRF 토큰 추가
+			let csrfToken = $("#csrf_value").val();
+      	    let csrfParameterName = $("#csrf_value").attr("name");
+			let csrfInput = $("<input>").attr("type", "hidden").attr("name", csrfParameterName).val(csrfToken);
+			
+			
 			let form = $("<form>").attr("method", "post").attr("action", "/user/delete");
 			form.appendTo("body");
-			form.append(input).submit();
+			form.append(input).append(csrfInput).submit();
 		}
 	});
 
