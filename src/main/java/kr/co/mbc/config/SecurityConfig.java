@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 import kr.co.mbc.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 //		String[] permitUrls = {"/**", "/oauth2/**", "/login/**", "/logout/**", "/auth/**"};
@@ -33,15 +35,17 @@ public class SecurityConfig {
 //		http
 //		.formLogin((auth)-> auth.disable());
 		
+		// 로그아웃 설정
 		http.logout((auth) -> auth
 				.logoutUrl("/auth/logout")
 				.logoutSuccessUrl("/")
 				.permitAll()
 				);
 		
+		// 일반로그인 설정
 		http
 		.formLogin((auth)-> auth
-				.loginPage("/oauth2/authorization/naver")
+				.loginPage("/auth/loginForm")
 				.loginProcessingUrl("/auth/login")
 				.permitAll()
 				);
@@ -52,6 +56,7 @@ public class SecurityConfig {
 //		http
 //		.oauth2Login(Customizer.withDefaults());
 		
+		// 네이버 로그인 설정
 		http.oauth2Login((auth) -> auth
 				.loginPage("/auth/oauth2login")
 				.userInfoEndpoint((config) -> config
@@ -59,10 +64,11 @@ public class SecurityConfig {
 						)
 				);
 		
+		// 권한 설정
 		http.authorizeHttpRequests(
 				(auth) -> auth
 				.requestMatchers("/admin/**").hasRole("ADMIN")
-				.requestMatchers("/board/**, /replies/**, /boardReactions/**,/replyReactions/**").hasAnyRole("ADMIN", "USER")
+				.requestMatchers("/user/**" , "/board/**", "/replies/**", "/boardReactions/**", "/replyReactions/**").hasAnyRole("ADMIN", "USER")
 				.requestMatchers("/**").permitAll()
 				);
 		return http.build();

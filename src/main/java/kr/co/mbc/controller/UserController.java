@@ -1,6 +1,8 @@
 package kr.co.mbc.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +68,7 @@ public class UserController {
 	
 	// 회원삭제
 	@PostMapping("/delete")
-	public String username(String username) {
+	public String username(String username, Authentication authentication) {
 		
 		UserEntity userEntity = userService.findByUsername(username);
 		
@@ -78,7 +80,7 @@ public class UserController {
 		
 		userService.deleteByUsername(username);
 		
-		return "redirect:/";
+		return "redirect:/auth/logout";
 	}
 	
 	//회원정보 수정 처리
