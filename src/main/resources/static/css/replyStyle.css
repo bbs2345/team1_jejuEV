@@ -2,6 +2,16 @@
 
 /* ===============리플 스타일 start============== */
 
+/* 좋아요/싫어요 버튼 우측 정렬 */
+.reply_list_btns_reaction, .reply-dislike-button,.replyOriBtn,.replyUpBtn {
+    gap: 3px; /* 버튼 사이 간격 */
+    margin-left: auto; /* 자동으로 오른쪽으로 이동 */
+}
+#board_read_show_reply_list {
+    max-height: 450px;
+    overflow-y: auto;
+}
+
 #replies_list {
     margin-top: 40px;
      margin-bottom: 30px;
@@ -14,7 +24,7 @@
 
 
 #board_read_show_reply_list {
-    max-height: 400px;
+    max-height: 450px;
     overflow-y: auto;
 }
 

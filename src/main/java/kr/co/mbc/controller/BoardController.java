@@ -1,12 +1,9 @@
 package kr.co.mbc.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,18 +22,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.co.mbc.dto.BoardForm;
 import kr.co.mbc.dto.BoardResponse;
 import kr.co.mbc.dto.Criteria;
-import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardEntity;
-import kr.co.mbc.entity.BoardReactionEntity;
 import kr.co.mbc.entity.CateEntity;
-import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
 import kr.co.mbc.service.BoardService;
 import kr.co.mbc.service.CateService;
 import kr.co.mbc.service.BoardReactionService;
-import kr.co.mbc.service.ReplyService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
 import kr.co.mbc.utils.Pagination;
@@ -61,8 +53,6 @@ public class BoardController {
 	
 	private final UserService userService;
 	
-	private final ReplyService replyService;
-	
 	private final BoardReactionService reactionService;
 	
 	private final CateService cateService;
@@ -80,7 +70,6 @@ public class BoardController {
 					.cate(freecate)
 					.title("제목"+i)
 					.content("QnA내용입니다.")
-					.writer(userEntity.getUsername())
 					.createDate(currentDate)
 					.user(userEntity).build();
 			boardService.save(boardEntity);

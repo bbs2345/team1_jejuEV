@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +54,7 @@ public class BoardReactionController {
 		BoardReactionEntity boardReactionEntity = boardReactionService.findByBoardIdAndUsername(bId, username);
 
 		if (boardReactionEntity == null) {
-			boolean isSaved = boardReactionService.processReaction(bId, reactionType, username);
+			boardReactionService.processReaction(bId, reactionType, username);
 		} else {
 			boardReactionEntity.setReactionType(reactionType);
 			boardReactionService.save(boardReactionEntity);

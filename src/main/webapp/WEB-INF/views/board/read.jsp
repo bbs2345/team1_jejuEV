@@ -140,7 +140,6 @@ button{
 			<h3>게시글 자세히 보기</h3>
 		</div>
 		
-
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
