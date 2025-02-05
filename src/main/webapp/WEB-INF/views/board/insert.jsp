@@ -94,12 +94,9 @@ button:hover {
 	                    </c:forEach>
 	                </select>
 	            </div>
-	            
-	            
-	            
 				
 				<div>
-					<label>작성자</label> <input name="writer" value="${principal.username}"  readonly="readonly">
+					<label>작성자</label> <input id="board_insert_writer" name="writer" value="${principal.username}"  readonly="readonly">
 				</div>
 				<div>
 					<label>내용</label>
@@ -135,6 +132,15 @@ button:hover {
             return false;  // 제출 막기
         }
     });
+	
+// 	// principal.username 값을 가져오기
+//     let username = "${principal.username}";
+
+//     // 만약 username이 'naver'로 시작하면 '___mbc___' 뒤 5글자만 추출
+//     if (username.startsWith("naver")) {
+//         let suffix = username.split("___mbc___")[1].substring(0, 5);
+//         document.getElementById("board_insert_writer").value = suffix;
+//     }
 	
 	</script>
 </body>

@@ -139,6 +139,10 @@ button{
 		<div>
 			<h3>게시글 자세히 보기</h3>
 		</div>
+		
+		<div>
+		 	<img src="/user/imgDisplay?fullFileName=${principal.profileImage}" class="profile-img">
+		</div>
 
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
