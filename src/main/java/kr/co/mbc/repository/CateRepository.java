@@ -1,7 +1,5 @@
 package kr.co.mbc.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import kr.co.mbc.entity.CateEntity;

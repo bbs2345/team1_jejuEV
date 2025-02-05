@@ -7,21 +7,18 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.mbc.dto.Criteria;
+import kr.co.mbc.dto.Pagination;
 import kr.co.mbc.dto.UserResponse;
 import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.entity.UserEntity;
-import kr.co.mbc.service.AttachService;
-import kr.co.mbc.service.BoardService;
 import kr.co.mbc.service.CateService;
 import kr.co.mbc.service.UserService;
-import kr.co.mbc.utils.FormatDateUtil;
-import kr.co.mbc.utils.Pagination;
-import kr.co.mbc.utils.UploadFileUtils;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,52 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminController {
 	
-	private static final String SERVICEPATH = "board";
 	private final UserService userService;
 	private final CateService cateService;
-	private final AttachService attachService;
-	private final FormatDateUtil formatDateUtil;
-	private final BoardService boardService;
-	private final UploadFileUtils uploadFileUtils;
-	
-//	// 공지사항 입력 기능
-//	@PostMapping("/noticeInsert")
-//	public String noticeInsert(BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {
-//		
-//		UserEntity userEntity = userService.findByUsername(boardForm.getWriter());
-//		
-//		BoardEntity boardEntity = BoardEntity.toBoardEntity(boardForm);
-//		
-//		CateEntity cateEntity = cateService.findByCname("공지사항");
-//		
-//		boardEntity.setCate(cateEntity);
-//		boardEntity.setUser(userEntity);
-//		boardEntity.setCreateDate(formatDateUtil.getCurrentDate());
-//		boardEntity.setUpdateDate(formatDateUtil.getCurrentDate());
-//		
-//		boardService.save(boardEntity);
-//		
-//		
-//		MultipartFile multipartFile = mRequest.getFile("myfile");
-//		
-//		if (!multipartFile.isEmpty()) {
-//			String fullFileName = uploadFileUtils.uploadBoardFile(multipartFile, SERVICEPATH, boardEntity.getId());
-//			AttachEntity attachEntity = new AttachEntity(null, fullFileName, boardEntity);
-//			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
-//		}
-//		
-//		return "redirect:/board/"+ cateEntity.getCid() + "/list";
-//	}
-	
-//	// 공지사항 입력 화면
-//	@GetMapping("/noticeInsert")
-//	public String noticeInsert(Model model) {
-//		CateEntity cateEntity = cateService.findByCname("공지사항");
-//		
-//		model.addAttribute("cateEntity", cateEntity);
-//		
-//		return "admin/noticeInsert";
-//	}
 	
 	// 관리자화면
 	@GetMapping("/home")
@@ -89,7 +42,7 @@ public class AdminController {
 	
 	// 회원목록
 	@GetMapping("/userList")
-	public String userList(Criteria criteria, Model model) {
+	public String userList(@ModelAttribute("criteria") Criteria criteria, Model model) {
 		
 		List<UserEntity> userEntities = userService.findMembers(criteria);
 		
@@ -105,7 +58,6 @@ public class AdminController {
 		
 		model.addAttribute("userList", userList);
 		model.addAttribute("pagination", pagination);
-		model.addAttribute("criteria", criteria);
 		
 		return "admin/userList";
 	}

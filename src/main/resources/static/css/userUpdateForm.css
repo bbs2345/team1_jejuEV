@@ -28,10 +28,20 @@ body {
     max-width: 700px;
 }
 
+/* 프로필 이미지 스타일 */
 .jeju-image-upload {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+}
+
+.profile-img {
+    border-radius: 50%; 
+    border: 5px solid #FF9F00; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover; /* 이미지를 비율에 맞게 잘라서 표시 */
+    width: 150px;
+    height: 150px;
 }
 
 .file-input {

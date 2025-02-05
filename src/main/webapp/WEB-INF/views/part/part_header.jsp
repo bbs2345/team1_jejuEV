@@ -1,97 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri= "http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<c:set value="${sessionScope.userEntity}" var="userEntity"/>
 <c:set value="${applicationScope.cateList}" var="cateList"/>
 
- <sec:authorize access="isAuthenticated( )">
-  <sec:authentication property="principal" var="principal"/>
+<sec:authorize access="isAuthenticated( )">
+	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
-
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-
-<div class="container-fluid">
-   <!-- 로그인 -->
-   <div class="d-flex">
-   
-      <!-- 로고 영역 -->
-      <div class="p-2 logo-container">
-         <a href="/"><img src="/images/logo2.png" width="100px" height="100px" alt="로고"></a>
-      </div>
-      
-      <!-- 메뉴 -->
-      <div class="flex-grow-1">
-         <ul class="d-flex justify-content-center main-menu">
-         
-            <li class="nav-item"><a class="nav-link" href="/">메인</a></li>
-
-
-            <li class="nav-item"><a href="/process">개요</a> 
-            <!-- 서브메뉴 -->
-               <div class="submenu">
-                  <a class="nav-link" href="/process">개발 과정</a>
-               </div>
-            </li>
-            
-            <li class="nav-item"><a href="/tourist">제주 관광지</a>
-               <div class="submenu">
-                  <a href="/tourist">제주 관광지</a>
-               </div>
-            </li>
-
-            <li class="nav-item"><a class="nav-link" href="/ev/list">전기차 충전소</a>
-            <!-- 서브메뉴 -->
-               <div class="submenu">
-                  <a href="/ev/list">전기차 충전소</a>
-                  <a href="/ev/chart">전기차 충전소 그래프</a>
-               </div>
-               </li>
-
-            <li class="nav-item"><a class="nav-link" href="/board/list">게시판</a>
-            <!-- 서브메뉴 -->
-               <div class="submenu">
-                  <c:forEach items="${cateList}" var="cate">
-                     <a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a>
-                  </c:forEach>
-               </div>
-            </li>
-            
-            <c:if test="${principal.role == 'ROLE_ADMIN'}">
-               <li class="nav-item"><a class="nav-link" href="/admin/home">관리자</a>
-                  <div  class="submenu">
-                        <a href="/admin/userList">회원목록</a>
-                        <a href="/admin/home">관리자페이지</a>
-                  </div>
-               </li>
-            </c:if>
-         </ul>
-      </div>
-
-      <!-- 로그인/회원가입 버튼 영역 -->
-      
-      <div class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto">
-         <c:if test="${empty principal}">
-            <a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a>
-            <a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a>
-         </c:if>
-         <c:if test="${not empty principal}">
-            <span>${principal.name}님 환영합니다.</span>
-            <a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a>
-            <a class="btn btn-outline-primary mx-2" href="/user/read/${principal.username}">회원정보</a>
-         </c:if>
-            
-      </div>
-
-</div>
-
 
 <style>
 /* 전체 컨테이너 스타일 */
@@ -232,6 +155,71 @@
     transition: background 0.3s ease;
 }
 </style>
+
+<div class="container-fluid">
+	<div class="d-flex">
+		<!-- 로고 영역 -->
+		<div class="p-2 logo-container">
+			<a href="/"><img src="/images/logo2.png" width="100px" height="100px" alt="로고"></a>
+		</div>
+
+		<!-- 메뉴 -->
+		<div class="flex-grow-1">
+			<ul class="d-flex justify-content-center main-menu">
+				<li class="nav-item"><a href="/process">개요</a>
+					<!-- 서브메뉴 -->
+					<div class="submenu">
+						<a class="nav-link" href="/process">개발 과정</a>
+					</div>
+				</li>
+				<li class="nav-item"><a href="/tourist">제주 관광지</a></li>
+				<li class="nav-item"><a class="nav-link" href="#">전기차 충전소</a>
+					<!-- 서브메뉴 -->
+					<div class="submenu">
+						<a href="/ev/list">전기차 충전소</a>
+						<a href="/ev/chart">전기차 충전소 그래프</a>
+					</div>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="/board/list">게시판</a>
+					<!-- 서브메뉴 -->
+					<div class="submenu">
+						<c:forEach items="${cateList}" var="cate">
+							<a class="nav-link" href="/board/${cate.cid}/list">${cate.cname}</a>
+						</c:forEach>
+					</div>
+				</li>
+
+				<c:if test="${principal.role == 'ROLE_ADMIN'}">
+					<li class="nav-item"><a class="nav-link" href="/admin/home">관리자</a>
+						<div class="submenu">
+							<a href="/admin/userList">회원목록</a> <a href="/admin/home">관리자페이지</a>
+						</div></li>
+				</c:if>
+			</ul>
+		</div>
+
+		<!-- 로그인/회원가입 버튼 영역 -->
+		<div
+			class="p-2 d-flex justify-content-center align-items-center auth-buttons ml-auto">
+			<c:if test="${empty principal}">
+				<a class="btn btn-outline-primary mx-2" href="/auth/loginForm">로그인</a>
+				<a class="btn btn-outline-primary mx-2" href="/auth/joinForm">회원가입</a>
+			</c:if>
+			<c:if test="${not empty principal}">
+				<span>${principal.name}님 환영합니다.</span>
+				<a class="btn btn-outline-primary mx-2" href="/auth/logout">로그아웃</a>
+				<a class="btn btn-outline-primary mx-2"
+					href="/user/read/${principal.username}">회원정보</a>
+			</c:if>
+		</div>
+
+	</div>
+</div>
+
+
+
 
 
 <script>

@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <!DOCTYPE html>
 <html>
@@ -78,13 +75,13 @@ form select {
 <div class="container" id="board_list_css">
 	<div>
 	    <!-- 게시판 전체 목록일 때 -->
-	    <c:if test="${empty cname}">
+	    <c:if test="${empty cateEntity}">
 	        <h3>전체 목록</h3>
 	    </c:if>
 	
 	    <!-- 각 게시판 목록일 때 -->
-	        <c:if test="${not empty cname}">
-	            <h3>${cname} 목록</h3>
+	        <c:if test="${not empty cateEntity}">
+	            <h3>${cateEntity.cname} 목록</h3>
 	        </c:if>
 	</div>
 
@@ -114,7 +111,6 @@ form select {
 	<!-- 검색 -->
 	<div class="d-flex justify-content-center">
 		<form method="get">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<select name="type">
 				<option value="title" ${criteria.type == 'title' ? 'selected':''}>제목</option>
 				<option value="writer" ${criteria.type == 'writer' ? 'selected':''}>작성자</option>
@@ -143,76 +139,34 @@ form select {
 	</div>
 	
 	<div>
-		<a id="board_list_write_btn" class="btn btn-success ">글쓰기</a>
+		<c:choose>
+			<c:when test="${not empty principal && principal.role == 'ROLE_ADMIN' && not empty cateEntity && cateEntity.cname == '공지사항'}">
+				<a href="/board/${cateEntity.cid}/insert" id="board_list_write_btn" class="btn btn-success">글쓰기</a>
+			</c:when>
+			
+			<c:when test="${not empty principal && principal.role == 'ROLE_USER' && not empty cateEntity && cateEntity.cname == '공지사항'}">
+			</c:when>
+			
+			<c:when test="${empty principal && not empty cateEntity && cateEntity.cname == '공지사항'}">
+			</c:when>
+			
+			<c:when test="${empty principal}">
+				<a href="/auth/loginForm" class="btn btn-success">글쓰기</a>
+			</c:when>
+			
+			<c:when test="${not empty cateEntity}">
+				<a href="/board/${cateEntity.cid}/insert" id="board_list_write_btn" class="btn btn-success">글쓰기</a>
+			</c:when>
+			
+			<c:otherwise>
+				<a href="/board/insert" id="board_list_write_btn" class="btn btn-success">글쓰기</a>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
 </div>
 
 <script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript">
-
-	let page = $("input[name='page']");
-	let type = getSearchParam("type");
-	let keyword = getSearchParam("keyword");
-	
-	// 전체 URI 가져오기
-    let uri = document.location.pathname; // /board/{id}/insert
-    // '/' 기준으로 분리
-    let parts = uri.split("/");
- 	// 배열의 두 번째 요소가 카테고리
-    let cid = parts[2]; 
-	
- 	
- 	
-	// 상세페이지로 이동
-	$(".board_list_boardList").find("a").click(function(event) {
-		event.preventDefault();
-		let bId = $(this).attr("href");
-	
-		let form = $("<form>").attr("action", "/board/read/" + bId).attr("method", "get").append(getHiddenTag("page", page.val()));
-	
-		if (type != null && keyword != null) {
-			form.append(getHiddenTag("type", type));
-			form.append(getHiddenTag("keyword", keyword));
-		}
-	
-		form.appendTo("body").submit();
-	
-	});
-
-	// 페이지 이동
-	$("#pagination").find("a").click(function(event) {
-		event.preventDefault();
-	
-		let form;
-		
-		if(cid == null || cid =='list') {
-			form = $("<form>").attr("action", "/board/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
-		}else{
-			form = $("<form>").attr("action", "/board/"+cid+"/list").attr("method", "get").append(getHiddenTag("page", $(this).attr("href")));
-		}
-		
-		if (type != null && keyword != null) {
-			form.append(getHiddenTag("type", type));
-			form.append(getHiddenTag("keyword", keyword));
-		}
-	
-		form.appendTo("body").submit();
-	
-	});
- 	
-// 	// 주소값에 cate 적용하기
-// 	$('#board_list_write_btn').attr('href', '/board/' + cate + '/insert');
-    
-	// 만약 cate이 '공지사항'이면 글쓰기 버튼을 숨김
-    if (cid === "notice") {
-        $('#board_list_write_btn').remove(); 
-    } else if(cid === "list") {
-    	$('#board_list_write_btn').attr('href', '/board/insert');
-    }else{
-        $('#board_list_write_btn').attr('href', '/board/' + cid + '/insert');
-    }
-	
-</script>
+<script type="text/javascript" src="/js/boardService.js"></script>
 </body>
 </html>
