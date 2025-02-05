@@ -37,5 +37,10 @@ public class CateController {
 		return "redirect:/admin/home";
 	}
 	
+	// 카테고리 추가화면
+	@GetMapping("/cateInsert")
+	public String cateInsert() {
+		return "admin/cateInsert";
+	}
 	
 }

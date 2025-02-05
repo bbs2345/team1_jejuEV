@@ -17,6 +17,9 @@
 <body>
 <%@ include file="../part/part_header.jsp" %>
 
+
+<!-- 	날려도 되는 jsp     -->
+
 	<div class="container">
 		<div>
 			<h3>공지사항 입력</h3>

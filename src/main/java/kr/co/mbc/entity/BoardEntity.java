@@ -42,7 +42,7 @@ public class BoardEntity {
 	@Column(nullable = false, length = 60)
 	private String title;
 	
-	@Column(length = 30, nullable = false)
+	@Column(length = 60, nullable = false)
 	private String writer;
 	
 	@Column(columnDefinition = "TEXT", nullable = false)

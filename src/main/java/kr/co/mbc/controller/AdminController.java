@@ -44,44 +44,44 @@ public class AdminController {
 	private final BoardService boardService;
 	private final UploadFileUtils uploadFileUtils;
 	
-	// 공지사항 입력 기능
-	@PostMapping("/noticeInsert")
-	public String noticeInsert(BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {
-		
-		UserEntity userEntity = userService.findByUsername(boardForm.getWriter());
-		
-		BoardEntity boardEntity = BoardEntity.toBoardEntity(boardForm);
-		
-		CateEntity cateEntity = cateService.findByCname("공지사항");
-		
-		boardEntity.setCate(cateEntity);
-		boardEntity.setUser(userEntity);
-		boardEntity.setCreateDate(formatDateUtil.getCurrentDate());
-		boardEntity.setUpdateDate(formatDateUtil.getCurrentDate());
-		
-		boardService.save(boardEntity);
-		
-		
-		MultipartFile multipartFile = mRequest.getFile("myfile");
-		
-		if (!multipartFile.isEmpty()) {
-			String fullFileName = uploadFileUtils.uploadBoardFile(multipartFile, SERVICEPATH, boardEntity.getId());
-			AttachEntity attachEntity = new AttachEntity(null, fullFileName, boardEntity);
-			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
-		}
-		
-		return "redirect:/board/"+ cateEntity.getCid() + "/list";
-	}
+//	// 공지사항 입력 기능
+//	@PostMapping("/noticeInsert")
+//	public String noticeInsert(BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {
+//		
+//		UserEntity userEntity = userService.findByUsername(boardForm.getWriter());
+//		
+//		BoardEntity boardEntity = BoardEntity.toBoardEntity(boardForm);
+//		
+//		CateEntity cateEntity = cateService.findByCname("공지사항");
+//		
+//		boardEntity.setCate(cateEntity);
+//		boardEntity.setUser(userEntity);
+//		boardEntity.setCreateDate(formatDateUtil.getCurrentDate());
+//		boardEntity.setUpdateDate(formatDateUtil.getCurrentDate());
+//		
+//		boardService.save(boardEntity);
+//		
+//		
+//		MultipartFile multipartFile = mRequest.getFile("myfile");
+//		
+//		if (!multipartFile.isEmpty()) {
+//			String fullFileName = uploadFileUtils.uploadBoardFile(multipartFile, SERVICEPATH, boardEntity.getId());
+//			AttachEntity attachEntity = new AttachEntity(null, fullFileName, boardEntity);
+//			attachService.save(attachEntity);  // 새로 업로드된 파일 정보 저장
+//		}
+//		
+//		return "redirect:/board/"+ cateEntity.getCid() + "/list";
+//	}
 	
-	// 공지사항 입력 화면
-	@GetMapping("/noticeInsert")
-	public String noticeInsert(Model model) {
-		CateEntity cateEntity = cateService.findByCname("공지사항");
-		
-		model.addAttribute("cateEntity", cateEntity);
-		
-		return "admin/noticeInsert";
-	}
+//	// 공지사항 입력 화면
+//	@GetMapping("/noticeInsert")
+//	public String noticeInsert(Model model) {
+//		CateEntity cateEntity = cateService.findByCname("공지사항");
+//		
+//		model.addAttribute("cateEntity", cateEntity);
+//		
+//		return "admin/noticeInsert";
+//	}
 	
 	// 관리자화면
 	@GetMapping("/home")
@@ -92,12 +92,6 @@ public class AdminController {
 		context.setAttribute("cateList", cateList);
 		
 		return "admin/home";
-	}
-	
-	// 카테고리 추가화면
-	@GetMapping("/cateInsert")
-	public String cateInsert() {
-		return "admin/cateInsert";
 	}
 	
 	// 회원목록

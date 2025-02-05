@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import kr.co.mbc.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails{
@@ -52,6 +53,10 @@ public class CustomUserDetails implements UserDetails{
 	public String getName() {
 		return userEntity.getName();
 	}
+	
+	public String getProfileImage() {
+		return userEntity.getProfileImage();
+	};
 
 //	public UserEntity getUserEntity() {
 //		// TODO Auto-generated method stub

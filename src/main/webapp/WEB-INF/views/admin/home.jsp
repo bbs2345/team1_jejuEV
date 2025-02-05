@@ -39,8 +39,8 @@
 			</c:forEach>
 		</table>
 
-		<a href="/admin/cateInsert">카테고리등록</a>
-		<a href="/admin/noticeInsert">공지사항등록</a>
+		<a href="/cate/cateInsert">카테고리등록</a>
+		<a href="/board/notice/insert">공지사항등록</a>
 	</div>
 
 

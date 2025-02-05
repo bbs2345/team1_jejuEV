@@ -19,10 +19,10 @@ public class SecurityConfig {
 	
 	private final CustomOAuth2UserService customOAuth2UserService;
 	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+//	@Bean
+//	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//		return new BCryptPasswordEncoder();
+//	}
 	
 
 	@Bean
@@ -67,7 +67,7 @@ public class SecurityConfig {
 		// 권한 설정
 		http.authorizeHttpRequests(
 				(auth) -> auth
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/cate/**" ,"/admin/**").hasRole("ADMIN")
 				.requestMatchers("/user/**" , "/board/**", "/replies/**", "/boardReactions/**", "/replyReactions/**").hasAnyRole("ADMIN", "USER")
 				.requestMatchers("/**").permitAll()
 				);

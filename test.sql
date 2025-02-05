@@ -1,6 +1,7 @@
 select * from tbl_user;
 SELECT * FROM tbl_user LIMIT 10 OFFSET 0;
 delete from tbl_user;
+delete from tbl_user where id = 8;
 
 <<<<<<< HEAD
 UPDATE tbl_user
