@@ -42,9 +42,6 @@ public class BoardEntity {
 	@Column(nullable = false, length = 60)
 	private String title;
 	
-	@Column(length = 60, nullable = false)
-	private String writer;
-	
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 	
@@ -78,7 +75,6 @@ public class BoardEntity {
 	public static BoardEntity toBoardEntity(BoardForm boardForm) {
 		return BoardEntity.builder()
 				.title(boardForm.getTitle())
-				.writer(boardForm.getWriter())
 				.content(boardForm.getContent())
 				.build();
 	}

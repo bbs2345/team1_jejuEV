@@ -89,56 +89,60 @@ function makeReplyListTag(obj) {
 	for (i of obj) {
 		tag += `			
 		<div class='d-flex'>
-			<div>
-			작성자 : ${i.writer}  내용 : ${i.content}  작성일 : ${i.writeDate}  
-			</div>`;
-
-		tag += `
-		<div class="reply_list_btns_reaction">
-		<button class="reply-reaction-button" data-reaction-type="like" data-rId="${i.id}">
-		<i class="bi bi-hand-thumbs-up"></i><span id="reply-like-count-${i.id}">`;
-
-		if (i.likes == null) {
-			tag += `</span>`;
-		}
-		if (i.likes != null) {
-			tag += `${i.likes}</span>`;
-		}
-		tag += `
-		</button>
-		<button class="reply-dislike-button" data-reaction-type="dislike" data-rId="${i.id}">
-		<i class="bi bi-hand-thumbs-down"></i><span id="reply-dislike-count-${i.id}">`;
-
-		if (i.dislikes != null) {
-			tag += `
-			${i.dislikes}</span>`;
-		}
-		tag += `</span>
-		</button>
-		</div>
-		`;
-		if (i.writer == $("input[name='username']").val()) {
-			tag += `
-			<div class="replyOriBtn" style="display: block;">
-				<button type='button' class='reply_btn_update' data-rId='${i.id}'>수정</button> 
-				<button type='button' class='reply_btn_delete' data-rId='${i.id}'>삭제</button>
-			</div>
-			
-			<div class="replyUpBtn" style="display: none;">
-			    <input type="text" class="reply_edit_input" value="${i.content}" />
-			    <button type="button" class="reply_save_btn" data-id="${i.id}">저장</button>
-			    <button type="button" class="reply_cancel_btn" data-id="${i.id}">취소</button>
+			<div id="reply_lists">
+				<div class="comment-header">
+				<strong>${i.writer}</strong> · ${i.writeDate}
+				</div>
+				<div class="comment-text">${i.content}</div>
 			</div>
 			`;
-		}
-		tag += `
-		</div>
-		<hr>`;
 
-	}
+					if (i.writer == $("input[name='username']").val()) {
+						tag += `
+						<div class="replyOriBtn" style="display: block;">
+							<button type='button' class='reply_btn_update' data-rId='${i.id}'>수정</button> 
+							<button type='button' class='reply_btn_delete' data-rId='${i.id}'>삭제</button>
+						</div>
+						
+						<div class="replyUpBtn" style="display: none;">
+						    <input type="text" class="reply_edit_input" value="${i.content}" />
+						    <button type="button" class="reply_save_btn" data-id="${i.id}">저장</button>
+						    <button type="button" class="reply_cancel_btn" data-id="${i.id}">취소</button>
+						</div>
+						`;
+					}
+					tag += `
+					<div class="reply_list_btns_reaction">
+					<button class="reply-reaction-button" data-reaction-type="like" data-rId="${i.id}">
+					<i class="bi bi-hand-thumbs-up"></i><span id="reply-like-count-${i.id}">`;
 
-	return tag;
-}
+					if (i.likes == null) {
+						tag += `</span>`;
+					}
+					if (i.likes != null) {
+						tag += `${i.likes}</span>`;
+					}
+					tag += `
+					</button>
+					<button class="reply-dislike-button" data-reaction-type="dislike" data-rId="${i.id}">
+					<i class="bi bi-hand-thumbs-down"></i><span id="reply-dislike-count-${i.id}">`;
+
+					if (i.dislikes != null) {
+						tag += `
+						${i.dislikes}</span>`;
+					}
+					tag += `</span>
+					</button>
+					</div>
+					`;
+					tag += `
+					</div>
+					<hr>`;
+
+				}
+
+				return tag;
+			}
 
 
 // 댓글 수정
@@ -326,6 +330,7 @@ $(function() {
 			alert("로그인 후 작성해주세요.");
 			return;
 		}
+		});
 
 
 	// 댓글 작성
