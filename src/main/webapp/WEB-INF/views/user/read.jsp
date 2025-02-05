@@ -1,14 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
-<sec:authorize access="isAuthenticated( )">
-   <sec:authentication property="principal" var="principal"/>
-</sec:authorize> 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,9 +18,17 @@
 		<h3 class="jeju-header">회원정보 상세보기</h3>
 	</div>
 	
+	<input id="csrf_value" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<div class="jeju-info">
 		<div class="profile-image">
-			<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" class="profile-img">
+			<c:choose>
+				<c:when test="${not empty userResponse.profileImage}">
+					<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" class="profile-img">
+				</c:when>
+				<c:otherwise>
+					<img class="profile-img">
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div class="info-item">
 			아이디 : ${userResponse.username}
@@ -52,7 +51,6 @@
 		
 		<a href="/user/updateForm/${userResponse.username}" class="jeju-link">회원정보 수정</a>
 		<a id="user_read_deleteuser" href="${userResponse.username}" class="jeju-link">회원탈퇴</a>
-		<input id="csrf_value" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</div>
 </div>
 

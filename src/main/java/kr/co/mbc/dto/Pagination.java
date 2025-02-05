@@ -1,6 +1,5 @@
-package kr.co.mbc.utils;
+package kr.co.mbc.dto;
 
-import kr.co.mbc.dto.Criteria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

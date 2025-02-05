@@ -1,7 +1,6 @@
 package kr.co.mbc.controller;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 
@@ -18,21 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-
 import kr.co.mbc.dto.BoardForm;
 import kr.co.mbc.dto.BoardResponse;
 import kr.co.mbc.dto.Criteria;
+import kr.co.mbc.dto.Pagination;
 import kr.co.mbc.entity.AttachEntity;
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
+import kr.co.mbc.service.BoardReactionService;
 import kr.co.mbc.service.BoardService;
 import kr.co.mbc.service.CateService;
-import kr.co.mbc.service.BoardReactionService;
 import kr.co.mbc.service.UserService;
 import kr.co.mbc.utils.FormatDateUtil;
-import kr.co.mbc.utils.Pagination;
 import kr.co.mbc.utils.UploadFileUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -63,12 +61,34 @@ public class BoardController {
 		
 		UserEntity userEntity = userService.findByUsername("m001");
 		String currentDate = formatDateUtil.getCurrentDate();
-		CateEntity freecate = cateService.findByCid("qna");
+		CateEntity cate1 = cateService.findByCid("free");
+		CateEntity cate2 = cateService.findByCid("notice");
+		CateEntity cate3 = cateService.findByCid("qna");
 		
 		for (int i = 1; i < 311; i++) {
 			BoardEntity boardEntity = BoardEntity.builder()
-					.cate(freecate)
-					.title("제목"+i)
+					.cate(cate1)
+					.title("자유글"+i)
+					.content("QnA내용입니다.")
+					.createDate(currentDate)
+					.user(userEntity).build();
+			boardService.save(boardEntity);
+		}
+		
+		for (int i = 1; i < 311; i++) {
+			BoardEntity boardEntity = BoardEntity.builder()
+					.cate(cate2)
+					.title("공지"+i)
+					.content("QnA내용입니다.")
+					.createDate(currentDate)
+					.user(userEntity).build();
+			boardService.save(boardEntity);
+		}
+		
+		for (int i = 1; i < 311; i++) {
+			BoardEntity boardEntity = BoardEntity.builder()
+					.cate(cate3)
+					.title("질문"+i)
 					.content("QnA내용입니다.")
 					.createDate(currentDate)
 					.user(userEntity).build();
@@ -94,7 +114,6 @@ public class BoardController {
 	//이미지 넣기
 	@GetMapping("/imgDisplay")
 	public ResponseEntity<byte[]> imgDisplay(String fullFileName) {
-		
 		ResponseEntity<byte[]> responseEntity = uploadFileUtils.imgDisplay(fullFileName);
 		
 		return responseEntity;
@@ -103,6 +122,13 @@ public class BoardController {
 	// 삭제 기능
 	@PostMapping("/delete")
 	public String delete(Long id) {
+		BoardEntity boardEntity = boardService.findById(id);
+		List<AttachEntity> fileList = boardEntity.getAttachList();
+		
+		for (AttachEntity file : fileList) {
+			uploadFileUtils.deleteFile(file.getFilename());
+		}
+		
 		boardService.delete(id);
 		return "redirect:/board/list";
 	}
@@ -146,8 +172,6 @@ public class BoardController {
 
 	    boardService.update(boardEntity);  // 수정된 게시글 저장
 
-
-		
 		return "redirect:/board/read/" + boardEntity.getId();
 	}
 
@@ -164,24 +188,13 @@ public class BoardController {
 	    BoardResponse boardResponse = BoardEntity.toBoardResponse(boardEntity);
 	    model.addAttribute("boardResponse", boardResponse);
 
-	    // 기존 파일 목록
-	    List<AttachEntity> fileList = attachService.findByBoard(boardEntity);
-	    model.addAttribute("fileList", fileList);
-
-	    // 파일 미리보기 처리
-	    if (!fileList.isEmpty()) {
-	        String existingFileName = fileList.get(0).getFilename();
-	        ResponseEntity<byte[]> preview = uploadFileUtils.previewImage(existingFileName);
-	        model.addAttribute("preview", preview);
-	    }
-
 	    return "board/update";
 	}
 
 
 	// 읽기 기능
-	@GetMapping("/read/{id}")
-	public String read(@PathVariable("id") Long id, Model model, Criteria criteria) {
+	@GetMapping({"/read/{id}" , "{cid}/read/{id}"})
+	public String read(@PathVariable(value = "cid", required = false) String cid, @PathVariable("id") Long id, Model model, @ModelAttribute("criteria") Criteria criteria) {
 		
 		BoardEntity dto = boardService.findById(id);
 		
@@ -192,33 +205,33 @@ public class BoardController {
 		int likesCount = reactionService.findByBoardAndReactionType(dto, "like").size();
 		int dislikesCount = reactionService.findByBoardAndReactionType(dto, "dislike").size();
 		
-		
 		BoardResponse boardResponse = BoardEntity.toBoardResponse(dto);
 		
 		String con = dto.getContent();
 		con = con.replace("\n", "<br>");
 		dto.setContent(con);
 		
-		List<AttachEntity> fileList = attachService.findByBoard(dto);
-
 		model.addAttribute("boardResponse", boardResponse);
-		model.addAttribute("fileList", fileList);
-		model.addAttribute("criteria", criteria);
 		model.addAttribute("reactionCounts", Map.of("likes", likesCount, "dislikes", dislikesCount));
 		
 		return "board/read";
 	}
 	
 	@GetMapping({"/list" , "/{cid}/list"})
-	public String boardList(@PathVariable(value = "cid", required = false) String cid, Criteria criteria, Model model) {
+	public String boardList(@PathVariable(value = "cid", required = false) String cid, @ModelAttribute("criteria") Criteria criteria, Model model) {
 	    
+		if (criteria.getType() == "writer" && criteria.getType() != null) {
+			String username = criteria.getKeyword();
+			UserEntity userEntity = userService.findByUsername(username);
+			String uId = userEntity.getId().toString();
+			criteria.setKeyword(uId);
+		}
+		
 		if (cid != null) {
 			criteria.setCateId(cid);
 			CateEntity cateEntity = cateService.findByCid(cid);
-			String cname = cateEntity.getCname();
-			model.addAttribute("cname", cname);
+			model.addAttribute("cateEntity", cateEntity);
 		}
-		
 		
 	    // 게시판 목록 가져오기
 	    List<BoardEntity> boardEntities = boardService.findAll(criteria);  // `cid`와 `criteria`를 전달
@@ -236,63 +249,10 @@ public class BoardController {
 
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("pagination", pagination);
-	    model.addAttribute("criteria", criteria);
 	    
 	    return "board/list";
 	}
 	
-//	@GetMapping("/{cid}/list")
-//	public String boardList(@PathVariable(value = "cid", required = false) String cid,Criteria criteria, Model model) {
-//
-//		CateEntity cateEntity = cateService.findByCid(cid);
-//		
-//		List<BoardEntity> boardEntities = boardService.findAll(criteria, cid);
-//		
-//	    List<BoardResponse> boardList = new ArrayList<>();
-//	    if (!"board".equals(cid)) {
-//	        
-//	        for (BoardEntity boardEntity : boardEntities) {
-//	        	
-//	            if (boardEntity.getCate().getCname().equals(cateEntity.getCname())) {
-//	                boardList.add(BoardEntity.toBoardResponse(boardEntity));
-//	            }
-//	            
-//	        }
-//	    } else {
-//	        for (BoardEntity boardEntity : boardEntities) {
-//	            boardList.add(BoardEntity.toBoardResponse(boardEntity));
-//	        }
-//	    }
-//		
-//		Long totalCount = boardService.getTotalCount(criteria, cid);
-//		
-//		Pagination pagination = new Pagination(criteria, totalCount);
-//		
-//		model.addAttribute("boardList", boardList);
-//		model.addAttribute("pagination", pagination);
-//		model.addAttribute("criteria", criteria);
-//		
-//		return "board/list";
-//	}
-
-	/*
-	// 목록 보기
-	@GetMapping("/list")
-	public void list(Model model) {
-		
-		List<BoardEntity> boardEntities = boardService.findAll();
-
-		List<BoardResponse> boardList = new ArrayList<>();
-		
-		for (BoardEntity boardEntity : boardEntities) {
-			BoardResponse boardResponse = BoardEntity.toBoardResponse(boardEntity);
-			boardList.add(boardResponse);
-		}
-
-		model.addAttribute("boardResponseList", boardList);
-	}
-	*/
-
 	// 게시글 입력 기능
 	@PostMapping("/{cid}/insert")
 	public String insert(@PathVariable("cid")String cid, BoardForm boardForm, MultipartHttpServletRequest mRequest) throws Exception {

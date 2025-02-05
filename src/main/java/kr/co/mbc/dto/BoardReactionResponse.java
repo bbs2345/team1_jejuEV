@@ -1,7 +1,6 @@
 package kr.co.mbc.dto;
 
 import kr.co.mbc.entity.BoardEntity;
-import kr.co.mbc.entity.ReplyEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

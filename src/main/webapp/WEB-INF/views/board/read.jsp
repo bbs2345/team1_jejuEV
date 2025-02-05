@@ -1,35 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
-<sec:authorize access="isAuthenticated( )">
-   <sec:authentication property="principal" var="principal"/>
-</sec:authorize> 
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>게시글 자세히 보기</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-	type="text/javascript"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 	<link href="/css/replyStyle.css" rel="stylesheet">
 	<link href="/css/boardStyle.css" rel="stylesheet">
-	<style type="text/css">
+<style type="text/css">
 	
 table {
     width: 100%;
@@ -132,8 +115,8 @@ button{
 	    <link href="/css/boardStyle.css" rel="stylesheet">
 </head>
 <body>
-
-	<%@ include file="../part/part_header.jsp"%>
+<%@ include file="../part/part_header.jsp" %>
+	
 
 	<div class="container" id="board_read_css">
 		<div>
@@ -142,7 +125,7 @@ button{
 		
 		<div>
 			<form action="/board/delete" method="post" id="board_delete_service">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+				<input type="hidden" id="board_read_csrfToken" name="${_csrf.parameterName}" value="${_csrf.token}">
 				<input type="hidden" name="id" value="${boardResponse.id}" /> 
 				<input type="hidden" name="username" value="${principal.username}">
 				<input type="hidden" name="reactionLike" value="${reactionResponse.likes}">
@@ -169,9 +152,8 @@ button{
 					<tr>
 						<td colspan="4">
 							<div class="images">
-								<c:forEach items="${fileList}" var="dto">
-									<img src="/board/imgDisplay?fullFileName=${dto.filename}"
-										width="100px" height="100px">
+								<c:forEach items="${boardResponse.attachList}" var="dto">
+									<img src="/board/imgDisplay?fullFileName=${dto.filename}" width="100px" height="100px">
 								</c:forEach>
 							</div>
 						</td>
@@ -185,8 +167,8 @@ button{
 			    <a href="${criteria.page}" id="toBoardList">목록</a> 
 			    
 			    <c:if test="${principal.role == 'ROLE_ADMIN' or principal.username == boardResponse.writer}">
-				    <a href="/board/update/${boardResponse.id}">수정</a> 
-				    <a id=delete_board_botton href="#">삭제</a>
+				    <a href="/board/update/${boardResponse.id}">수정</a>
+				    <a href="#" id="delete_board_botton">삭제</a>
 			    </c:if>
 		    </div>
 		    
@@ -216,28 +198,24 @@ button{
 			<div class="container">
 				<h5>댓글작성</h5>
 				<!-- 댓글 작성 -->
-				<form action="/replies/" method="post" id="replyForm"
-					enctype="application/json">
-				<input type="hidden" id="csrf_token_value" name="${_csrf.parameterName}" value="${_csrf.token}">
+				<form action="/replies/" method="post" id="replyForm" enctype="application/json">
+					<input type="hidden" id="csrf_token_value" name="${_csrf.parameterName}" value="${_csrf.token}">
 					
-					<input id="ttt" type="hidden" name="boardId"
-						value="${boardResponse.id}" />
+					<input id="ttt" type="hidden" name="boardId" value="${boardResponse.id}" />
 	
 					<!-- 로그인해야만 댓글작성 할 수 있도록 바꾸기 -->
 					<div>
 						<c:if test="${empty principal}">
-							<input type="text" id="replyWriter" class="empty-form-control"
-								placeholder="작성자" required />
+							<input type="text" id="replyWriter" class="empty-form-control" placeholder="작성자" required />
 						</c:if>
 						<c:if test="${not empty principal}">
-							<input type="text" id="replyWriter" class="form-control"
-								readonly="readonly" value="${principal.username}" />
+							<input readonly="readonly" value="${principal.name}">
+							<input type="hidden" id="replyWriter" class="form-control" readonly="readonly" value="${principal.username}" />
 						</c:if>
 					</div>
 	
 					<div>
-						<textarea id="replyContent" class="form-control" rows="3"
-							placeholder="댓글 내용을 입력해 주세요" required></textarea>
+						<textarea id="replyContent" class="form-control" rows="3" placeholder="댓글 내용을 입력해 주세요" required></textarea>
 					</div>
 					<button id="board_read_reply_insert" type="button">댓글 작성</button>
 				</form>
@@ -247,35 +225,18 @@ button{
 			</div>
 		
 		</div>
-<!-- ---------------------------------------------------- -->
 		<div class=" d-flex justify-content-center" id="reply_pagenation"></div>
-<!-- --------------------------------------------------------------------------- -->
 	</div>
 		
 
-	<script type="text/javascript" src="/js/common.js"></script>
-	<script type="text/javascript" src="/js/boardService.js"></script>
-	<script type="text/javascript" src="/js/replyService.js"></script>
-	<script type="text/javascript">
-
-	let type = getSearchParam("type");
-	let keyword = getSearchParam("keyword");
-	
-	// 글 목록 페이지로 이동
-	   $("#toBoardList").click(function(event){
-	      event.preventDefault();
-	      let page = $(this).attr("href");
-	      
-	      let form = $("<form>").attr("action", "/board/list").append(getHiddenTag("page", page));
-	      if (type != null && keyword != null) {
-	         form.append(getHiddenTag("type", type));
-	         form.append(getHiddenTag("keyword", keyword));
-	      }
-	      form.appendTo("body").submit();
-	      
-	   });
-	
-
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/boardService.js"></script>
+<script type="text/javascript" src="/js/replyService.js"></script>
+<<<<<<< HEAD
+=======
+<script type="text/javascript">
+	getReaction();
 </script>
+>>>>>>> 874d2df (수정완료)
 </body>
 </html>

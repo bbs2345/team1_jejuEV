@@ -2,7 +2,6 @@ package kr.co.mbc.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,18 +48,9 @@ public class UserController {
 	}
 	*/
 	
-	
 	// 회원 프로필이미지 불러오기
 	@GetMapping("/imgDisplay")
 	public ResponseEntity<byte[]> imgDisplay(String fullFileName) {
-		
-		/*
-		// 마지막 '/'의 인덱스를 찾고, 파일네임만 추출
-        String fileName = fullFileName.substring(fullFileName.lastIndexOf("/") + 1);
-        
-        // 마지막 '/'의 인덱스를 찾고, 경로만 추출
-        String filePath = fullFileName.substring(0, fullFileName.lastIndexOf("/"));
-		*/
 		ResponseEntity<byte[]> entity = uploadFileUtils.imgDisplay(fullFileName);
         
 		return entity;
@@ -102,10 +92,9 @@ public class UserController {
 			
 			String newFileName = uploadFileUtils.uploadFile(multipartFile, SERVICEPATH, userForm.getUsername());
 			userEntity.setProfileImage(newFileName);
-			
 		}
 		
-		userService.save(userEntity);
+		userService.update(userEntity);
 		
 		return "redirect:/user/read/"+userForm.getUsername();
 	}

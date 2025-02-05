@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.co.mbc.dto.UserForm;
 import kr.co.mbc.entity.UserEntity;
@@ -43,14 +42,6 @@ public class AuthController {
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder; 
 	
-//	@GetMapping("/logout")
-//	public String logout(HttpSession session) {
-//		
-//		session.removeAttribute("userEntity");
-//		
-//		return "redirect:/";
-//	}
-	
 	// 로그아웃 처리
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
@@ -65,7 +56,7 @@ public class AuthController {
 
 	// 로그인 처리
 	@PostMapping("/login")
-	public String login(String username, String password, HttpSession session) {
+	public String login(String username, String password) {
 		
 		UserEntity userEntity = userService.findByUsername(username);
 		
@@ -73,8 +64,6 @@ public class AuthController {
 	        // 사용자 없음 또는 비밀번호 불일치
 	        return "auth/loginForm";
 	    }
-		
-		session.setAttribute("userEntity", userEntity);
 		
 		return "redirect:/";
 	}
