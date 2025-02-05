@@ -14,7 +14,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import kr.co.mbc.dto.BoardResponse;
 import kr.co.mbc.dto.ReplyResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +35,6 @@ public class ReplyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
    
-	private String writer; // 나중에 없앨것, 작성자는 user에서 가져오기
-    
 	@Column(length = 300, nullable = false)
 	private String content;
 	

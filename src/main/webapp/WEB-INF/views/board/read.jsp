@@ -169,9 +169,8 @@ button{
 					<tr>
 						<td colspan="4">
 							<div class="images">
-								<c:forEach items="${fileList}" var="dto">
-									<img src="/board/imgDisplay?fullFileName=${dto.filename}"
-										width="100px" height="100px">
+								<c:forEach items="${boardResponse.attachList}" var="dto">
+									<img src="/board/imgDisplay?fullFileName=${dto.filename}" width="100px" height="100px">
 								</c:forEach>
 							</div>
 						</td>
@@ -253,29 +252,8 @@ button{
 	</div>
 		
 
-	<script type="text/javascript" src="/js/common.js"></script>
-	<script type="text/javascript" src="/js/boardService.js"></script>
-	<script type="text/javascript" src="/js/replyService.js"></script>
-	<script type="text/javascript">
-
-	let type = getSearchParam("type");
-	let keyword = getSearchParam("keyword");
-	
-	// 글 목록 페이지로 이동
-	   $("#toBoardList").click(function(event){
-	      event.preventDefault();
-	      let page = $(this).attr("href");
-	      
-	      let form = $("<form>").attr("action", "/board/list").append(getHiddenTag("page", page));
-	      if (type != null && keyword != null) {
-	         form.append(getHiddenTag("type", type));
-	         form.append(getHiddenTag("keyword", keyword));
-	      }
-	      form.appendTo("body").submit();
-	      
-	   });
-	
-
-</script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/boardService.js"></script>
+<script type="text/javascript" src="/js/replyService.js"></script>
 </body>
 </html>

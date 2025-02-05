@@ -27,9 +27,17 @@
 		<h3 class="jeju-header">회원정보 상세보기</h3>
 	</div>
 	
+	<input id="csrf_value" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	<div class="jeju-info">
 		<div class="profile-image">
-			<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" class="profile-img">
+			<c:choose>
+				<c:when test="${not empty userResponse.profileImage}">
+					<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" class="profile-img">
+				</c:when>
+				<c:otherwise>
+					<img class="profile-img">
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div class="info-item">
 			아이디 : ${userResponse.username}
@@ -52,7 +60,6 @@
 		
 		<a href="/user/updateForm/${userResponse.username}" class="jeju-link">회원정보 수정</a>
 		<a id="user_read_deleteuser" href="${userResponse.username}" class="jeju-link">회원탈퇴</a>
-		<input id="csrf_value" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	</div>
 </div>
 

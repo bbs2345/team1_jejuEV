@@ -4,16 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.transaction.Transactional;
 import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.entity.AttachEntity;
-import kr.co.mbc.entity.AttachEntity.AttachEntityBuilder;
 import kr.co.mbc.entity.BoardEntity;
-import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.repository.BoardRepository;
-import kr.co.mbc.utils.UploadFileUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,14 +17,12 @@ import lombok.RequiredArgsConstructor;
 public class BoardService {
 	private final BoardRepository boardRepository;
 	private final AttachService attachService;
-	private final UploadFileUtils uploadFileUtils;
 
 	public BoardEntity save(BoardEntity boardEntity) {
 		return boardRepository.save(boardEntity);
 	}
 
 	public List<BoardEntity> findAll() {
-		// TODO Auto-generated method stub
 		List<BoardEntity> list = boardRepository.findAll();
 		
 		return list;

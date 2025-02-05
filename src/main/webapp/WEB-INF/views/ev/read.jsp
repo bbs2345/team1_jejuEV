@@ -37,6 +37,7 @@
 <div class="container">
 	<h2>${stationEntity.statNm}</h2>
 	<input type="hidden" name="statId" value="${stationEntity.statId}">
+	<a id="backList">목록</a>
 	<div>
 		<table class="table table-bordered">
 			<thead>

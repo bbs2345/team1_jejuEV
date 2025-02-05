@@ -43,14 +43,6 @@ public class AuthController {
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder; 
 	
-//	@GetMapping("/logout")
-//	public String logout(HttpSession session) {
-//		
-//		session.removeAttribute("userEntity");
-//		
-//		return "redirect:/";
-//	}
-	
 	// 로그아웃 처리
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
@@ -73,8 +65,6 @@ public class AuthController {
 	        // 사용자 없음 또는 비밀번호 불일치
 	        return "auth/loginForm";
 	    }
-		
-		session.setAttribute("userEntity", userEntity);
 		
 		return "redirect:/";
 	}

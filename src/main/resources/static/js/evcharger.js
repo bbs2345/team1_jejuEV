@@ -70,6 +70,25 @@ $(function() {
 	
 	getCharcerInfo(statId);
 	
-	
-	
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    let backButton = document.getElementById("backList");
+
+    let currentParams = window.location.search; // 현재 URL의 쿼리 스트링 가져오기
+    let Url = "/ev/list";
+
+    // 쿼리 스트링이 있으면 저장하고, 없으면 초기화
+    if (currentParams) {
+        sessionStorage.setItem("listPageUrl", Url + currentParams);
+    } else {
+        sessionStorage.removeItem("listPageUrl"); // 쿼리 스트링 없으면 기존 검색 조건 삭제
+    }
+
+    // 저장된 검색 조건 불러오기
+    let savedUrl = sessionStorage.getItem("listPageUrl") || Url; // 기본값 설정
+
+    // 목록 버튼 클릭 시 저장된 검색 조건 유지
+    backButton.href = savedUrl;
+
 });

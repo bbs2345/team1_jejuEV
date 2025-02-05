@@ -35,7 +35,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 		               "(:#{#criteria.cateId} IS NULL OR cate_id = :#{#criteria.cateId}) AND " +
 		               "(:#{#criteria.type} IS NULL OR " +
 		               "(:#{#criteria.type} = 'title' AND title LIKE %:#{#criteria.keyword}%) OR " +
-		               "(:#{#criteria.type} = 'writer' AND writer LIKE %:#{#criteria.keyword}%))")
+		               "(:#{#criteria.type} = 'writer' AND user_id LIKE %:#{#criteria.keyword}%))")
 		Long getTotalCount(Criteria criteria);
 
 		@Query(nativeQuery = true, 
@@ -43,7 +43,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>{
 		               "(:#{#criteria.cateId} IS NULL OR cate_id = :#{#criteria.cateId}) AND " +
 		               "(:#{#criteria.type} IS NULL OR " +
 		               "(:#{#criteria.type} = 'title' AND title LIKE %:#{#criteria.keyword}%) OR " +
-		               "(:#{#criteria.type} = 'writer' AND writer LIKE %:#{#criteria.keyword}%)) " +
+		               "(:#{#criteria.type} = 'writer' AND user_id LIKE %:#{#criteria.keyword}%)) " +
 		               "ORDER BY id DESC LIMIT :#{#criteria.perPageContent} OFFSET :#{#criteria.getOffset()}")
 		List<BoardEntity> findAll(Criteria criteria);
 

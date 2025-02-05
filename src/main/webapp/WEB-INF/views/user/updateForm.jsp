@@ -35,9 +35,9 @@
 						<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" class="profile-img">
 					</c:if>
 				</div>
-				<div class="file-upload">
-					<input type="file" name="profileImage" class="file-input">
-				</div>
+			</div>
+			<div class="file-upload">
+				<input type="file" name="profileImage" class="file-input">
 			</div>
 			<div class="form-group">
 				<label for="username">아이디:</label>

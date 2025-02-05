@@ -1,7 +1,6 @@
 package kr.co.mbc.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,16 @@ import lombok.RequiredArgsConstructor;
 public class CateService {
 
 	private final CateRepository cateRepository;
+	
+	public void checkAndCreateCate(String cid, String cname) {
+        CateEntity dbEntity = cateRepository.findByCname(cname);
+
+        if (dbEntity == null) {
+        	CateEntity cateEntity = CateEntity.builder().cid(cid).cname(cname).build();
+            cateRepository.save(cateEntity);
+        }
+        
+    }
 
 	public void save(CateEntity cateEntity) {
 		cateRepository.save(cateEntity);

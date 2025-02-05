@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kr.co.mbc.entity.AttachEntity;
-import kr.co.mbc.entity.AttachEntity.AttachEntityBuilder;
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.repository.AttachRepository;
 import lombok.RequiredArgsConstructor;

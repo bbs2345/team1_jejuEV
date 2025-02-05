@@ -76,7 +76,7 @@
 				<c:forEach items="${stList}" var="dto">
 					<tr>
 						<td>${dto.statId}</td>
-						<td><a href="/ev/read/${dto.statId}">${dto.statNm}</a></td>
+						<td><a href="/ev/read/${dto.statId}${pageContext.request.queryString != null ? '?' : ''}${pageContext.request.queryString}">${dto.statNm}</a></td>
 						<td>${dto.addr}</td>
 						<td>${dto.useTime}</td>
 						<td>

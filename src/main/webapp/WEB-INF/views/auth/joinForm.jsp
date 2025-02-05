@@ -19,70 +19,70 @@
 <body>
 <%@ include file="../part/part_header.jsp" %>
 
-	<div class="container">
+<div class="container">
 
-		<div class="container">
-			<form:form id="member_join_insertForm" modelAttribute="userForm"
-				action="/auth/join" method="post" enctype="multipart/form-data">
-				<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
-				<input id="csrfToken" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	<div class="container">
+		<form:form id="member_join_insertForm" modelAttribute="userForm" action="/auth/join" method="post" enctype="multipart/form-data">
+			<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
+			<input id="csrfToken" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			
+			<div class="row">
+				<div class="col col-md-4">
+					<h2>프로필 이미지</h2>
+					<!-- 그리드 크기 조정 -->
+					<div class="preview" style="width: 100%; height: auto; background-color: #f0f0f0; border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+					</div>
+					<div>
+						<input type="file" name="profileImage" class="custom-style" style="width: 100%;">
+					</div>
+				</div>
 				
-				
-				<div class="row">
-					<div class="col-12 col-md-4">
-						<h2>프로필 이미지</h2>
-						<!-- 그리드 크기 조정 -->
-						<div class="preview"
-							style="width: 100%; height: auto; background-color: #f0f0f0; border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center;"></div>
-						<div>
-							<input type="file" name="profileImage" class="custom-style"
-								style="width: 100%;">
+				<div class="col col-md-5 custom-style">
+					<div class="row">
+						<h2 class="join-title">회원가입</h2>
+
+						<!-- 아이디 -->
+						<div class="col-12 mb-3">
+							<form:label path="username" class="form-label">아이디</form:label>
+							<div class="input-group">
+								<form:input path="username" class="form-control" />
+								<button id="auth_joinForm_checkId" type="button" class="btn btn-outline-primary">중복체크</button>
+							</div>
+							<div></div>
+						</div>
+
+						<!-- 비밀번호 -->
+						<div class="col-12 mb-3">
+							<form:label path="password" class="form-label">비밀번호</form:label>
+							<form:input path="password" type="password" class="form-control" />
+							<div></div>
+						</div>
+
+						<!-- 비밀번호 확인 -->
+						<div class="col-12 mb-3">
+							<form:label path="password2" class="form-label">비밀번호 확인</form:label>
+							<form:input path="password2" type="password" class="form-control" />
+							<div></div>
+						</div>
+
+						<!-- 이름 -->
+						<div class="col-12 mb-3">
+							<form:label path="name" class="form-label">이름</form:label>
+							<form:input path="name" class="form-control" />
+						</div>
+
+						<!-- 회원등록 -->
+						<div class="col-12">
+							<button id="auth_joinForm_submit" type="button"
+								class="btn btn-primary w-100">회원등록</button>
 						</div>
 					</div>
-
-					<div class="col-12 col-md-5 custom-style">
-						<div class="row">
-							<h2 class="join-title">회원가입</h2>
-
-							<!-- 아이디 -->
-							<div class="col-12 mb-3">
-								<form:label path="username" class="form-label">아이디</form:label>
-								<div class="input-group">
-									<form:input path="username" class="form-control" />
-									<button id="auth_joinForm_checkId" type="button"
-										class="btn btn-outline-primary">중복체크</button>
-								</div>
-							</div>
-
-							<!-- 비밀번호 -->
-							<div class="col-12 mb-3">
-								<form:label path="password" class="form-label">비밀번호</form:label>
-								<form:input path="password" type="password" class="form-control" />
-							</div>
-
-							<!-- 비밀번호 확인 -->
-							<div class="col-12 mb-3">
-								<form:label path="password2" class="form-label">비밀번호 확인</form:label>
-								<form:input path="password2" type="password"
-									class="form-control" />
-							</div>
-
-							<!-- 이름 -->
-							<div class="col-12 mb-3">
-								<form:label path="name" class="form-label">이름</form:label>
-								<form:input path="name" class="form-control" />
-							</div>
-
-							<!-- 회원등록 -->
-							<div class="col-12">
-								<button id="auth_joinForm_submit" type="button"
-									class="btn btn-primary w-100">회원등록</button>
-							</div>
-						</div>
-			</form:form>
-		</div>
+				</div>
+			</div>
+		</form:form>
 	</div>
+</div>
 
-	<script type="text/javascript" src="/js/userService.js"></script>
+<script type="text/javascript" src="/js/userService.js"></script>
 </body>
 </html>
