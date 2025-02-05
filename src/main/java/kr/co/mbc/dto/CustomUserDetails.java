@@ -54,10 +54,6 @@ public class CustomUserDetails implements UserDetails{
 		return userEntity.getName();
 	}
 	
-	public String getProfileImage() {
-		return userEntity.getProfileImage();
-	};
-
 //	public UserEntity getUserEntity() {
 //		// TODO Auto-generated method stub
 //		return userEntity;

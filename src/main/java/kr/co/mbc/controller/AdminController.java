@@ -3,23 +3,16 @@ package kr.co.mbc.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.mbc.dto.BoardForm;
 import kr.co.mbc.dto.Criteria;
 import kr.co.mbc.dto.UserResponse;
-import kr.co.mbc.entity.AttachEntity;
-import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.entity.CateEntity;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.service.AttachService;
