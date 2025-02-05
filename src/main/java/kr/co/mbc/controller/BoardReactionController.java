@@ -26,7 +26,6 @@ public class BoardReactionController {
 
 
 
-	// ===============================================================================
 	// 보드 좋아요, 나빠요 카운트 가져고이
 	@GetMapping("/{bId}")
 	public Map<String, List<BoardReactionEntity>> getBoardReactionCount(@PathVariable("bId") Long bId) {

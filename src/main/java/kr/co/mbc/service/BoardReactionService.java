@@ -1,17 +1,14 @@
 package kr.co.mbc.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.mbc.entity.BoardEntity;
 import kr.co.mbc.entity.BoardReactionEntity;
-import kr.co.mbc.entity.ReplyEntity;
-import kr.co.mbc.repository.BoardRepository;
 import kr.co.mbc.repository.BoardReactionRepository;
+import kr.co.mbc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

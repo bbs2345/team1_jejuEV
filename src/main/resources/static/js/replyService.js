@@ -4,33 +4,34 @@ console.log("replyService.js파일 불러옴.");
 //=================================================================
 //댓글아이디 별로 좋아요,나빠요 카운트
 function getReplyReaction(obj) {
-    for (let el of obj) {
+	
+	for (let el of obj) {
+		
+		$.ajax({
+			url: `/replyReactions/${el.id}`,
+			type: "get",
+			dataType: "text",
+			success: function(map) {
+				let obj = JSON.parse(map);
 
-        $.ajax({
-            url: `/replyReactions/${el.id}`,
-            type: "get",
-            dataType: "text",
-            success: function (map) {
-                let obj = JSON.parse(map);
+				$(`#reply-like-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-up");
+				$(`#reply-dislike-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-down");
 
-                $(`#reply-like-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-up");
-                $(`#reply-dislike-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-down");
-
-                for (let user of obj.likes) {
-                    if (user.username == $("input[name='username']").val()) {
-                        $(`#reply-like-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-up-fill");
-                    }
-                }
-                for (let user of obj.dislikes) {
-                    if (user.username == $("input[name='username']").val()) {
-                        $(`#reply-dislike-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-down-fill");
-                    }
-                }
-                $(`#reply-like-count-${el.id}`).text(obj.likes.length);
-                $(`#reply-dislike-count-${el.id}`).text(obj.dislikes.length);
-            },
-        });
-    }
+				for (let user of obj.likes) {
+					if (user.username == $("input[name='username']").val()) {
+						$(`#reply-like-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-up-fill");
+					}
+				}
+				for (let user of obj.dislikes) {
+					if (user.username == $("input[name='username']").val()) {
+						$(`#reply-dislike-count-${el.id}`).prev().attr("class", "bi-hand-thumbs-down-fill");
+					}
+				}
+				$(`#reply-like-count-${el.id}`).text(obj.likes.length);
+				$(`#reply-dislike-count-${el.id}`).text(obj.dislikes.length);
+			},
+		});
+	}
 }
 
 
@@ -85,20 +86,20 @@ function makeReplyListTag(obj) {
 
 
 	let tag = ``;
-
+	
 	for (i of obj) {
 		tag += `			
 		<div class='d-flex'>
 			<div id="reply_lists">
 				<div class="comment-header">
-				<strong>${i.writer}</strong> · ${i.writeDate}
+				<strong>${i.user.name}</strong> · ${i.writeDate}
 				</div>
 				<div class="comment-text">${i.content}</div>
 			</div>
 			`;
 
-					if (i.writer == $("input[name='username']").val()) {
-						tag += `
+		if (i.user.username == $("input[name='username']").val()) {
+			tag += `
 						<div class="replyOriBtn" style="display: block;">
 							<button type='button' class='reply_btn_update' data-rId='${i.id}'>수정</button> 
 							<button type='button' class='reply_btn_delete' data-rId='${i.id}'>삭제</button>
@@ -110,39 +111,39 @@ function makeReplyListTag(obj) {
 						    <button type="button" class="reply_cancel_btn" data-id="${i.id}">취소</button>
 						</div>
 						`;
-					}
-					tag += `
+		}
+		tag += `
 					<div class="reply_list_btns_reaction">
 					<button class="reply-reaction-button" data-reaction-type="like" data-rId="${i.id}">
 					<i class="bi bi-hand-thumbs-up"></i><span id="reply-like-count-${i.id}">`;
 
-					if (i.likes == null) {
-						tag += `</span>`;
-					}
-					if (i.likes != null) {
-						tag += `${i.likes}</span>`;
-					}
-					tag += `
+		if (i.likes == null) {
+			tag += `</span>`;
+		}
+		if (i.likes != null) {
+			tag += `${i.likes}</span>`;
+		}
+		tag += `
 					</button>
 					<button class="reply-dislike-button" data-reaction-type="dislike" data-rId="${i.id}">
 					<i class="bi bi-hand-thumbs-down"></i><span id="reply-dislike-count-${i.id}">`;
 
-					if (i.dislikes != null) {
-						tag += `
+		if (i.dislikes != null) {
+			tag += `
 						${i.dislikes}</span>`;
-					}
-					tag += `</span>
+		}
+		tag += `</span>
 					</button>
 					</div>
 					`;
-					tag += `
+		tag += `
 					</div>
 					<hr>`;
 
-				}
+	}
 
-				return tag;
-			}
+	return tag;
+}
 
 
 // 댓글 수정
@@ -151,12 +152,13 @@ function getReplyList(page) {
 	let bId = $("input[name='boardId']").val();
 	let username = $("input[name='username']").val();
 	let csrfToken = $("#board_delete_service").find("input").eq(0).val();
-	
-	
+
+
 	// page가 undefined일 경우 기본값 1로 설정
 	if (page === undefined) {
 		page = 1;
 	}
+	
 
 	$.ajax({
 		url: `/replies/${bId}?page=${page}`,
@@ -167,16 +169,18 @@ function getReplyList(page) {
 			"X-HTTP-Method-Override": "GET"
 		},
 		dataType: "text",
-		success: function(result) {
-			let obj = JSON.parse(result);
+		success: function(map) {
+			let obj = JSON.parse(map);
+			
+			console.log(obj);
+			
+			$("#replies_list").find("span").text(obj.paging.totalElements);
 
-			$("#replies_list").find("span").text(obj.otalElements);
-
-			let tag = makeReplyListTag(obj["content"]);
+			let tag = makeReplyListTag(obj.list);
 
 			$("#board_read_show_reply_list").html(tag);
-			
-			getReplyReaction(obj["content"]);
+
+			getReplyReaction(obj.list);
 
 
 			//========================================================			
@@ -220,7 +224,7 @@ function getReplyList(page) {
 			replyPaging(obj);
 
 			//===========================================
-			
+
 			// 댓글 삭제 버튼 클릭 이벤트
 			$("#board_read_show_reply_list").find(".reply_btn_delete").each(function() {
 
@@ -313,70 +317,45 @@ $(function() {
 	let replyWriter = $("#replyWriter");
 	let replyContent = $("#replyContent");
 	let tokenValue = $("#csrf_token_value").val();
-	
-	$(".empty-form-control").click(function(){
+
+	$(".empty-form-control").click(function() {
 		alert("로그인 후 작성해주세요.");
 		return;  // 작성자가 비어 있으면 함수 종료
 	})
-	
+
 	$("#board_read_reply_insert").click(function() {
 
 		// replyContent 값 확인
 		if (replyContent.val() === '') {
-		    alert("댓글 내용을 입력해 주세요.");
-		    return;
+			alert("댓글 내용을 입력해 주세요.");
+			return;
 		}
-		if(replyWriter.val() === ''){
+		if (replyWriter.val() === '') {
 			alert("로그인 후 작성해주세요.");
 			return;
 		}
-		});
-
-
-	// 댓글 작성
-//	$("#board_read_reply_insert").click(function() {
-//
-//		$.ajax({
-//			url: "/replies/",
-//			type: "post",
-//			data: JSON.stringify({
-//				bId: bId.val(),
-//				writer: replyWriter.val(),
-//				content: replyContent.val()
-//
-//			}),
-//			headers: {
-//				"Content-Type": "application/json",
-//				"X-HTTP-Method-Override": "POST"
-//			},
-//			dataType: "text",
-//			success: function(result) {
-//				getReplyList(1);
-//				$("#replyContent").val("");
-//			}
-//		});
-//	});
+	});
 
 	$("#board_read_reply_insert").click(function() {
-			$.ajax({
-				url: "/replies/",
-				type: "post",
-				data: JSON.stringify({
-					bId: bId.val(),
-					writer: replyWriter.val(),
-					content: replyContent.val(),
-				}),
-				headers: {
-					"Content-Type": "application/json",
-					"X-HTTP-Method-Override": "POST",
-					"X-CSRF-TOKEN": tokenValue
-				},
-				dataType: "text",
-				success: function(result) {
-					getReplyList(1);
-					$("#replyContent").val("");
-				}
-			});
+		$.ajax({
+			url: "/replies/",
+			type: "post",
+			data: JSON.stringify({
+				bId: bId.val(),
+				writer: replyWriter.val(),
+				content: replyContent.val(),
+			}),
+			headers: {
+				"Content-Type": "application/json",
+				"X-HTTP-Method-Override": "POST",
+				"X-CSRF-TOKEN": tokenValue
+			},
+			dataType: "text",
+			success: function(result) {
+				getReplyList(1);
+				$("#replyContent").val("");
+			}
 		});
+	});
 
 });

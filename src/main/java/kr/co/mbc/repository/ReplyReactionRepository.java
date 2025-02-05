@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import kr.co.mbc.entity.BoardEntity;
-import kr.co.mbc.entity.BoardReactionEntity;
 import kr.co.mbc.entity.ReplyEntity;
 import kr.co.mbc.entity.ReplyReactionEntity;
 

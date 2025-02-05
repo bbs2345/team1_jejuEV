@@ -1,28 +1,28 @@
 console.log("userService.js파일 불러옴.");
 
-function makeImg(result){
-	let tag =`<img src="${result}" width="267" height="298">`;
+function makeImg(result) {
+	let tag = `<img src="${result}" width="267" height="298">`;
 	return tag;
 }
 
 $(function() {
-	
+
 	// 회원삭제 버튼 클릭 이벤트
-	$("#user_read_deleteuser").click(function(event){
+	$("#user_read_deleteuser").click(function(event) {
 		event.preventDefault();
-		
+
 		let isDelete = confirm("정말 탈퇴하시겠습니까?");
-		
-		if(isDelete) {
+
+		if (isDelete) {
 			let usernameValue = $(this).attr("href");
 			let input = $("<input>").attr("name", "username").val(usernameValue);
-			
+
 			// CSRF 토큰 추가
 			let csrfToken = $("#csrf_value").val();
-      	    let csrfParameterName = $("#csrf_value").attr("name");
+			let csrfParameterName = $("#csrf_value").attr("name");
 			let csrfInput = $("<input>").attr("type", "hidden").attr("name", csrfParameterName).val(csrfToken);
-			
-			
+
+
 			let form = $("<form>").attr("method", "post").attr("action", "/user/delete");
 			form.appendTo("body");
 			form.append(input).append(csrfInput).submit();
@@ -30,26 +30,26 @@ $(function() {
 	});
 
 	// 이미지 미리보기
-	$("input[name='profileImage']").change(function() {
-		
+	$("input[name='profileImage']").change(function(event) {
 		let reader = new FileReader();
-		
-		reader.readAsDataURL(event.target.files[0]);
+		let file = event.target.files[0];
 
-		reader.onload = function(event) {
-			let result = event.target.result;
-			if (result.startsWith("data:image")) {
-				let tag = makeImg(result);
-				$(".preview").html(tag);
+		if (file) {
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				let result = e.target.result;
 
-			} else {
-				alert("이미지 파일만 올리세요.");
-				$("input[name='profileImage']").val('');
-				$(".preview").find("img").remove();
-			}
-
+				if (result.startsWith("data:image")) {
+					// 기존의 makeImg() 함수 대신 직접 img 태그를 생성하여 class 유지
+					let tag = `<img src="${result}" class="profile-img">`;
+					$(".preview").html(tag);
+				} else {
+					alert("이미지 파일만 올리세요.");
+					$("input[name='profileImage']").val('');
+					$(".preview").empty();
+				}
+			};
 		}
-
 	});
 
 	let username = $("input[name='username']");
@@ -119,8 +119,8 @@ $(function() {
 
 	// input 이벤트
 	$("body").on("input", "input[name='username']", function() {
-		// 아이디 바꾸면 span태그 초기화 시키고 isOk false로, 중복체크버튼 다시 활성화
-		$("#auth_joinForm_checkId").next().removeAttr().text('');
+		// 아이디 바꾸면 isOk false로, 중복체크버튼 다시 활성화
+		$("#auth_joinForm_checkId").parent().next().removeAttr().text('');
 		checkId = false;
 		$("#auth_joinForm_checkId").prop("disabled", false);
 	});
@@ -137,12 +137,11 @@ $(function() {
 			alert("아이디를 입력하세요.");
 			return;
 		}
-
 		$.ajax({
 			url: "/auth/checkId",
 			type: "post",
 			headers: {
-		        "X-CSRF-TOKEN": csrfToken  // CSRF 토큰을 헤더에 포함
+				"X-CSRF-TOKEN": csrfToken  // CSRF 토큰을 헤더에 포함
 			},
 			data: {
 				username: usernameValue
@@ -151,14 +150,14 @@ $(function() {
 			success: function(result) {
 				if (result == "ok") {
 					// result가 ok일 때, span태그 style속성바꾸고, text로 '사용가능한 아이디'
-					$("#auth_joinForm_checkId").next().attr("style", "color: blue").text("사용가능한 아이디");
+					$("#auth_joinForm_checkId").parent().next().attr("style", "color: blue").text("사용가능한 아이디");
 					checkId = true;
 					$("#auth_joinForm_checkId").prop("disabled", true); // 중복체크 버튼 비활성화 시킴
 				} else {
-					$("#auth_joinForm_checkId").next().attr("style", "color: red").text("이미사용중인 아이디");
+					$("#auth_joinForm_checkId").parent().next().attr("style", "color: red").text("이미사용중인 아이디");
 				}
 			}
-			
+
 		});
 	});
 

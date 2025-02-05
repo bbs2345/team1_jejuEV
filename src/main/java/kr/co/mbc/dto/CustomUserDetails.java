@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import kr.co.mbc.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails{

@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html>
 <html>
@@ -115,7 +111,7 @@ a:hover {
 
 	<form:form modelAttribute="boardForm" action="/board/update" method="post" enctype="multipart/form-data">
 		<form:errors path="*" cssClass="errorblock" element="div"></form:errors>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		<input id="csrfToken" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		
 		
 		<div>
@@ -138,20 +134,17 @@ a:hover {
 		<div>
 			<label for="fileUpload">이미지: </label>
 			<div class="preview">
-				<c:if test="${fileList != null}">
-					<c:forEach items="${fileList}" var="dto">
+				<c:if test="${boardResponse.attachList != null}">
+					<c:forEach items="${boardResponse.attachList}" var="dto">
 						<div class="image-item">
-							<img src="/board/imgDisplay?fullFileName=${dto.filename}"
-								width="100" height="100">
+							<img src="/board/imgDisplay?fullFileName=${dto.filename}" width="100" height="100">
 							<button type="button" class="btn btn-danger btn-sm" data-filename="${dto.filename}" id="deleteImage">삭제</button>
 						</div>
 					</c:forEach>
 				</c:if>
 			</div>
 			<div>
-				<input type="file" name="myfile" id="fileInput"
-					onchange="previewFile()" /> <img id="filePreview" width="100"
-					height="100" style="display: none;" />
+				<input type="file" name="myfile" id="fileInput"/><img id="filePreview" width="100" height="100" style="display: none;" />
 			</div>
 		</div>
 
@@ -161,6 +154,7 @@ a:hover {
 	<a href="/board/list">목록</a>
 </div>
 
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/boardService.js"></script>
 </body>
 </html>

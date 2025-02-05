@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.co.mbc.dto.Criteria;
-import kr.co.mbc.dto.UserForm;
 import kr.co.mbc.entity.UserEntity;
 import kr.co.mbc.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,36 +17,18 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
-	
+
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	public void save(UserEntity userEntity) {
-		UserEntity dbUserEntity = userRepository.findByUsername(userEntity.getUsername());
-				
-		if(dbUserEntity == null) {
-			// insert
-			String encodingPass = bCryptPasswordEncoder.encode(userEntity.getPassword());
-			userEntity.setPassword(encodingPass);
-			userRepository.save(userEntity);
-		}else {
-			// update
-			String dbPass = dbUserEntity.getPassword();
-			String formPass = userEntity.getPassword();
-			
-			if(!bCryptPasswordEncoder.matches(formPass, dbPass)) {
-				return;
-			}
-			
-			dbUserEntity.setName(userEntity.getName());
-			dbUserEntity.setProfileImage(userEntity.getProfileImage());
-			userRepository.save(dbUserEntity);
-		}
-		
+
+	public void update(UserEntity userEntity) {
+		userRepository.save(userEntity);
 	}
 
-//	public void save(UserEntity userEntity) {
-//		userRepository.save(userEntity);
-//	}
+	public void save(UserEntity userEntity) {
+		String encodingPass = bCryptPasswordEncoder.encode(userEntity.getPassword());
+		userEntity.setPassword(encodingPass);
+		userRepository.save(userEntity);
+	}
 
 	public UserEntity findByUsername(String username) {
 		return userRepository.findByUsername(username);
@@ -59,13 +40,13 @@ public class UserService {
 	}
 
 	public List<UserEntity> findMembers(Criteria criteria) {
-		
+
 		return userRepository.findMembers(criteria);
 	}
 
 	public UserEntity findById(Long i) {
 		Optional<UserEntity> opt = userRepository.findById(i);
-		
+
 		if (opt.isPresent()) {
 			UserEntity userEntity = opt.get();
 			return userEntity;
@@ -80,5 +61,5 @@ public class UserService {
 	public UserEntity findByUsernameAndPassword(String username, String encodePass) {
 		return userRepository.findByUsernameAndPassword(username, encodePass);
 	}
-	
+
 }

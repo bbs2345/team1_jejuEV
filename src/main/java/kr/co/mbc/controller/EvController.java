@@ -22,13 +22,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.mbc.dto.ApiResponseDto;
 import kr.co.mbc.dto.Criteria;
+import kr.co.mbc.dto.Pagination;
 import kr.co.mbc.entity.EvChargerEntity;
 import kr.co.mbc.entity.EvStationEntity;
 import kr.co.mbc.service.EvChargerService;
 import kr.co.mbc.service.EvStationService;
 import kr.co.mbc.service.EvUserCateChargerCountService;
 import kr.co.mbc.service.EvYoilChgerCountService;
-import kr.co.mbc.utils.Pagination;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -48,15 +48,12 @@ public class EvController {
 		return evYoilChgerCountService.getYoilChgerCountByBaseDayOfTheWeek();
 	}
 	
-	
 	// 사용자 유형별 충전횟수
 	@GetMapping("/getuserCateCountByUserCate")
 	@ResponseBody
 	public Map<String, Integer> getUsercateCount() {
 		return evUserCateChargerCountService.getUsercateCount();
 	}
-		
-	
 	
 	@GetMapping("/getChgerTypeCountByChgerType")
 	@ResponseBody
@@ -141,7 +138,6 @@ public class EvController {
 	        }
 	    }
 		
-		
 		return map;
 	}
 	
@@ -200,8 +196,6 @@ public class EvController {
 		
 		return "ev/read";
 	}
-	
-	
 	
 	// 충전소 목록
 	@GetMapping("/list")

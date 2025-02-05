@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
 
 <!DOCTYPE html>
 <html>
@@ -35,9 +30,9 @@
 						<img src="/user/imgDisplay?fullFileName=${userResponse.profileImage}" class="profile-img">
 					</c:if>
 				</div>
-				<div class="file-upload">
-					<input type="file" name="profileImage" class="file-input">
-				</div>
+			</div>
+			<div class="file-upload">
+				<input type="file" name="profileImage" class="file-input">
 			</div>
 			<div class="form-group">
 				<label for="username">아이디:</label>
