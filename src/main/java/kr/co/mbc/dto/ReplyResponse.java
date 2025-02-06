@@ -27,6 +27,5 @@ public class ReplyResponse {
 	private BoardEntity board;
 	private UserEntity user;
 	private List<ReplyReactionEntity> replyReactionList;
-	
 
 }
