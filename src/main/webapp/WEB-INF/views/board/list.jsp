@@ -101,7 +101,7 @@ form select {
 					<tr>
 						<td>${dto.id}</td>
 						<td>[ ${dto.cate.cname} ] <a href="${dto.id}">${dto.title}</a>  [${dto.replyList.size()}]</td>
-						<td>${dto.writer} | ${dto.user.name}</td>
+						<td>${dto.user.name}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -221,7 +221,7 @@ function getReplyList(page) {
 			})
 			//===========================================
 
-			replyPaging(obj);
+			replyPaging(obj.paging);
 
 			//===========================================
 
