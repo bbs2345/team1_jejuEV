@@ -232,11 +232,10 @@ button{
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/boardService.js"></script>
 <script type="text/javascript" src="/js/replyService.js"></script>
-<<<<<<< HEAD
-=======
+
 <script type="text/javascript">
 	getReaction();
 </script>
->>>>>>> 874d2df (수정완료)
+
 </body>
 </html>
