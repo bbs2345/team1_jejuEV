@@ -100,12 +100,13 @@ button:hover {
 					<input type="file" name="myfile">
 				</div>
 				<div>
-					<button type="submit">글 입력 완료</button>
+					<button type="button" id="board_insert_btn_submit">글 입력 완료</button>
 				</div>
 				<a href="/board/list" class="btn btn-success">목록</a>
 			</form:form>
 		</div>
 	</div>
+	
 	<script type="text/javascript" src="/js/boardService.js"></script>
 	<script type="text/javascript">
 	
@@ -124,6 +125,17 @@ button:hover {
             return false;  // 제출 막기
         }
     });
+	
+	$("#board_insert_btn_submit").click(function(){
+		
+		let title = $("input[name='title']").val();
+		if(title != ''){
+			$("#boardForm").submit();
+		} else {
+			alert("제목입력하세요");
+		}
+		
+	});
 	
 // 	// principal.username 값을 가져오기
 //     let username = "${principal.username}";
