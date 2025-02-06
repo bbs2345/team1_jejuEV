@@ -220,8 +220,7 @@
 
 
 
-
-
+<script type="text/javascript" src="/js/common.js"></script>
 <script>
 $(document).ready(function() {
     // 메뉴 항목에 마우스를 올리면 서브메뉴 보이기
