@@ -81,6 +81,20 @@ function replyPaging(obj) {
 
 //===========================================================
 
+/* 삼항연산자사용
+if(i.user.profileImage == null) {
+			tag += `<img src="/images/default_profile.png" class="profile-img">`;
+		}
+		if(i.user.profileImage != null) {
+			tag += `<img src="/user/imgDisplay?fullFileName=${i.user.profileImage}" class="profile-img">`;
+		}
+
+
+tag += i.user.profileImage == null
+        ? `<img src="/images/default_profile.png" class="profile-img">`
+        : `<img src="/user/imgDisplay?fullFileName=${i.user.profileImage}" class="profile-img">`;
+*/
+
 // 댓글 리스트 생성
 function makeReplyListTag(obj) {
 
@@ -89,7 +103,13 @@ function makeReplyListTag(obj) {
 	
 	for (i of obj) {
 		tag += `			
-		<div class='d-flex'>
+		<div class='d-flex'>`;
+		
+		tag += i.user.profileImage == null
+		        ? `<img src="/images/default_profile.png" class="profile-img">`
+		        : `<img src="/board/imgDisplay?fullFileName=${i.user.profileImage}" class="profile-img">`;
+		tag += `
+			
 			<div id="reply_lists">
 				<div class="comment-header">
 				<strong>${i.user.name}</strong> · ${i.writeDate}
@@ -152,7 +172,7 @@ function getReplyList(page) {
 	let bId = $("input[name='boardId']").val();
 	let username = $("input[name='username']").val();
 	let csrfToken = $("#board_delete_service").find("input").eq(0).val();
-
+	let profileImage = $("input[name='profileImage']").val();
 
 	// page가 undefined일 경우 기본값 1로 설정
 	if (page === undefined) {
@@ -343,7 +363,7 @@ $(function() {
 			data: JSON.stringify({
 				bId: bId.val(),
 				writer: replyWriter.val(),
-				content: replyContent.val(),
+				content: replyContent.val()
 			}),
 			headers: {
 				"Content-Type": "application/json",

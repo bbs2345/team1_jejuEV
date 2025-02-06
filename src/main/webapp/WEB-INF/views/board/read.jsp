@@ -130,6 +130,7 @@ button{
 				<input type="hidden" name="username" value="${principal.username}">
 				<input type="hidden" name="reactionLike" value="${reactionResponse.likes}">
 				<input type="hidden" name="reactionDislike" value="${reactionResponse.dislikes}">
+				<input type="hidden" name="profileImage" value="${boardResponse.user.profileImage}">
 				<table class="table">
 					<tr>
 						<th>글번호</th>
@@ -141,11 +142,11 @@ button{
 						<th>제목</th>
 						<td>${boardResponse.title}</td>
 						<th>작성자</th>
-						<td>${boardResponse.writer}</td>
+						<td>${boardResponse.user.name}</td>
 					</tr>
 					<tr>
 						<td colspan="4">
-							<p>${boardResponse.content}</p>
+							<p >${boardResponse.content}</p>
 						</td>
 					</tr>
 					

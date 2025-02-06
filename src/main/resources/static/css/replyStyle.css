@@ -2,6 +2,13 @@
 
 /* ===============리플 스타일 start============== */
 
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 /* 좋아요/싫어요 버튼 우측 정렬 */
 .reply_list_btns_reaction, .reply-dislike-button,.replyOriBtn,.replyUpBtn {
     gap: 3px; /* 버튼 사이 간격 */
